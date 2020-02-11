@@ -44,6 +44,13 @@ void EjesRGB::render(dmat4 const& modelViewMat) const
 }
 //-------------------------------------------------------------------------
 
+void EjesRGB::update(dmat4 const& modelViewMat) 
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+}
+//-------------------------------------------------------------------------
+
 Poligono::Poligono(dvec4 color, GLuint numL, GLdouble rd): Abs_Entity()
 {
 	setColor(color);
@@ -58,6 +65,8 @@ Poligono::~Poligono()
 void Poligono::render(dmat4 const& modelViewMat) const
 {
 	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
 		glLineWidth(2);
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
@@ -65,6 +74,13 @@ void Poligono::render(dmat4 const& modelViewMat) const
 	}
 }
 
+//-------------------------------------------------------------------------
+
+void Poligono::update(dmat4 const& modelViewMat) 
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+}
 //-------------------------------------------------------------------------
 
 Sierpinski::Sierpinski(dvec4 color, GLuint numP, GLdouble rd): Abs_Entity()
@@ -81,12 +97,21 @@ Sierpinski::~Sierpinski()
 void Sierpinski::render(dmat4 const& modelViewMat) const
 {
 	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
 		glPointSize(2);
 		glColor4dv(value_ptr(color()));
 		mMesh->render();
 		glPointSize(1);
 	}
 }
+
+void Sierpinski::update(dmat4 const& modelViewMat) 
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+}
+//-------------------------------------------------------------------------
 
 TrianguloRGB::TrianguloRGB(GLdouble rd): Abs_Entity()
 {
@@ -101,11 +126,20 @@ TrianguloRGB::~TrianguloRGB()
 void TrianguloRGB::render(dmat4 const& modelViewMat) const
 {
 	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat * matTrans;  // glm matrix multiplication
+		upload(aMat);
 		glPolygonMode(GL_FRONT, GL_FILL);
 		glPolygonMode(GL_BACK, GL_LINE);
 		mMesh->render();
 	}
 }
+
+void TrianguloRGB::update(dmat4 const& modelViewMat)
+{
+	matTrans = translate(mModelMat, dvec3(0.0, 1.0, 0.0));
+	matTrans = rotate(matTrans, radians(1.0), dvec3(0.0, 0.0, 1.0));
+}
+//-------------------------------------------------------------------------
 
 RectanguloRGB::RectanguloRGB(GLdouble w, GLdouble h)
 {
@@ -120,8 +154,17 @@ RectanguloRGB::~RectanguloRGB()
 void RectanguloRGB::render(dmat4 const& modelViewMat) const
 {
 	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
 		glPolygonMode(GL_FRONT, GL_FILL);
 		glPolygonMode(GL_BACK, GL_LINE);
 		mMesh->render();
 	}
 }
+
+void RectanguloRGB::update(dmat4 const& modelViewMat) 
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+}
+//-------------------------------------------------------------------------
