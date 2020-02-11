@@ -66,3 +66,62 @@ void Poligono::render(dmat4 const& modelViewMat) const
 }
 
 //-------------------------------------------------------------------------
+
+Sierpinski::Sierpinski(dvec4 color, GLuint numP, GLdouble rd): Abs_Entity()
+{
+	setColor(color);
+	mMesh = Mesh::generaSierpinski(rd, numP);
+}
+
+Sierpinski::~Sierpinski()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void Sierpinski::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		glPointSize(2);
+		glColor4dv(value_ptr(color()));
+		mMesh->render();
+		glPointSize(1);
+	}
+}
+
+TrianguloRGB::TrianguloRGB(GLdouble rd): Abs_Entity()
+{
+	mMesh = Mesh::generaTrianguloRGB(rd);
+}
+
+TrianguloRGB::~TrianguloRGB()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void TrianguloRGB::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		glPolygonMode(GL_FRONT, GL_FILL);
+		glPolygonMode(GL_BACK, GL_LINE);
+		mMesh->render();
+	}
+}
+
+RectanguloRGB::RectanguloRGB(GLdouble w, GLdouble h)
+{
+	mMesh = Mesh::generaRectanguloRGB(w, h);
+}
+
+RectanguloRGB::~RectanguloRGB()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void RectanguloRGB::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		glPolygonMode(GL_FRONT, GL_FILL);
+		glPolygonMode(GL_BACK, GL_LINE);
+		mMesh->render();
+	}
+}

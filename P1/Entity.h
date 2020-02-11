@@ -44,20 +44,44 @@ protected:
 
 class EjesRGB : public Abs_Entity 
 {
-public:
-	explicit EjesRGB(GLdouble l);
-	~EjesRGB();
-	virtual void render(glm::dmat4 const& modelViewMat) const;
+	public:
+		explicit EjesRGB(GLdouble l);
+		~EjesRGB();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
 };
 
 //-------------------------------------------------------------------------
 
 class Poligono : public Abs_Entity
 {
-public:
-	explicit Poligono(glm::dvec4 color, GLuint numL, GLdouble rd);
-	~Poligono();
-	virtual void render(glm::dmat4 const& modelViewMat) const;
+	public:
+		explicit Poligono(glm::dvec4 color, GLuint numL, GLdouble rd);
+		~Poligono();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
+};
+
+class Sierpinski : public Abs_Entity
+{
+	public:
+		explicit Sierpinski(glm::dvec4 color, GLuint numP, GLdouble rd);
+		~Sierpinski();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
+};
+
+class TrianguloRGB : public Abs_Entity
+{
+	public:
+		explicit TrianguloRGB(GLdouble rd);
+		~TrianguloRGB();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
+};
+
+class RectanguloRGB : public Abs_Entity
+{
+	public:
+		explicit RectanguloRGB(GLdouble w, GLdouble h);
+		~RectanguloRGB();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
 };
 
 #endif //_H_Entities_H_

@@ -29,10 +29,12 @@ void Scene::init()
 	yellow.r = 1.0;
 	yellow.g = 1.0;
 	yellow.b = 0;
-	gObjects.push_back(new EjesRGB(400.0));
-	gObjects.push_back(new Poligono(yellow, 3, 100));
-	gObjects.push_back(new Poligono(magenta, 100, 100));
-	
+	// gObjects.push_back(new EjesRGB(400.0));
+	// gObjects.push_back(new Poligono(yellow, 3, 100.0));
+	// gObjects.push_back(new Poligono(magenta, 100, 100.0));
+	// gObjects.push_back(new Sierpinski(yellow, 3200, 200.0));
+	// gObjects.push_back(new TrianguloRGB(200));
+	gObjects.push_back(new RectanguloRGB(200.0, 100.0));
 }
 //-------------------------------------------------------------------------
 void Scene::free() 
