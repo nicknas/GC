@@ -126,7 +126,7 @@ TrianguloRGB::~TrianguloRGB()
 void TrianguloRGB::render(dmat4 const& modelViewMat) const
 {
 	if (mMesh != nullptr) {
-		dmat4 aMat = modelViewMat * mModelMat * matTrans;  // glm matrix multiplication
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glPolygonMode(GL_FRONT, GL_FILL);
 		glPolygonMode(GL_BACK, GL_LINE);
@@ -136,8 +136,8 @@ void TrianguloRGB::render(dmat4 const& modelViewMat) const
 
 void TrianguloRGB::update(dmat4 const& modelViewMat)
 {
-	matTrans = translate(mModelMat, dvec3(0.0, 1.0, 0.0));
-	matTrans = rotate(matTrans, radians(1.0), dvec3(0.0, 0.0, 1.0));
+	setModelMat(translate(mModelMat, dvec3(0.0, 1.0, 0.0)));
+	setModelMat(rotate(mModelMat, radians(1.0), dvec3(0.0, 0.0, 1.0)));
 }
 //-------------------------------------------------------------------------
 

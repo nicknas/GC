@@ -17,14 +17,14 @@
 class Abs_Entity  // abstract class
 {
 public:
-	Abs_Entity(): mModelMat(1.0), mColor(1) {};  // 4x4 identity matrix
+	Abs_Entity() : mModelMat(1.0), mColor(1) {};  // 4x4 identity matrix
 	virtual ~Abs_Entity() {};
 
 	Abs_Entity(const Abs_Entity& e) = delete;  // no copy constructor
 	Abs_Entity& operator=(const Abs_Entity& e) = delete;  // no copy assignment
 
 	virtual void render(glm::dmat4 const& modelViewMat) const = 0;  // abstract method
-	virtual void update(glm::dmat4 const& modelViewMat);
+	virtual void update(glm::dmat4 const& modelViewMat) {};
 
 	// modeling matrix
 	glm::dmat4 const& modelMat() const { return mModelMat; };
@@ -79,8 +79,6 @@ class TrianguloRGB : public Abs_Entity
 		~TrianguloRGB();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
 		virtual void update(glm::dmat4 const& modelViewMat);
-	protected:
-		glm::dmat4 matTrans;
 };
 
 class RectanguloRGB : public Abs_Entity
