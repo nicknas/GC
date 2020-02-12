@@ -44,11 +44,8 @@ void EjesRGB::render(dmat4 const& modelViewMat) const
 }
 //-------------------------------------------------------------------------
 
-void EjesRGB::update(dmat4 const& modelViewMat) 
-{
-	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
-	upload(aMat);
-}
+void EjesRGB::update() 
+{}
 //-------------------------------------------------------------------------
 
 Poligono::Poligono(dvec4 color, GLuint numL, GLdouble rd): Abs_Entity()
@@ -76,11 +73,8 @@ void Poligono::render(dmat4 const& modelViewMat) const
 
 //-------------------------------------------------------------------------
 
-void Poligono::update(dmat4 const& modelViewMat) 
-{
-	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
-	upload(aMat);
-}
+void Poligono::update() 
+{}
 //-------------------------------------------------------------------------
 
 Sierpinski::Sierpinski(dvec4 color, GLuint numP, GLdouble rd): Abs_Entity()
@@ -106,11 +100,8 @@ void Sierpinski::render(dmat4 const& modelViewMat) const
 	}
 }
 
-void Sierpinski::update(dmat4 const& modelViewMat) 
-{
-	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
-	upload(aMat);
-}
+void Sierpinski::update() 
+{}
 //-------------------------------------------------------------------------
 
 TrianguloRGB::TrianguloRGB(GLdouble rd): Abs_Entity()
@@ -135,10 +126,10 @@ void TrianguloRGB::render(dmat4 const& modelViewMat) const
 	}
 }
 
-void TrianguloRGB::update(dmat4 const& modelViewMat)
+void TrianguloRGB::update()
 {
-	setModelMat(translate(dmat4(1), dvec3(300.0 * cos(radians(angle)), 300.0 * sin(radians(angle)), 0.0)));
-	setModelMat(rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0)));
+	mModelMat = translate(dmat4(1), dvec3(300.0 * cos(radians(angle)), 300.0 * sin(radians(angle)), 0.0));
+	mModelMat = rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0));
 	angle++;
 }
 //-------------------------------------------------------------------------
@@ -164,9 +155,6 @@ void RectanguloRGB::render(dmat4 const& modelViewMat) const
 	}
 }
 
-void RectanguloRGB::update(dmat4 const& modelViewMat) 
-{
-	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
-	upload(aMat);
-}
+void RectanguloRGB::update() 
+{}
 //-------------------------------------------------------------------------

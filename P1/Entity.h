@@ -24,7 +24,7 @@ public:
 	Abs_Entity& operator=(const Abs_Entity& e) = delete;  // no copy assignment
 
 	virtual void render(glm::dmat4 const& modelViewMat) const = 0;  // abstract method
-	virtual void update(glm::dmat4 const& modelViewMat) {};
+	virtual void update() {};
 
 	// modeling matrix
 	glm::dmat4 const& modelMat() const { return mModelMat; };
@@ -49,7 +49,7 @@ class EjesRGB : public Abs_Entity
 		explicit EjesRGB(GLdouble l);
 		~EjesRGB();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
-		virtual void update(glm::dmat4 const& modelViewMat);
+		virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -60,7 +60,7 @@ class Poligono : public Abs_Entity
 		explicit Poligono(glm::dvec4 color, GLuint numL, GLdouble rd);
 		~Poligono();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
-		virtual void update(glm::dmat4 const& modelViewMat);
+		virtual void update();
 };
 
 class Sierpinski : public Abs_Entity
@@ -69,7 +69,7 @@ class Sierpinski : public Abs_Entity
 		explicit Sierpinski(glm::dvec4 color, GLuint numP, GLdouble rd);
 		~Sierpinski();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
-		virtual void update(glm::dmat4 const& modelViewMat);
+		virtual void update();
 };
 
 class TrianguloRGB : public Abs_Entity
@@ -78,7 +78,7 @@ class TrianguloRGB : public Abs_Entity
 		explicit TrianguloRGB(GLdouble rd);
 		~TrianguloRGB();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
-		virtual void update(glm::dmat4 const& modelViewMat);
+		virtual void update();
 	private:
 		GLdouble angle;
 };
@@ -89,7 +89,7 @@ class RectanguloRGB : public Abs_Entity
 		explicit RectanguloRGB(GLdouble w, GLdouble h);
 		~RectanguloRGB();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
-		virtual void update(glm::dmat4 const& modelViewMat);
+		virtual void update();
 };
 
 #endif //_H_Entities_H_

@@ -29,7 +29,7 @@ public:
 	void init();
 
     void render(Camera const& cam) const;
-	void update(Camera const& cam) const;
+	void update() const;
 
 protected:
 	void free();

@@ -32,7 +32,7 @@ void Scene::init()
 	gObjects.push_back(new EjesRGB(400.0));
 	gObjects.push_back(new Poligono(yellow, 3, 300.0));
 	gObjects.push_back(new Poligono(magenta, 300, 300.0));
-	gObjects.push_back(new Sierpinski(yellow, 3200, 300.0));
+	gObjects.push_back(new Sierpinski(yellow, 6400, 300.0));
 	gObjects.push_back(new TrianguloRGB(20.0));
 	gObjects.push_back(new RectanguloRGB(800.0, 600.0));
 	gObjects[5]->setModelMat(translate(gObjects[5]->modelMat(), dvec3(0.0, 0.0, -100.0)));
@@ -73,13 +73,11 @@ void Scene::render(Camera const& cam) const
 }
 //-------------------------------------------------------------------------
 
-void Scene::update(Camera const& cam) const
+void Scene::update() const
 {
-	cam.upload();
-
 	for (Abs_Entity* el : gObjects)
 	{
-		el->update(cam.viewMat());
+		el->update();
 	}
 }
 //-------------------------------------------------------------------------
