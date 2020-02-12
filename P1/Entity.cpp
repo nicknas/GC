@@ -115,6 +115,7 @@ void Sierpinski::update(dmat4 const& modelViewMat)
 
 TrianguloRGB::TrianguloRGB(GLdouble rd): Abs_Entity()
 {
+	angle = 0.0;
 	mMesh = Mesh::generaTrianguloRGB(rd);
 }
 
@@ -136,8 +137,9 @@ void TrianguloRGB::render(dmat4 const& modelViewMat) const
 
 void TrianguloRGB::update(dmat4 const& modelViewMat)
 {
-	setModelMat(translate(mModelMat, dvec3(0.0, 1.0, 0.0)));
-	setModelMat(rotate(mModelMat, radians(1.0), dvec3(0.0, 0.0, 1.0)));
+	setModelMat(translate(dmat4(1), dvec3(300.0 * cos(radians(angle)), 300.0 * sin(radians(angle)), 0.0)));
+	setModelMat(rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0)));
+	angle++;
 }
 //-------------------------------------------------------------------------
 
