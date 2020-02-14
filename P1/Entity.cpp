@@ -104,9 +104,10 @@ void Sierpinski::update()
 {}
 //-------------------------------------------------------------------------
 
-TrianguloRGB::TrianguloRGB(GLdouble rd): Abs_Entity()
+TrianguloRGB::TrianguloRGB(GLdouble rd, GLdouble radioCircunferencia): Abs_Entity()
 {
 	angle = 0.0;
+	radio = radioCircunferencia;
 	mMesh = Mesh::generaTrianguloRGB(rd);
 }
 
@@ -123,13 +124,14 @@ void TrianguloRGB::render(dmat4 const& modelViewMat) const
 		glPolygonMode(GL_FRONT, GL_FILL);
 		glPolygonMode(GL_BACK, GL_LINE);
 		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 }
 
 void TrianguloRGB::update()
 {
-	mModelMat = translate(dmat4(1), dvec3(300.0 * cos(radians(angle)), 300.0 * sin(radians(angle)), 0.0));
-	mModelMat = rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0));
+	mModelMat = translate(dmat4(1), dvec3(radio * cos(radians(angle)), radio * sin(radians(angle)), 0.0));
+	mModelMat = rotate(mModelMat, radians(angle * 100), dvec3(0.0, 0.0, 1.0));
 	angle++;
 }
 //-------------------------------------------------------------------------
@@ -152,9 +154,39 @@ void RectanguloRGB::render(dmat4 const& modelViewMat) const
 		glPolygonMode(GL_FRONT, GL_FILL);
 		glPolygonMode(GL_BACK, GL_LINE);
 		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 }
 
 void RectanguloRGB::update() 
 {}
 //-------------------------------------------------------------------------
+
+Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h)
+{
+	mMesh = Mesh::generaEstrella3D(re, np, h);
+}
+
+Estrella3D::~Estrella3D()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void Estrella3D::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		mMesh->render();
+		
+		aMat = rotate(aMat, radians(180.0), dvec3(0.0, 1.0, 0.0));
+		upload(aMat);
+		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+}
+void Estrella3D::update()
+{
+
+}

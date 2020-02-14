@@ -75,12 +75,13 @@ class Sierpinski : public Abs_Entity
 class TrianguloRGB : public Abs_Entity
 {
 	public:
-		explicit TrianguloRGB(GLdouble rd);
+		explicit TrianguloRGB(GLdouble rd, GLdouble radioCircunferencia);
 		~TrianguloRGB();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
 		virtual void update();
 	private:
 		GLdouble angle;
+		GLdouble radio;
 };
 
 class RectanguloRGB : public Abs_Entity
@@ -92,4 +93,12 @@ class RectanguloRGB : public Abs_Entity
 		virtual void update();
 };
 
+class Estrella3D : public Abs_Entity
+{
+	public:
+		explicit Estrella3D(GLdouble re, GLdouble np, GLdouble h);
+		~Estrella3D();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
+		virtual void update();
+};
 #endif //_H_Entities_H_
