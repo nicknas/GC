@@ -67,6 +67,7 @@ void Poligono::render(dmat4 const& modelViewMat) const
 		glLineWidth(2);
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
+		glColor3d(1.0, 1.0, 1.0);
 		glLineWidth(1);
 	}
 }
@@ -97,6 +98,7 @@ void Sierpinski::render(dmat4 const& modelViewMat) const
 		glColor4dv(value_ptr(color()));
 		mMesh->render();
 		glPointSize(1);
+		glColor4dv(value_ptr(dvec4(1.0, 1.0, 1.0, 1.0)));
 	}
 }
 
@@ -131,7 +133,7 @@ void TrianguloRGB::render(dmat4 const& modelViewMat) const
 void TrianguloRGB::update()
 {
 	mModelMat = translate(dmat4(1), dvec3(radio * cos(radians(angle)), radio * sin(radians(angle)), 0.0));
-	mModelMat = rotate(mModelMat, radians(angle * 100), dvec3(0.0, 0.0, 1.0));
+	mModelMat = rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0));
 	angle++;
 }
 //-------------------------------------------------------------------------
@@ -161,32 +163,3 @@ void RectanguloRGB::render(dmat4 const& modelViewMat) const
 void RectanguloRGB::update() 
 {}
 //-------------------------------------------------------------------------
-
-Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h)
-{
-	mMesh = Mesh::generaEstrella3D(re, np, h);
-}
-
-Estrella3D::~Estrella3D()
-{
-	delete mMesh; mMesh = nullptr;
-}
-
-void Estrella3D::render(dmat4 const& modelViewMat) const
-{
-	if (mMesh != nullptr) {
-		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
-		upload(aMat);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		mMesh->render();
-		
-		aMat = rotate(aMat, radians(180.0), dvec3(0.0, 1.0, 0.0));
-		upload(aMat);
-		mMesh->render();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
-}
-void Estrella3D::update()
-{
-	setModelMat(rotate(mModelMat, radians(1.0), dvec3(0.0, 1.0, 1.0)));
-}
