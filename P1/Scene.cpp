@@ -14,11 +14,25 @@ using namespace glm;
 
 void Scene::init()
 { 
+	resetGL();
 	setGL();  // OpenGL settings
 
 	// allocate memory and load resources
     // Lights
     // Textures
+	for (int i = 0; i < 10; i++) {
+		gTextures.push_back(new Texture());
+	}
+	gTextures[0]->load("../Bmps/baldosaC.bmp");
+	gTextures[1]->load("../Bmps/baldosaF.bmp");
+	gTextures[2]->load("../Bmps/baldosaP.bmp");
+	gTextures[3]->load("../Bmps/container.bmp");
+	gTextures[4]->load("../Bmps/grass.bmp");
+	gTextures[5]->load("../Bmps/papelC.bmp");
+	gTextures[6]->load("../Bmps/papelE.bmp");
+	gTextures[7]->load("../Bmps/windowC.bmp");
+	gTextures[8]->load("../Bmps/windowV.bmp");
+	gTextures[9]->load("../Bmps/Zelda.bmp");
 
     // Graphics objects (entities) of the scene
 	dvec4 yellow;
@@ -30,13 +44,16 @@ void Scene::init()
 	yellow.g = 1.0;
 	yellow.b = 0;
 	gObjects.push_back(new EjesRGB(400.0));
-	/*gObjects.push_back(new Poligono(yellow, 3, 300.0));
-	gObjects.push_back(new Poligono(magenta, 300, 300.0));
-	gObjects.push_back(new Sierpinski(yellow, 6400, 300.0));
-	gObjects.push_back(new TrianguloRGB(20.0, 300.0));
-	gObjects.push_back(new RectanguloRGB(800.0, 600.0));
-	gObjects[5]->setModelMat(translate(gObjects[5]->modelMat(), dvec3(0.0, 0.0, -100.0)));*/
-	gObjects.push_back(new Estrella3D(200.0, 6.0, 100.0));
+	if (mId == 0) {
+		gObjects.push_back(new Poligono(yellow, 3, 300.0));
+		gObjects.push_back(new Poligono(magenta, 300, 300.0));
+		gObjects.push_back(new Sierpinski(yellow, 6400, 300.0));
+		gObjects.push_back(new TrianguloRGB(20.0, 300.0));
+		gObjects.push_back(new RectanguloRGB(800.0, 600.0));
+		gObjects[5]->setModelMat(translate(gObjects[5]->modelMat(), dvec3(0.0, 0.0, -100.0)));
+	}
+	else if(mId == 1)
+		gObjects.push_back(new Estrella3D(200.0, 4.0, 200.0));
 }
 //-------------------------------------------------------------------------
 void Scene::free() 
@@ -46,6 +63,12 @@ void Scene::free()
 	{
 		delete el;  el = nullptr;
 	}
+	gObjects.resize(0);
+	for (Texture* tx : gTextures)
+	{
+		delete tx; tx = nullptr;
+	}
+	gTextures.resize(0);
 }
 //-------------------------------------------------------------------------
 void Scene::setGL() 
@@ -53,13 +76,15 @@ void Scene::setGL()
 	// OpenGL basic setting
 	glClearColor(0.0, 0.0, 0.0, 1.0);  // background color (alpha=1 -> opaque)
 	glEnable(GL_DEPTH_TEST);  // enable Depth test 
-
+	glEnable(GL_TEXTURE_2D);
 }
 //-------------------------------------------------------------------------
 void Scene::resetGL() 
 {
+	free();
 	glClearColor(.0, .0, .0, .0);  // background color (alpha=1 -> opaque)
 	glDisable(GL_DEPTH_TEST);  // disable Depth test 	
+	glDisable(GL_TEXTURE_2D);
 }
 //-------------------------------------------------------------------------
 
@@ -82,3 +107,7 @@ void Scene::update() const
 	}
 }
 //-------------------------------------------------------------------------
+
+void Scene::setState(int id) {
+	mId = id;
+}

@@ -11,7 +11,7 @@
 #endif
 
 #include "Mesh.h"
-
+#include "Texture.h"
 //-------------------------------------------------------------------------
 
 class Abs_Entity  // abstract class
@@ -32,12 +32,16 @@ public:
 
 	void setColor(glm::dvec4 const& color) { mColor = color; };
 	glm::dvec4 const& color() const { return mColor; };
+
+	void setTexture(Texture *aTex) { mTexture = aTex; };
+	Texture* texture() const { return mTexture; };
 	
 protected:
 
 	Mesh* mMesh = nullptr;   // the mesh
 	glm::dmat4 mModelMat;    // modeling matrix
 	glm::dvec4 mColor;
+	Texture* mTexture = nullptr;
 	// transfers modelViewMat to the GPU
 	virtual void upload(glm::dmat4 const& mModelViewMat) const; 
 };
@@ -100,5 +104,7 @@ class Estrella3D : public Abs_Entity
 		~Estrella3D();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
 		virtual void update();
+	private:
+		GLdouble angle;
 };
 #endif //_H_Entities_H_
