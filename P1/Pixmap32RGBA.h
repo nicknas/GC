@@ -7,7 +7,11 @@
 
 #include <GL/freeglut.h>
 #include <string>
+#ifdef _WIN32
 #include <glm.hpp>
+#else
+#include <glm/glm.hpp>
+#endif
 
 
 class PixMap32RGBA {   

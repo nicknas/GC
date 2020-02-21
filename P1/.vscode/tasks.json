@@ -4,7 +4,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "g++ -g -o main main.cpp IG1App.cpp Camera.cpp Entity.cpp Mesh.cpp Scene.cpp Viewport.cpp -lGL -lGLU -lglut",
+            "command": "g++ -g -o main main.cpp IG1App.cpp Camera.cpp Entity.cpp Mesh.cpp Scene.cpp Viewport.cpp Texture.cpp Pixmap32RGBA.cpp -lGL -lGLU -lglut",
             "problemMatcher": []
         }
     ]
