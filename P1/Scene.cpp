@@ -52,8 +52,11 @@ void Scene::init()
 		gObjects.push_back(new RectanguloRGB(800.0, 600.0));
 		gObjects[5]->setModelMat(translate(gObjects[5]->modelMat(), dvec3(0.0, 0.0, -100.0)));
 	}
-	else if(mId == 1)
-		gObjects.push_back(new Estrella3D(200.0, 4.0, 200.0));
+	else if (mId == 1) {
+		gObjects.push_back(new Estrella3D(50.0, 4.0, 50.0, gTextures[2]));
+		gObjects.push_back(new Suelo(800.0, 600.0, 10, 10, gTextures[0]));
+		// gObjects.push_back(new Caja(200.0));
+	}
 }
 //-------------------------------------------------------------------------
 void Scene::free() 

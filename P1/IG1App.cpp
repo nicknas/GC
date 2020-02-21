@@ -189,6 +189,7 @@ void IG1App::update() {
 		if ((time - mLastUpdateTime) >= 17) {
 			mLastUpdateTime = time;
 			mScene->update();
+			glutPostRedisplay();
 		}
 	}
 }

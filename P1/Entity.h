@@ -100,11 +100,29 @@ class RectanguloRGB : public Abs_Entity
 class Estrella3D : public Abs_Entity
 {
 	public:
-		explicit Estrella3D(GLdouble re, GLdouble np, GLdouble h);
+		explicit Estrella3D(GLdouble re, GLdouble np, GLdouble h, Texture *tex);
 		~Estrella3D();
 		virtual void render(glm::dmat4 const& modelViewMat) const;
 		virtual void update();
 	private:
 		GLdouble angle;
+};
+
+class Suelo : public Abs_Entity
+{
+	public:
+		explicit Suelo(GLdouble w, GLdouble h, GLuint rw, GLuint rh, Texture* tex);
+		~Suelo();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
+		virtual void update();
+};
+
+class Caja : public Abs_Entity
+{
+	public:
+		explicit Caja(GLdouble ld);
+		~Caja();
+		virtual void render(glm::dmat4 const& modelViewMat) const;
+		virtual void update();
 };
 #endif //_H_Entities_H_

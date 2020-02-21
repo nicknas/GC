@@ -146,7 +146,7 @@ Mesh* Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h)
 {
     Mesh* mesh = new Mesh();
     mesh->mPrimitive = GL_TRIANGLE_FAN;
-    mesh->mNumVertices = 2 * np + 3;
+    mesh->mNumVertices = 2 * np + 3.0;
     mesh->vVertices.reserve(mesh->mNumVertices);
     mesh->vColors.reserve(mesh->mNumVertices);
     GLdouble angle = 90.0;
@@ -161,5 +161,50 @@ Mesh* Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h)
         mesh->vColors.emplace_back(1.0, 0.0, 1.0, 1.0);
         angle += (360.0 / (2 * np));
     }
+    return mesh;
+}
+
+Mesh* Mesh::generaEstrellaTexCor(GLdouble re, GLuint np, GLdouble h) {
+    Mesh* mesh = generaEstrella3D(re, np, h);
+    mesh->vTexCoords.reserve(mesh->mNumVertices);
+    mesh->vTexCoords.emplace_back(0.5, 0.5);
+    GLdouble angle = 90.0;
+    for (int i = 1; i < (2 * np) + 3; i++) {
+        if (i % 2 == 1) {
+            mesh->vTexCoords.emplace_back(0.5 + (0.5 * cos(radians(angle))), 0.5 + (0.5 * sin(radians(angle))));
+        }
+        else {
+            mesh->vTexCoords.emplace_back(0.5 + (0.25 * cos(radians(angle))), 0.5 + (0.25 * sin(radians(angle))));
+        }
+        angle += (360.0 / (2 * np));
+    }
+    return mesh;
+}
+
+Mesh* Mesh::generaRectanguloTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh) {
+    Mesh* mesh = generaRectangulo(w, h);
+    mesh->vTexCoords.reserve(mesh->mNumVertices);
+    mesh->vTexCoords.emplace_back(0, rh);
+    mesh->vTexCoords.emplace_back(0, 0);
+    mesh->vTexCoords.emplace_back(rw, rh);
+    mesh->vTexCoords.emplace_back(rw, 0);
+    return mesh;
+}
+
+Mesh* Mesh::generaContCubo(GLdouble ld) {
+    Mesh* mesh = new Mesh();
+    mesh->mPrimitive = GL_TRIANGLE_STRIP;
+    mesh->mNumVertices = 10;
+    mesh->vVertices.reserve(mesh->mNumVertices);
+    mesh->vVertices.emplace_back(0.0, ld, 0.0);
+    mesh->vVertices.emplace_back(0.0, 0.0, 0.0);
+    mesh->vVertices.emplace_back(0.0, ld, ld);
+    mesh->vVertices.emplace_back(0.0, 0.0, ld);
+    mesh->vVertices.emplace_back(ld, ld, ld);
+    mesh->vVertices.emplace_back(ld, 0.0, ld);
+    mesh->vVertices.emplace_back(ld, ld, 0.0);
+    mesh->vVertices.emplace_back(ld, 0.0, 0.0);
+    mesh->vVertices.emplace_back(0.0, ld, 0.0);
+    mesh->vVertices.emplace_back(0.0, 0.0, 0.0);
     return mesh;
 }

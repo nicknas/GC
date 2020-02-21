@@ -162,15 +162,17 @@ void RectanguloRGB::update()
 {}
 //-------------------------------------------------------------------------
 
-Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h)
+Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, Texture *tex)
 {
-	mMesh = Mesh::generaEstrella3D(re, np, h);
+	mMesh = Mesh::generaEstrellaTexCor(re, np, h);
+	mTexture = tex;
 	angle = 0.0;
 }
 
 Estrella3D::~Estrella3D()
 {
 	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
 }
 
 void Estrella3D::render(dmat4 const& modelViewMat) const
@@ -178,20 +180,79 @@ void Estrella3D::render(dmat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		// mTexture->bind(GL_REPLACE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->bind(GL_REPLACE);
 		mMesh->render();
 		
 		aMat = rotate(aMat, radians(180.0), dvec3(0.0, 1.0, 0.0));
 		upload(aMat);
 		mMesh->render();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		// mTexture->unbind();
+		mTexture->unbind();
 	}
 }
 
 void Estrella3D::update()
 {
-	setModelMat(rotate(dmat4(1), radians(angle), dvec3(0.0, 1.0, 1.0)));
+	setModelMat(rotate(dmat4(1), radians(angle), dvec3(0.0, 1.0, 0.0)));
+	setModelMat(rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0)));
 	angle++;
+}
+
+Suelo::Suelo(GLdouble w, GLdouble h, GLuint rw, GLuint rh, Texture *tex)
+{
+	mMesh = Mesh::generaRectanguloTexCor(w, h, rw, rh);
+	setModelMat(rotate(dmat4(1), radians(-90.0), dvec3(1.0, 0.0, 0.0)));
+	mTexture = tex;
+}
+
+Suelo::~Suelo()
+{
+	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
+}
+
+void Suelo::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->bind(GL_REPLACE);
+		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->unbind();
+	}
+}
+
+void Suelo::update()
+{
+
+}
+
+Caja::Caja(GLdouble ld) {
+	mMesh = Mesh::generaContCubo(ld);
+}
+
+Caja::~Caja() {
+	delete mMesh; mMesh = nullptr;
+}
+
+
+void Caja::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glPolygonMode(GL_FRONT, GL_LINE);
+		//mTexture->bind(GL_REPLACE);
+		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		//mTexture->unbind();
+	}
+}
+
+void Caja::update() 
+{
+
 }
