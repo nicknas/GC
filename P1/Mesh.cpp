@@ -196,15 +196,31 @@ Mesh* Mesh::generaContCubo(GLdouble ld) {
     mesh->mPrimitive = GL_TRIANGLE_STRIP;
     mesh->mNumVertices = 10;
     mesh->vVertices.reserve(mesh->mNumVertices);
-    mesh->vVertices.emplace_back(0.0, ld, 0.0);
-    mesh->vVertices.emplace_back(0.0, 0.0, 0.0);
-    mesh->vVertices.emplace_back(0.0, ld, ld);
-    mesh->vVertices.emplace_back(0.0, 0.0, ld);
-    mesh->vVertices.emplace_back(ld, ld, ld);
-    mesh->vVertices.emplace_back(ld, 0.0, ld);
-    mesh->vVertices.emplace_back(ld, ld, 0.0);
-    mesh->vVertices.emplace_back(ld, 0.0, 0.0);
-    mesh->vVertices.emplace_back(0.0, ld, 0.0);
-    mesh->vVertices.emplace_back(0.0, 0.0, 0.0);
+    mesh->vVertices.emplace_back(-ld/2, ld / 2, -ld / 2);
+    mesh->vVertices.emplace_back(-ld / 2, -ld / 2, -ld / 2);
+    mesh->vVertices.emplace_back(-ld / 2, ld / 2, ld / 2);
+    mesh->vVertices.emplace_back(-ld / 2, -ld / 2, ld / 2);
+    mesh->vVertices.emplace_back(ld / 2, ld / 2, ld / 2);
+    mesh->vVertices.emplace_back(ld / 2, -ld / 2, ld / 2);
+    mesh->vVertices.emplace_back(ld / 2, ld / 2, -ld / 2);
+    mesh->vVertices.emplace_back(ld / 2, -ld / 2, -ld / 2);
+    mesh->vVertices.emplace_back(-ld / 2, ld / 2, -ld / 2);
+    mesh->vVertices.emplace_back(-ld / 2, -ld / 2, -ld / 2);
+    return mesh;
+}
+
+Mesh* Mesh::generaCajaTexCor(GLdouble nl) {
+    Mesh* mesh = generaContCubo(nl);
+    mesh->vTexCoords.reserve(mesh->mNumVertices);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
+    mesh->vTexCoords.emplace_back(0.0, 1.0);
+    mesh->vTexCoords.emplace_back(0.0, 0.0);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
+    mesh->vTexCoords.emplace_back(0.0, 1.0);
+    mesh->vTexCoords.emplace_back(0.0, 0.0);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
     return mesh;
 }

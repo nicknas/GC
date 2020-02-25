@@ -162,9 +162,11 @@ void RectanguloRGB::update()
 {}
 //-------------------------------------------------------------------------
 
-Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, Texture *tex)
+Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, Texture *tex, GLdouble hFromOrigin)
 {
+	mHFromOrigin = hFromOrigin;
 	mMesh = Mesh::generaEstrellaTexCor(re, np, h);
+	setModelMat(translate(mModelMat, dvec3(-mHFromOrigin, mHFromOrigin, -mHFromOrigin)));
 	mTexture = tex;
 	angle = 0.0;
 }
@@ -194,7 +196,8 @@ void Estrella3D::render(dmat4 const& modelViewMat) const
 
 void Estrella3D::update()
 {
-	setModelMat(rotate(dmat4(1), radians(angle), dvec3(0.0, 1.0, 0.0)));
+	setModelMat(translate(dmat4(1), dvec3(-mHFromOrigin, mHFromOrigin, -mHFromOrigin)));
+	setModelMat(rotate(mModelMat, radians(angle), dvec3(0.0, 1.0, 0.0)));
 	setModelMat(rotate(mModelMat, radians(angle), dvec3(0.0, 0.0, 1.0)));
 	angle++;
 }
@@ -230,12 +233,17 @@ void Suelo::update()
 
 }
 
-Caja::Caja(GLdouble ld) {
-	mMesh = Mesh::generaContCubo(ld);
+Caja::Caja(GLdouble ld, Texture* frontTex, Texture* backTex) {
+	mMesh = Mesh::generaCajaTexCor(ld);
+	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2, -ld)));
+	mTexture = frontTex;
+	mBackTex = backTex;
 }
 
 Caja::~Caja() {
 	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
+	delete mBackTex; mBackTex = nullptr;
 }
 
 
@@ -244,11 +252,16 @@ void Caja::render(dmat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
-		glPolygonMode(GL_FRONT, GL_LINE);
-		//mTexture->bind(GL_REPLACE);
+		glEnable(GL_CULL_FACE);
+		mTexture->bind(GL_REPLACE);
+		glCullFace(GL_BACK);
 		mMesh->render();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		//mTexture->unbind();
+		mTexture->unbind();
+		mBackTex->bind(GL_REPLACE);
+		glCullFace(GL_FRONT);
+		mMesh->render();
+		mBackTex->unbind();
+		glDisable(GL_CULL_FACE);
 	}
 }
 
