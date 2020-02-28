@@ -39,6 +39,9 @@ public:
 
 	void run();    // the main event processing loop
 	void close();  // the application
+
+	int winWidth();
+	int winHeight();
 	
 protected:
 
@@ -75,6 +78,8 @@ protected:
 	int mWinH = 600;    // window's height
 	bool mAnimate = false;
 	GLuint mLastUpdateTime = 0;
+
+	
 };
 //-------------------------------------------------------------------------
 

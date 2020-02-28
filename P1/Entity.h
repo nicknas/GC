@@ -129,4 +129,13 @@ class Caja : public Abs_Entity
 	private:
 		Texture* mBackTex = nullptr;
 };
+
+class Foto : public Abs_Entity
+{
+public:
+	explicit Foto(GLdouble w, GLdouble h);
+	~Foto();
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	virtual void update();
+};
 #endif //_H_Entities_H_

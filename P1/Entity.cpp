@@ -269,3 +269,35 @@ void Caja::update()
 {
 
 }
+
+Foto::Foto(GLdouble w, GLdouble h)
+{
+	mMesh = Mesh::generaRectanguloTexCor(w, h, 1, 1);
+	setModelMat(rotate(dmat4(1), radians(-90.0), dvec3(1.0, 0.0, 0.0)));
+	mTexture = new Texture();
+	mTexture->loadColorBuffer();
+}
+
+Foto::~Foto()
+{
+	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
+}
+
+void Foto::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->bind(GL_REPLACE);
+		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->unbind();
+	}
+}
+
+void Foto::update()
+{
+	mTexture->loadColorBuffer();
+}

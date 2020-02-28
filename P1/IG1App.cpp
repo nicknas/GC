@@ -193,3 +193,10 @@ void IG1App::update() {
 		}
 	}
 }
+
+int IG1App::winWidth() {
+	return mWinW;
+}
+int IG1App::winHeight() {
+	return mWinH;
+}

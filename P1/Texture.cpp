@@ -1,5 +1,5 @@
 #include "Texture.h"
-
+#include "IG1App.h"
 //-------------------------------------------------------------------------
 
 Texture::~Texture() 
@@ -62,3 +62,22 @@ void Texture::setWrap(GLuint wp) // GL_REPEAT, GL_CLAMP
   glBindTexture(GL_TEXTURE_2D, 0); 
 }
 //-------------------------------------------------------------------------
+
+void Texture::loadColorBuffer()
+{
+    if (mId == 0) init();
+
+
+    mWidth = IG1App::s_ig1app.winWidth();
+    mHeight = IG1App::s_ig1app.winHeight();
+
+    GLint level = 0;   //Base image level
+    GLint border = 0;  //No border
+
+    glBindTexture(GL_TEXTURE_2D, mId);
+   
+    glReadBuffer(GL_FRONT);
+    glCopyTexImage2D(GL_TEXTURE_2D, level, GL_RGBA, 0, 0, mWidth, mHeight, border);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glReadBuffer(GL_BACK);
+}
