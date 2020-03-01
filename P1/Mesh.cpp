@@ -224,3 +224,22 @@ Mesh* Mesh::generaCajaTexCor(GLdouble nl) {
     mesh->vTexCoords.emplace_back(1.0, 0.0);
     return mesh;
 }
+
+Mesh* Mesh::generaSueloCajaTexCor(GLdouble nl) {
+    Mesh* mesh = new Mesh();
+    mesh->mPrimitive = GL_TRIANGLE_STRIP;
+    mesh->mNumVertices = 4;
+    
+    mesh->vVertices.reserve(mesh->mNumVertices);
+    mesh->vVertices.emplace_back(-nl / 2, -nl / 2, -nl / 2);
+    mesh->vVertices.emplace_back(nl / 2, -nl / 2, -nl / 2);
+    mesh->vVertices.emplace_back(-nl / 2, -nl / 2, nl / 2);
+    mesh->vVertices.emplace_back(nl / 2, -nl / 2, nl / 2);
+    
+    mesh->vTexCoords.reserve(mesh->mNumVertices);
+    mesh->vTexCoords.emplace_back(0.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(0.0, 0.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
+    return mesh;
+}

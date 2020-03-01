@@ -29,6 +29,7 @@ public:
 	static Mesh* generaRectanguloTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh);
 	static Mesh* generaContCubo(GLdouble ld);
 	static Mesh* generaCajaTexCor(GLdouble nl);
+	static Mesh* generaSueloCajaTexCor(GLdouble nl);
 	
 	Mesh() {};
 	virtual ~Mesh() {};

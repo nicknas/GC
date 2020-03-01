@@ -165,7 +165,11 @@ void PixMap32RGBA::reserve(GLsizei width, GLsizei height) // throw(std::exceptio
       }
       catch(std::bad_alloc &) 
 	  {
-        throw std::exception("PixMap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
+        #ifdef _WIN32
+            throw std::exception("PixMap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
+        #else
+            throw std::runtime_error("PixMap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
+        #endif
       }
   }   
 }

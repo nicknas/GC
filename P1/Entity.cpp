@@ -235,13 +235,15 @@ void Suelo::update()
 
 Caja::Caja(GLdouble ld, Texture* frontTex, Texture* backTex) {
 	mMesh = Mesh::generaCajaTexCor(ld);
-	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2, -ld)));
+	meshSuelo = Mesh::generaSueloCajaTexCor(ld);
+	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2 + 0.1, -ld)));
 	mTexture = frontTex;
 	mBackTex = backTex;
 }
 
 Caja::~Caja() {
 	delete mMesh; mMesh = nullptr;
+	delete meshSuelo; meshSuelo = nullptr;
 	delete mTexture; mTexture = nullptr;
 	delete mBackTex; mBackTex = nullptr;
 }
@@ -256,10 +258,12 @@ void Caja::render(dmat4 const& modelViewMat) const
 		mTexture->bind(GL_REPLACE);
 		glCullFace(GL_BACK);
 		mMesh->render();
+		meshSuelo->render();
 		mTexture->unbind();
 		mBackTex->bind(GL_REPLACE);
 		glCullFace(GL_FRONT);
 		mMesh->render();
+		meshSuelo->render();
 		mBackTex->unbind();
 		glDisable(GL_CULL_FACE);
 	}
@@ -273,7 +277,8 @@ void Caja::update()
 Foto::Foto(GLdouble w, GLdouble h)
 {
 	mMesh = Mesh::generaRectanguloTexCor(w, h, 1, 1);
-	setModelMat(rotate(dmat4(1), radians(-90.0), dvec3(1.0, 0.0, 0.0)));
+	setModelMat(translate(dmat4(1), dvec3(0.0, 0.1, 0.0)));
+	setModelMat(rotate(mModelMat, radians(-90.0), dvec3(1.0, 0.0, 0.0)));
 	mTexture = new Texture();
 	mTexture->loadColorBuffer();
 }

@@ -14,7 +14,6 @@ using namespace glm;
 
 void Scene::init()
 { 
-	resetGL();
 	setGL();  // OpenGL settings
 
 	// allocate memory and load resources
@@ -32,7 +31,7 @@ void Scene::init()
 	gTextures[6]->load("../Bmps/papelE.bmp");
 	gTextures[7]->load("../Bmps/windowC.bmp");
 	gTextures[8]->load("../Bmps/windowV.bmp");
-	gTextures[9]->load("../Bmps/Zelda.bmp");
+	// gTextures[9]->load("../Bmps/Zelda.bmp");
 
     // Graphics objects (entities) of the scene
 	dvec4 yellow;
@@ -67,12 +66,12 @@ void Scene::free()
 	{
 		delete el;  el = nullptr;
 	}
-	gObjects.resize(0);
+	gObjects.clear();
 	for (Texture* tx : gTextures)
 	{
 		delete tx; tx = nullptr;
 	}
-	gTextures.resize(0);
+	gTextures.clear();
 }
 //-------------------------------------------------------------------------
 void Scene::setGL() 
@@ -85,7 +84,6 @@ void Scene::setGL()
 //-------------------------------------------------------------------------
 void Scene::resetGL() 
 {
-	free();
 	glClearColor(.0, .0, .0, .0);  // background color (alpha=1 -> opaque)
 	glDisable(GL_DEPTH_TEST);  // disable Depth test 	
 	glDisable(GL_TEXTURE_2D);
@@ -113,5 +111,11 @@ void Scene::update() const
 //-------------------------------------------------------------------------
 
 void Scene::setState(int id) {
+	free();
 	mId = id;
+}
+
+void Scene::saveFoto() {
+	Texture* tex = gObjects[gObjects.size() - 1]->texture();
+	tex->save("../Bmps/Foto.bmp");
 }

@@ -33,6 +33,8 @@ public:
   void setWrap(GLuint wp);  // GL_REPEAT, GL_CLAMP 
 
   void loadColorBuffer();
+
+  void save(const std::string & BMP_NAME);
 protected:
 
   void init();

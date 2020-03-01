@@ -128,6 +128,8 @@ class Caja : public Abs_Entity
 
 	private:
 		Texture* mBackTex = nullptr;
+		Mesh* meshSuelo = nullptr;
+		glm::dmat4 matSuelo;    // modeling matrix
 };
 
 class Foto : public Abs_Entity

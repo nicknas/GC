@@ -139,6 +139,9 @@ void IG1App::key(unsigned char key, int x, int y)
 		mScene->setState(0);
 		mScene->init();
 		break;
+	case 'f':
+		mScene->saveFoto();
+		break;
 	default:
 		need_redisplay = false;
 		break;

@@ -32,6 +32,7 @@ public:
     void render(Camera const& cam) const;
 	void update() const;
 	void setState(int id);
+	void saveFoto();
 
 protected:
 	void free();
