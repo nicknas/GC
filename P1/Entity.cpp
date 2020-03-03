@@ -306,3 +306,39 @@ void Foto::update()
 {
 	mTexture->loadColorBuffer();
 }
+
+Pared::Pared(GLdouble w, GLdouble h, GLdouble s, Texture* tex)
+{
+	mMesh = Mesh::generaParedTexCor(w, h, s);
+	setModelMat(translate(mModelMat, dvec3(0.0, h / 2, 0.0)));
+	mTexture = tex;
+}
+
+Pared::~Pared()
+{
+	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
+}
+
+void Pared::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glDepthMask(GL_FALSE);
+		glEnable(GL_BLEND);
+		glBlendFunc(1, 1);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->bind(GL_REPLACE);
+		mMesh->render();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		mTexture->unbind();
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+	}
+}
+
+void Pared::update()
+{
+
+}

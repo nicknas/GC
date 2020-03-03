@@ -56,6 +56,7 @@ void Scene::init()
 		gObjects.push_back(new Suelo(800.0, 600.0, 10, 10, gTextures[0]));
 		gObjects.push_back(new Caja(200.0, gTextures[3], gTextures[6]));
 		gObjects.push_back(new Foto(100.0, 120.0));
+		gObjects.push_back(new Pared(800.0, 300.0, 600.0, gTextures[8]));
 	}
 }
 //-------------------------------------------------------------------------

@@ -243,3 +243,37 @@ Mesh* Mesh::generaSueloCajaTexCor(GLdouble nl) {
     mesh->vTexCoords.emplace_back(1.0, 0.0);
     return mesh;
 }
+
+Mesh* Mesh::generaContPared(GLdouble w, GLdouble h, GLdouble s) {
+    Mesh* mesh = new Mesh();
+    mesh->mPrimitive = GL_TRIANGLE_STRIP;
+    mesh->mNumVertices = 10;
+    mesh->vVertices.reserve(mesh->mNumVertices);
+    mesh->vVertices.emplace_back(-w / 2, h / 2, -s / 2);
+    mesh->vVertices.emplace_back(-w / 2, -h / 2, -s / 2);
+    mesh->vVertices.emplace_back(-w / 2, h / 2, s / 2);
+    mesh->vVertices.emplace_back(-w / 2, -h / 2, s / 2);
+    mesh->vVertices.emplace_back(w / 2, h / 2, s / 2);
+    mesh->vVertices.emplace_back(w / 2, -h / 2, s / 2);
+    mesh->vVertices.emplace_back(w / 2, h / 2, -s / 2);
+    mesh->vVertices.emplace_back(w / 2, -h / 2, -s / 2);
+    mesh->vVertices.emplace_back(-w / 2, h / 2, -s / 2);
+    mesh->vVertices.emplace_back(-w / 2, -h / 2, -s / 2);
+    return mesh;
+}
+
+Mesh* Mesh::generaParedTexCor(GLdouble w, GLdouble h, GLdouble s) {
+    Mesh* mesh = generaContPared(w,h,s);
+    mesh->vTexCoords.reserve(mesh->mNumVertices);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
+    mesh->vTexCoords.emplace_back(0.0, 1.0);
+    mesh->vTexCoords.emplace_back(0.0, 0.0);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
+    mesh->vTexCoords.emplace_back(0.0, 1.0);
+    mesh->vTexCoords.emplace_back(0.0, 0.0);
+    mesh->vTexCoords.emplace_back(1.0, 1.0);
+    mesh->vTexCoords.emplace_back(1.0, 0.0);
+    return mesh;
+}

@@ -140,4 +140,13 @@ public:
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
 };
+
+class Pared : public Abs_Entity
+{
+public:
+	explicit Pared(GLdouble w, GLdouble h, GLdouble s, Texture* tex);
+	~Pared();
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	virtual void update();
+};
 #endif //_H_Entities_H_

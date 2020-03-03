@@ -30,6 +30,8 @@ public:
 	static Mesh* generaContCubo(GLdouble ld);
 	static Mesh* generaCajaTexCor(GLdouble nl);
 	static Mesh* generaSueloCajaTexCor(GLdouble nl);
+	static Mesh* generaContPared(GLdouble w, GLdouble h, GLdouble s);
+	static Mesh* generaParedTexCor(GLdouble w, GLdouble h, GLdouble s);
 	
 	Mesh() {};
 	virtual ~Mesh() {};
