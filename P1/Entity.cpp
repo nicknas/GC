@@ -166,7 +166,7 @@ Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, Texture *tex, GLdou
 {
 	mHFromOrigin = hFromOrigin;
 	mMesh = Mesh::generaEstrellaTexCor(re, np, h);
-	setModelMat(translate(mModelMat, dvec3(-mHFromOrigin, mHFromOrigin, -mHFromOrigin + 0.1)));
+	setModelMat(translate(mModelMat, dvec3(-mHFromOrigin, mHFromOrigin, -mHFromOrigin)));
 	mTexture = tex;
 	angle = 0.0;
 }
@@ -236,7 +236,7 @@ void Suelo::update()
 Caja::Caja(GLdouble ld, Texture* frontTex, Texture* backTex) {
 	mMesh = Mesh::generaCajaTexCor(ld);
 	meshSuelo = Mesh::generaSueloCajaTexCor(ld);
-	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2 + 0.1, -ld + 0.1)));
+	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2 + 0.1, -ld)));
 	mTexture = frontTex;
 	mBackTex = backTex;
 }
@@ -328,7 +328,8 @@ void Pared::render(dmat4 const& modelViewMat) const
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		mTexture->bind(GL_REPLACE);
+		glColor4dv(value_ptr(dvec4(1.0, 1.0, 1.0, 0.25)));
+		mTexture->bind(GL_MODULATE);
 		mMesh->render();
 		mTexture->unbind();
 		glDepthMask(GL_TRUE);
@@ -337,6 +338,46 @@ void Pared::render(dmat4 const& modelViewMat) const
 }
 
 void Pared::update()
+{
+
+}
+
+Planta::Planta(GLdouble ld, GLuint nump, Texture* tex)
+{
+	mMesh = Mesh::generaRectanguloTexCor(ld, ld, 1, 1);
+	setModelMat(translate(dmat4(1), dvec3(ld*2, ld / 2, -ld*2)));
+	mTexture = tex;
+	numplantas = nump;
+}
+
+Planta::~Planta()
+{
+	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
+}
+
+void Planta::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		for (int i = 0; i < numplantas; i++){
+			upload(aMat);
+			glDepthMask(GL_FALSE);
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			mTexture->bind(GL_REPLACE);
+			mMesh->render();
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			mTexture->unbind();
+			glDepthMask(GL_TRUE);
+			glDisable(GL_BLEND);
+			aMat = rotate(aMat, radians(360.0 / numplantas), dvec3(0.0, 1.0, 0.0));
+		}
+	}
+}
+
+void Planta::update()
 {
 
 }

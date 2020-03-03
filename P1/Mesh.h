@@ -32,6 +32,8 @@ public:
 	static Mesh* generaSueloCajaTexCor(GLdouble nl);
 	static Mesh* generaContPared(GLdouble w, GLdouble h, GLdouble s);
 	static Mesh* generaParedTexCor(GLdouble w, GLdouble h, GLdouble s);
+	static Mesh* generaPlanta(GLdouble w, GLdouble h, GLdouble angle);
+	static Mesh* generaPlantaTexCor(GLdouble w, GLdouble h, GLdouble angle);
 	
 	Mesh() {};
 	virtual ~Mesh() {};

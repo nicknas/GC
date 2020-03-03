@@ -94,3 +94,28 @@ void Texture::save(const std::string & BMP_NAME)
     glBindTexture(GL_TEXTURE_2D, 0);
     pixMap.save_bmp24BGR(BMP_NAME);
 }
+
+void Texture::load(const std::string & BMP_Name, glm::u8vec3 color, GLubyte alpha)
+{
+    if (mId == 0) init();
+
+    PixMap32RGBA pixMap;
+
+    pixMap.load_bmp24BGR(BMP_Name);
+
+    if (alpha != 255)
+        pixMap.set_colorkey_alpha(color, alpha);
+
+   
+
+    mWidth = pixMap.width();
+    mHeight = pixMap.height();
+
+    GLint level = 0;   //Base image level
+    GLint border = 0;  //No border
+
+    glBindTexture(GL_TEXTURE_2D, mId);
+    glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA, mWidth, mHeight, border, GL_RGBA, GL_UNSIGNED_BYTE, pixMap.data());
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+}

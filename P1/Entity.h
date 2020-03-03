@@ -149,4 +149,16 @@ public:
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
 };
+
+class Planta : public Abs_Entity
+{
+public:
+	explicit Planta(GLdouble ld, GLuint nump, Texture* tex);
+	~Planta();
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	virtual void update();
+private:
+	GLuint numplantas;
+
+};
 #endif //_H_Entities_H_
