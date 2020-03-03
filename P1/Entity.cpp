@@ -327,11 +327,10 @@ void Pared::render(dmat4 const& modelViewMat) const
 		upload(aMat);
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
-		glBlendFunc(1, 1);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->bind(GL_REPLACE);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4dv(value_ptr(dvec4(1.0, 1.0, 1.0, 0.5)));
+		mTexture->bind(GL_MODULATE);
 		mMesh->render();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		mTexture->unbind();
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
