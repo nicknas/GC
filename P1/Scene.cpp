@@ -30,8 +30,7 @@ void Scene::init()
 	gTextures[5]->load("../Bmps/papelC.bmp");
 	gTextures[6]->load("../Bmps/papelE.bmp");
 	gTextures[7]->load("../Bmps/windowC.bmp");
-	gTextures[8]->load("../Bmps/windowV.bmp");
-	// gTextures[9]->load("../Bmps/Zelda.bmp");
+	gTextures[8]->load("../Bmps/windowV.bmp", 128);
 
     // Graphics objects (entities) of the scene
 	dvec4 yellow;
@@ -56,6 +55,7 @@ void Scene::init()
 		gObjects.push_back(new Suelo(800.0, 600.0, 10, 10, gTextures[0]));
 		gObjects.push_back(new Caja(200.0, gTextures[3], gTextures[6]));
 		gObjects.push_back(new Foto(100.0, 120.0));
+		gFoto = gObjects[gObjects.size() - 1];
 		gObjects.push_back(new Pared(800.0, 300.0, 600.0, gTextures[8]));
 	}
 }
@@ -112,11 +112,12 @@ void Scene::update() const
 //-------------------------------------------------------------------------
 
 void Scene::setState(int id) {
+	resetGL();
 	free();
 	mId = id;
 }
 
 void Scene::saveFoto() {
-	Texture* tex = gObjects[gObjects.size() - 1]->texture();
+	Texture* tex = gFoto->texture();
 	tex->save("../Bmps/Foto.bmp");
 }

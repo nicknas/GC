@@ -41,6 +41,7 @@ protected:
 
 	std::vector<Abs_Entity*> gObjects;  // Entities (graphic objects) of the scene
 	std::vector<Texture*> gTextures;
+	Abs_Entity* gFoto;
 	int mId = 0;
 };
 //-------------------------------------------------------------------------
