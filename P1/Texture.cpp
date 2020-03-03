@@ -105,7 +105,6 @@ void Texture::load(const std::string & BMP_Name, glm::u8vec3 color, GLubyte alph
 
     if (alpha != 255)
         pixMap.set_colorkey_alpha(color, alpha);
-
    
 
     mWidth = pixMap.width();

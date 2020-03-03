@@ -166,7 +166,7 @@ Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, Texture *tex, GLdou
 {
 	mHFromOrigin = hFromOrigin;
 	mMesh = Mesh::generaEstrellaTexCor(re, np, h);
-	setModelMat(translate(mModelMat, dvec3(-mHFromOrigin, mHFromOrigin, -mHFromOrigin)));
+	setModelMat(translate(mModelMat, dvec3(-mHFromOrigin, mHFromOrigin, -mHFromOrigin + 0.1)));
 	mTexture = tex;
 	angle = 0.0;
 }
@@ -236,7 +236,7 @@ void Suelo::update()
 Caja::Caja(GLdouble ld, Texture* frontTex, Texture* backTex) {
 	mMesh = Mesh::generaCajaTexCor(ld);
 	meshSuelo = Mesh::generaSueloCajaTexCor(ld);
-	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2 + 0.1, -ld)));
+	setModelMat(translate(mModelMat, dvec3(-ld, ld / 2 + 0.1, -ld + 0.1)));
 	mTexture = frontTex;
 	mBackTex = backTex;
 }
@@ -328,8 +328,7 @@ void Pared::render(dmat4 const& modelViewMat) const
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4dv(value_ptr(dvec4(1.0, 1.0, 1.0, 0.25)));
-		mTexture->bind(GL_MODULATE);
+		mTexture->bind(GL_REPLACE);
 		mMesh->render();
 		mTexture->unbind();
 		glDepthMask(GL_TRUE);
