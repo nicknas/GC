@@ -43,10 +43,11 @@ public:
 	int winWidth();
 	int winHeight();
 
+	//Ejercicio 20
 	void mouse(int button, int state, int x, int y);
 	void motion(int x, int y);
 	void mouseWheel(int n, int d, int x, int y);
-
+	
 protected:
 
 	IG1App() {};
@@ -69,10 +70,6 @@ protected:
 	static void s_specialKey(int key, int x, int y) { s_ig1app.specialKey(key, x, y); };
 	static void s_update() { s_ig1app.update(); };
 
-	//Ejercicio20
-	static void glutMouseFunc(s_mouse);
-	static void glutMotionFunc(s_motion);
-	static void glutMouseWheelFunc(s_mouseWheel);
 	// Viewport position and size
 	Viewport *mViewPort = nullptr;
 	// Camera position, view volume and projection
@@ -90,6 +87,12 @@ protected:
 	//Ejercicio 20
 	glm::dvec2 mMouseCoord;
 	int mMouseButt;
+
+	static void glutMouseFunc(s_mouse);
+	static void glutMotionFunc(s_motion);
+	static void glutMouseWheelFunc(s_mouseWheel);
+
+	
 };
 //-------------------------------------------------------------------------
 

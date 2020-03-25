@@ -11,7 +11,6 @@
 #endif
 
 #include "Viewport.h"
-#include <gtc/matrix_access.hpp> //Ejercicio 20
 
 //-------------------------------------------------------------------------
 
@@ -28,16 +27,12 @@ public:
 	
 	void set2D();
 	void set3D();
-	/* Ejercicio 20
+	
+	/******Ejercicio 20
 	void pitch(GLdouble a); // rotates a degrees on the X axis
 	void yaw(GLdouble a);   // rotates a degrees on the Y axis
 	void roll(GLdouble a);  // rotates a degrees on the Z axis
 	*/
-	//Ejercicio 20
-	void moveLR(GLdouble cs); // Left / Right
-	void moveFB(GLdouble cs); // Forward / Backward
-	void moveUD(GLdouble cs); // Up / Down 
-
 	// projection matrix
 	glm::dmat4 const& projMat() const { return mProjMat; };
 	
@@ -48,6 +43,12 @@ public:
 
 	// transfers its viewport, the view matrix and projection matrix to the GPU
 	void upload() const { mViewPort->upload();  uploadVM(); uploadPM(); }; 
+
+	//Ejercicio 20
+	void moveUD(GLdouble cs);
+	void moveLR(GLdouble cs);
+	void moveFB(GLdouble cs);
+	void orbit(GLdouble incAng, GLdouble incY);
 
 protected:
 	
@@ -66,10 +67,13 @@ protected:
 	GLdouble mScaleFact = 1;   // scale factor
 	bool bOrto = true;   // orthogonal or perspective projection
 
-	GLdouble mRight, mUpward, mFront; //Ejercicio 20
-	void setAxes(); //Ejercicio 20
-
 	Viewport* mViewPort;   // the viewport
+
+	//Ejercicio 20
+	glm::dvec3 mRight, mUpward, mFront;
+	void setAxes();
+	GLdouble mAng = 90.0, mRadio=1000.0;
+	
 
 	void setVM();
 	void setPM();
