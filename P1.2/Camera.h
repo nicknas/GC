@@ -49,6 +49,7 @@ public:
 	void moveLR(GLdouble cs);
 	void moveFB(GLdouble cs);
 	void orbit(GLdouble incAng, GLdouble incY);
+	void changePrj();
 
 protected:
 	

@@ -72,6 +72,10 @@ void IG1App::iniWinOpenGL()
 	glutSpecialFunc(s_specialKey);
 	glutDisplayFunc(s_display);
 	glutIdleFunc(s_update);
+	//Ejercicio 20
+	glutMouseFunc(s_mouse); // cuando se presiona o suelta un botón
+	glutMotionFunc(s_motion); // cuando se mueve con un botón presionado
+	glutMouseWheelFunc(s_mouseWheel); // cuando se gira una rueda
 	
 	cout << glGetString(GL_VERSION) << '\n';
 	cout << glGetString(GL_VENDOR) << '\n';
@@ -141,6 +145,10 @@ void IG1App::key(unsigned char key, int x, int y)
 		break;
 	case 'f':
 		mScene->saveFoto();
+		break;
+	//Ejercicio 20
+	case 'p':
+		mCamera->changePrj();
 		break;
 	default:
 		need_redisplay = false;
@@ -225,7 +233,7 @@ void IG1App::motion(int x, int y) {
 		// Guardamos la posición actual
 		mMouseCoord = glm::dvec2(x, mWinH - y);
 		mp = (mMouseCoord - mp); // calculamos el desplazamiento realizado
-		mCamera->orbit(mp.x * 0.05, mp.y); // sensitivity = 0.05
+		mCamera->orbit(-mp.x * 0.05, -mp.y); // sensitivity = 0.05
 		glutPostRedisplay();
 	}
 	else if (mMouseButt == GLUT_RIGHT_BUTTON) {
@@ -234,15 +242,25 @@ void IG1App::motion(int x, int y) {
 		// Guardamos la posición actual
 		mMouseCoord = glm::dvec2(x, mWinH - y);
 		mp = (mMouseCoord - mp); // calculamos el desplazamiento realizado
-		mCamera->orbit(mp.x * 0.05, mp.y); // sensitivity = 0.05
+		//mCamera->orbit(mp.x, mp.y * 0.05); // sensitivity = 0.05
+		mCamera->moveLR(-mp.x);
+		mCamera->moveUD(-mp.y);
 		glutPostRedisplay();
 	}
 }
 //-----------------------------------------------------------------
 
 void IG1App::mouseWheel(int whellNumber, int direction, int x, int y) {
-	// direction es la dirección de la rueda (+1 / -1)
-	if (direction == 1) mCamera->moveFB(5);
-	else mCamera->moveFB(-5);
+	int m = glutGetModifiers();
+	if (m == 0) {
+		// direction es la dirección de la rueda (+1 / -1)
+		if (direction == 1) mCamera->moveFB(5.0);
+		else mCamera->moveFB(-5.0);
+	}
+	else if (m == GLUT_ACTIVE_CTRL) {
+		if (direction == 1) mCamera->setScale(+0.01);
+		else mCamera->setScale(-0.01);
+	}
+	
 	glutPostRedisplay();
 }

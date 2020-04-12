@@ -37,7 +37,8 @@ void Camera::setVM()
 
 void Camera::set2D() 
 {
-	mEye = dvec3(0, 0, 500);
+	mAng = -90.0;
+	mEye = dvec3(0, 0, mRadio);
 	mLook = dvec3(0, 0, 0);
 	mUp = dvec3(0, 1, 0);
 	setVM();
@@ -46,7 +47,12 @@ void Camera::set2D()
 
 void Camera::set3D() 
 {
-	mEye = dvec3(500, 500, 500);  
+	mAng = -45.0;
+
+	double x = mRadio * cos(radians(mAng));
+	double z = mRadio * cos(radians(mAng));
+
+	mEye = dvec3(x, mRadio, z);  
 	mLook = dvec3(0, 10, 0);   
 	mUp = dvec3(0, 1, 0);
 	setVM();
@@ -92,12 +98,17 @@ void Camera::setScale(GLdouble s)
 	setPM();
 }
 //-------------------------------------------------------------------------
-
+//Ejercicio 20
 void Camera::setPM() 
 {
 	if (bOrto) { //  if orthogonal projection
 		mProjMat = ortho(xLeft*mScaleFact, xRight*mScaleFact, yBot*mScaleFact, yTop*mScaleFact, mNearVal, mFarVal);
+		uploadPM();
 		// glm::ortho defines the orthogonal projection matrix
+	}
+	else {
+		mProjMat = frustum(xLeft * mScaleFact, xRight * mScaleFact, yBot * mScaleFact, yTop * mScaleFact, yTop, mFarVal);
+		uploadPM();
 	}
 }
 //-------------------------------------------------------------------------
@@ -141,3 +152,10 @@ void Camera::orbit(GLdouble incAng, GLdouble incY) {
 	mEye.y += incY;
 	setVM();
 }
+
+void Camera::changePrj() {
+	bOrto = !bOrto;
+	setPM();
+}
+
+
