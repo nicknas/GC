@@ -50,6 +50,8 @@ public:
 	void moveFB(GLdouble cs);
 	void orbit(GLdouble incAng, GLdouble incY);
 	void changePrj();
+	//Ejercicio 21
+	void setCenital();
 
 protected:
 	
@@ -58,9 +60,11 @@ protected:
 	glm::dvec3 mUp = { 0.0, 1.0, 0.0 };     // the up vector 
 
 	glm::dmat4 mViewMat;    // view matrix = inverse of modeling matrix 
+	void setVM();
 	void uploadVM() const;  // transfers viewMat to the GPU
 
 	glm::dmat4 mProjMat;     // projection matrix
+	void setPM();
 	void uploadPM() const;   // transfers projMat to the GPU
 
 	GLdouble xRight, xLeft, yTop, yBot;      // size of scene visible area
@@ -74,10 +78,6 @@ protected:
 	glm::dvec3 mRight, mUpward, mFront;
 	void setAxes();
 	GLdouble mAng = 90.0, mRadio=1000.0;
-	
-
-	void setVM();
-	void setPM();
 };
 //-------------------------------------------------------------------------
 

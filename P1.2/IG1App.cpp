@@ -89,14 +89,16 @@ void IG1App::free()
 	delete mViewPort; mViewPort = nullptr;
 }
 //-------------------------------------------------------------------------
-
-void IG1App::display() const   
+//Ejercicio 21
+void IG1App::display()   
 {  // double buffering
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // clears the back buffer
 
-	mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
-	
+	if (m2Vistas) display2Vistas();
+	else {
+		mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
+	}
 	glutSwapBuffers();	// swaps the front and back buffer
 }
 //-------------------------------------------------------------------------
@@ -149,6 +151,9 @@ void IG1App::key(unsigned char key, int x, int y)
 	//Ejercicio 20
 	case 'p':
 		mCamera->changePrj();
+		break;
+	case 'k':
+		m2Vistas = !m2Vistas;
 		break;
 	default:
 		need_redisplay = false;
@@ -263,4 +268,21 @@ void IG1App::mouseWheel(int whellNumber, int direction, int x, int y) {
 	}
 	
 	glutPostRedisplay();
+}
+
+//-----------------------------------------------------------------------
+//Ejercicio 21
+void IG1App::display2Vistas() {
+	Camera auxCam = *mCamera; //Camara auxiliar
+	Viewport auxVP = *mViewPort; //Puerto de vista auxiliar
+	mViewPort->setSize(mWinW / 2, mWinH); //Tamaño de los 2 puertos de vista
+	auxCam.setSize(mViewPort->width(), mViewPort->height());//tamaño de la venta de vista de la cámara
+	// vista Usuario
+	mViewPort->setPos(0, 0); //Posición del puerto de vista
+	mScene->render(auxCam); //renderizar con puerto de vista y cámara configurados
+	// vista Cenital
+	mViewPort->setPos(mWinW / 2, 0);//Posición del puerto de vista
+	auxCam.setCenital(); //Cambiamos posición y orientación de la cámara
+	mScene->render(auxCam); //renderizar con puerto de vista y cámara configurados
+	*mViewPort = auxVP; // restaurar el puerto de vista
 }

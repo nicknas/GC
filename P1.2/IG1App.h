@@ -51,8 +51,8 @@ protected:
 	void init();
 	void iniWinOpenGL();
 	void free();   
- 
-	void display() const;   // the scene
+	//Ejercicio 21
+	//void display() const;   // the scene
 	void resize(int newWidth, int newHeight);   // the viewport (without changing the scale) 
 	void key(unsigned char key, int x, int y);  // keypress event
 	void specialKey(int key, int x, int y);     // keypress event for special characters
@@ -61,6 +61,9 @@ protected:
 	void mouse(int button, int state, int x, int y); //cuando se presiona o suelta un botón
 	void motion(int x, int y); //cuando se mueve con un botón presionado
 	void mouseWheel(int whellNumber, int direction, int x, int y); //cuando se gira una rueda
+	//Ejercicio 21
+	void display();   // the scene
+	void display2Vistas();
 
 	// static callbacks 
 	static void s_display() { s_ig1app.display(); };
@@ -90,6 +93,9 @@ protected:
 	//Ejercicio 20
 	glm::dvec2 mMouseCoord;
 	int mMouseButt;
+	//Ejercicio 21
+	bool m2Vistas = false;
+	
 
 	
 };

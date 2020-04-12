@@ -157,5 +157,12 @@ void Camera::changePrj() {
 	bOrto = !bOrto;
 	setPM();
 }
-
+//Ejercicio 21
+void Camera::setCenital() {
+	mEye = dvec3(0, mRadio, 0);
+	mLook = dvec3(0, 0, 0);
+	mUp = dvec3(0, 0, -1);
+	mAng = 90.0;
+	setVM();
+}
 
