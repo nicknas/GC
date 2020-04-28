@@ -19,7 +19,7 @@ void Scene::init()
 	// allocate memory and load resources
     // Lights
     // Textures
-	for (int i = 0; i < 10; i++) {
+	/*for (int i = 0; i < 10; i++) {
 		gTextures.push_back(new Texture());
 	}
 	gTextures[0]->load("../Bmps/baldosaC.bmp");
@@ -31,17 +31,17 @@ void Scene::init()
 	gTextures[6]->load("../Bmps/papelE.bmp");
 	gTextures[7]->load("../Bmps/windowC.bmp");
 	gTextures[8]->load("../Bmps/windowV.bmp", 128);
-	// gTextures[9]->load("../Bmps/Zelda.bmp");
+	// gTextures[9]->load("../Bmps/Zelda.bmp");*/
 
     // Graphics objects (entities) of the scene
-	dvec4 yellow;
+	/*dvec4 yellow;
 	dvec4 magenta;
 	magenta.r = 1.0;
 	magenta.g = 0;
 	magenta.b = 1.0;
 	yellow.r = 1.0;
 	yellow.g = 1.0;
-	yellow.b = 0;
+	yellow.b = 0;*/
 	gObjects.push_back(new EjesRGB(400.0));
 	//PRÁCTICA 1
 	/*if (mId == 0) {
@@ -66,27 +66,27 @@ void Scene::init()
 	glm::dmat4 mAux;
 
 	Sphere* esfera = new Sphere(150.0);
-	esfera->color = glm::fvec3(255, 128, 0);
+	esfera->color = glm::fvec3(1, 0.5, 0);
 	gObjects.push_back(esfera);
 	
 	Cylinder* conoDer = new Cylinder(10.0, 0, 30.0);
-	conoDer->color = glm::fvec3(0, 0, 255);
+	conoDer->color = glm::fvec3(0, 0, 1);
 	mAux = conoDer->modelMat();
-	mAux = translate(mAux, dvec3(130, 50, 60));
+	mAux = translate(mAux, dvec3(125, 50, 55));
 	mAux = rotate(mAux, radians(45.0), dvec3(0.0, 1.0, 0));
 	conoDer->setModelMat(mAux);
 	gObjects.push_back(conoDer);
 	
 	Cylinder* conoIzq = new Cylinder(10.0, 0, 30.0);
-	conoIzq->color = glm::fvec3(0, 255, 255);
+	conoIzq->color = glm::fvec3(0, 1, 1);
 	mAux = conoIzq->modelMat();
-	mAux = translate(mAux, dvec3(80, 50, 120));
+	mAux = translate(mAux, dvec3(75, 50, 115));
 	mAux = rotate(mAux, radians(45.0), dvec3(0.0, 1.0, 0));
 	conoIzq->setModelMat(mAux);
 	gObjects.push_back(conoIzq);
 	
 	Disk* disco = new Disk(90.0,180.0);
-	disco->color = glm::fvec3(255, 0, 0);
+	disco->color = glm::fvec3(1, 0, 0);
 	mAux = disco->modelMat();
 	mAux = translate(mAux, dvec3(0, 80, 0));
 	mAux = rotate(mAux, radians(-90.0), dvec3(1.0, 0, 0));
@@ -94,11 +94,11 @@ void Scene::init()
 	gObjects.push_back(disco);
 	
 	PartialDisk* discoparcial = new PartialDisk(100.0, 120.0, 90.0,180.0);
-	discoparcial->color = glm::fvec3(0, 255, 0);
+	discoparcial->color = glm::fvec3(0, 1, 0);
 	mAux = discoparcial->modelMat();
-	mAux = translate(mAux, dvec3(100, 0, 100));
+	mAux = translate(mAux, dvec3(70, 0, 70));
 	mAux = rotate(mAux, radians(45.0), dvec3(0.0, 1.0, 0.0));
-	mAux = rotate(mAux, radians(15.0), dvec3(1.0, 0.0, 0.0));
+	//mAux = rotate(mAux, radians(15.0), dvec3(1.0, 0.0, 0.0));
 	discoparcial->setModelMat(mAux);
 	gObjects.push_back(discoparcial);
 }
