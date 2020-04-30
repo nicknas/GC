@@ -32,7 +32,7 @@ struct bitmap_information_header
 };
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::load_headers(std::ifstream & stream,  unsigned int & width, unsigned int & height) const// throw(std::ios_base::failure);
+void Pixmap32RGBA::load_headers(std::ifstream & stream,  unsigned int & width, unsigned int & height) const// throw(std::ios_base::failure);
 {
       width = 0; height = 0;
       bitmap_file_header bfh;
@@ -66,7 +66,7 @@ void PixMap32RGBA::load_headers(std::ifstream & stream,  unsigned int & width, u
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::save_headers(std::ofstream & stream) const noexcept
+void Pixmap32RGBA::save_headers(std::ofstream & stream) const noexcept
 {
       bitmap_file_header bfh;
       bitmap_information_header bih;
@@ -100,7 +100,7 @@ void PixMap32RGBA::save_headers(std::ofstream & stream) const noexcept
 //-------------------------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------
 
-PixMap32RGBA::PixMap32RGBA(PixMap32RGBA && pixmap) noexcept
+Pixmap32RGBA::Pixmap32RGBA(Pixmap32RGBA && pixmap) noexcept
 	: data_{ pixmap.data_ }, width_{ pixmap.width_ }, height_{ pixmap.height_ }
 {
 	pixmap.data_ = nullptr;
@@ -109,7 +109,7 @@ PixMap32RGBA::PixMap32RGBA(PixMap32RGBA && pixmap) noexcept
 }
 //-------------------------------------------------------------------------------------------
 
-PixMap32RGBA & PixMap32RGBA::operator=(PixMap32RGBA && pixmap) noexcept
+Pixmap32RGBA & Pixmap32RGBA::operator=(Pixmap32RGBA && pixmap) noexcept
 {
 	if (this != &pixmap)
 	{
@@ -126,7 +126,7 @@ PixMap32RGBA & PixMap32RGBA::operator=(PixMap32RGBA && pixmap) noexcept
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::free() noexcept
+void Pixmap32RGBA::free() noexcept
 {
    delete[] data_;
    data_ = nullptr;
@@ -134,9 +134,9 @@ void PixMap32RGBA::free() noexcept
    height_ = 0;
 }
 //-------------------------------------------------------------------------------------------
-PixMap32RGBA PixMap32RGBA::clone()  // throw(std::exception, std::bad_alloc)
+Pixmap32RGBA Pixmap32RGBA::clone()  // throw(std::exception, std::bad_alloc)
 {
-	PixMap32RGBA clon;
+	Pixmap32RGBA clon;
 	clon.reserve(width(), height());
 	
 	for (GLsizei i = 0; i< width_ * height_; i++)
@@ -146,7 +146,7 @@ PixMap32RGBA PixMap32RGBA::clone()  // throw(std::exception, std::bad_alloc)
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::reserve(GLsizei width, GLsizei height) // throw(std::exception, std::bad_alloc)
+void Pixmap32RGBA::reserve(GLsizei width, GLsizei height) // throw(std::exception, std::bad_alloc)
 {
   if(width > width_ || height > height_) 
     {  
@@ -166,20 +166,20 @@ void PixMap32RGBA::reserve(GLsizei width, GLsizei height) // throw(std::exceptio
       catch(std::bad_alloc &) 
 	  {
         #ifdef _WIN32
-            throw std::exception("PixMap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
+            throw std::exception("Pixmap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
         #else
-            throw std::runtime_error("PixMap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
+            throw std::runtime_error("Pixmap32RGBA::reserve() ERROR: Could not allocate memory (bad_alloc)"); 
         #endif
       }
   }   
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::load_bmp24BGR(const std::string & file_name) // throw(std::ios_base::failure, std::bad_alloc)
+void Pixmap32RGBA::load_bmp24BGR(const std::string & file_name) // throw(std::ios_base::failure, std::bad_alloc)
 {
       std::ifstream stream(file_name.c_str(), std::ios::binary);
       stream.exceptions( std::ifstream::failbit | std::ifstream::badbit );
-      if (!stream.is_open()) throw std::ios_base::failure("PixMap32RGBA::load_bmpBGR() ERROR: Could not open file");
+      if (!stream.is_open()) throw std::ios_base::failure("Pixmap32RGBA::load_bmpBGR() ERROR: Could not open file");
       
       unsigned int width, height;
       load_headers(stream, width, height);
@@ -202,7 +202,7 @@ void PixMap32RGBA::load_bmp24BGR(const std::string & file_name) // throw(std::io
 } 
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::row_bgr_rgba(char* rowAux, unsigned int r) noexcept
+void Pixmap32RGBA::row_bgr_rgba(char* rowAux, unsigned int r) noexcept
 {
    unsigned int j =  0, f = r* width_ + width_;  
 
@@ -216,7 +216,7 @@ void PixMap32RGBA::row_bgr_rgba(char* rowAux, unsigned int r) noexcept
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::row_rgba_bgr(char* rowAux, unsigned int r) const noexcept
+void Pixmap32RGBA::row_rgba_bgr(char* rowAux, unsigned int r) const noexcept
 {
    unsigned int j =  0, f = r* width_ + width_;  
 
@@ -229,7 +229,7 @@ void PixMap32RGBA::row_rgba_bgr(char* rowAux, unsigned int r) const noexcept
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::save_bmp24BGR(const std::string& file_name) const  // throw(std::ios_base::failure)
+void Pixmap32RGBA::save_bmp24BGR(const std::string& file_name) const  // throw(std::ios_base::failure)
 {
       std::ofstream stream(file_name.c_str(),std::ios::binary);
       stream.exceptions ( std::ifstream::failbit | std::ifstream::badbit );
@@ -253,7 +253,7 @@ void PixMap32RGBA::save_bmp24BGR(const std::string& file_name) const  // throw(s
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::set_alpha(GLubyte alpha) noexcept
+void Pixmap32RGBA::set_alpha(GLubyte alpha) noexcept
 {
     //if(data_ != nullptr) 
 	  for (GLsizei i = 0; i< width_ * height_; i++)
@@ -261,7 +261,7 @@ void PixMap32RGBA::set_alpha(GLubyte alpha) noexcept
 }
 //-------------------------------------------------------------------------------------------
 
-void PixMap32RGBA::set_colorkey_alpha(glm::u8vec3 colorKey, GLubyte alpha ) noexcept
+void Pixmap32RGBA::set_colorkey_alpha(glm::u8vec3 colorKey, GLubyte alpha ) noexcept
 {
 	//if (data_ != nullptr) 
 	  for (GLsizei i = 0; i< width_ * height_; i++)

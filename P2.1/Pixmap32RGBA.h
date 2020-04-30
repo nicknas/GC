@@ -1,6 +1,6 @@
 //#pragma once
-#ifndef _H_PixMap32RGBA_H
-#define _H_PixMap32RGBA_H
+#ifndef _H_Pixmap32RGBA_H
+#define _H_Pixmap32RGBA_H
 
 //#include <Windows.h>
 //#include <gl/GL.h>
@@ -14,20 +14,20 @@
 #endif
 
 
-class PixMap32RGBA {   
+class Pixmap32RGBA {   
 public:
    
 	typedef glm::u8vec4 rgba_color;  
  
-   PixMap32RGBA() noexcept : data_{ nullptr }, width_{ 0 }, height_{ 0 } {}
+   Pixmap32RGBA() noexcept : data_{ nullptr }, width_{ 0 }, height_{ 0 } {}
 
-   PixMap32RGBA(PixMap32RGBA && pixmap) noexcept;
-   PixMap32RGBA & operator=(PixMap32RGBA && pixmap) noexcept;
+   Pixmap32RGBA(Pixmap32RGBA && pixmap) noexcept;
+   Pixmap32RGBA & operator=(Pixmap32RGBA && pixmap) noexcept;
 
-   PixMap32RGBA(const PixMap32RGBA & pixmap) = delete;
-   PixMap32RGBA & operator=(const PixMap32RGBA & pixmap) = delete;
+   Pixmap32RGBA(const Pixmap32RGBA & pixmap) = delete;
+   Pixmap32RGBA & operator=(const Pixmap32RGBA & pixmap) = delete;
 
-   ~PixMap32RGBA() noexcept { free(); }
+   ~Pixmap32RGBA() noexcept { free(); }
       
    void load_bmp24BGR(const std::string & file_name);  // throw(std::ios_base::failure, std::exception);
    void save_bmp24BGR(const std::string & file_name) const;  // throw(std::ios_base::failure);
@@ -37,7 +37,7 @@ public:
    void set_alpha(GLubyte alpha) noexcept;
    void set_colorkey_alpha(glm::u8vec3 colorKey, GLubyte alpha) noexcept;
 
-   PixMap32RGBA clone();  // throw(std::exception, std::bad_alloc);
+   Pixmap32RGBA clone();  // throw(std::exception, std::bad_alloc);
    
    void free() noexcept;
 
@@ -73,4 +73,4 @@ private:
 
 };
    
-#endif //_H_PixMap32RGBA_H
+#endif //_H_Pixmap32RGBA_H

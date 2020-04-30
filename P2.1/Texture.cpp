@@ -34,7 +34,7 @@ void Texture::load(const std::string & BMP_Name, GLubyte alpha)
 {
 	if (mId == 0) init();
 	
-	PixMap32RGBA pixMap;
+	Pixmap32RGBA pixMap;
   
     pixMap.load_bmp24BGR(BMP_Name);
 
@@ -84,7 +84,7 @@ void Texture::loadColorBuffer()
 
 void Texture::save(const std::string & BMP_NAME)
 {
-    PixMap32RGBA pixMap;
+    Pixmap32RGBA pixMap;
 
     GLint level = 0;   //Base image level
 
@@ -99,7 +99,7 @@ void Texture::load(const std::string & BMP_Name, glm::u8vec3 color, GLubyte alph
 {
     if (mId == 0) init();
 
-    PixMap32RGBA pixMap;
+    Pixmap32RGBA pixMap;
 
     pixMap.load_bmp24BGR(BMP_Name);
 

@@ -58,8 +58,8 @@ protected:
 	void specialKey(int key, int x, int y);     // keypress event for special characters
 	void update();
 	//Ejercicio 20
-	void mouse(int button, int state, int x, int y); //cuando se presiona o suelta un botón
-	void motion(int x, int y); //cuando se mueve con un botón presionado
+	void mouse(int button, int state, int x, int y); //cuando se presiona o suelta un botï¿½n
+	void motion(int x, int y); //cuando se mueve con un botï¿½n presionado
 	void mouseWheel(int whellNumber, int direction, int x, int y); //cuando se gira una rueda
 	//Ejercicio 21
 	void display();   // the scene
@@ -72,8 +72,8 @@ protected:
 	static void s_specialKey(int key, int x, int y) { s_ig1app.specialKey(key, x, y); };
 	static void s_update() { s_ig1app.update(); };
 	//Ejercicio 20
-	static void s_mouse(int button, int state, int x, int y) { s_ig1app.mouse(button, state, x, y); }; //cuando se presiona o suelta un botón
-	static void s_motion(int x, int y) { s_ig1app.motion(x, y); }; //cuando se mueve con un botón presionado
+	static void s_mouse(int button, int state, int x, int y) { s_ig1app.mouse(button, state, x, y); }; //cuando se presiona o suelta un botï¿½n
+	static void s_motion(int x, int y) { s_ig1app.motion(x, y); }; //cuando se mueve con un botï¿½n presionado
 	static void s_mouseWheel(int whellNumber, int direction, int x, int y) { s_ig1app.mouseWheel(whellNumber, direction, x, y); }; //cuando se gira una rueda
 
 	// Viewport position and size
