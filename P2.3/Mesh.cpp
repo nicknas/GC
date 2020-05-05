@@ -8,9 +8,9 @@ using namespace glm;
 
 void Mesh::draw() const 
 {
-    //PRÁCTICA2.2
+   
   //glDrawArrays(mPrimitive, 0, size());   // primitive graphic, first index and number of elements to be rendered
-    
+    //PRÁCTICA2.2
     unsigned int stripIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 0, 1 };
     glDrawElements(mPrimitive, size(), GL_UNSIGNED_INT, stripIndices);
 }
@@ -30,13 +30,19 @@ void Mesh::render() const
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glTexCoordPointer(2, GL_DOUBLE, 0, vTexCoords.data());
     }
+    //PRÁCTICA 2.3
+    if (vNormals.size() > 0){
+        glEnableClientState(GL_NORMAL_ARRAY);
+        glNormalPointer(GL_DOUBLE, 0, vNormals.data());
+    }
 
 	draw();
 
     glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-
+    //PRÁCTICA 2.3
+    glDisableClientState(GL_NORMAL_ARRAY);
     
   }
 }
@@ -311,6 +317,97 @@ Mesh* Mesh::generaAnilloCuadrado(){
     mesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
     //mesh->vColors.emplace_back(0.0, 0.0, 0.0, 1.0);
     //mesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    
+
+    mesh->vNormals.reserve(mesh->mNumVertices);
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0); 
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0); 
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0); 
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);    
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
+    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
     return mesh;
 }
+//PRÁCTICA 2.3
+
+void IndexMesh::render() const
+{
+    if (vVertices.size() > 0) {  // transfer data
+// transfer the coordinates of the vertices
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_DOUBLE, 0, vVertices.data());  // number of coordinates per vertex, type of each coordinate, stride, pointer 
+        if (vColors.size() > 0) { // transfer colors
+            glEnableClientState(GL_COLOR_ARRAY);
+            glColorPointer(4, GL_DOUBLE, 0, vColors.data());  // components number (rgba=4), type of each component, stride, pointer  
+        }
+        if (vTexCoords.size() > 0) {
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glTexCoordPointer(2, GL_DOUBLE, 0, vTexCoords.data());
+        }
+        //PRÁCTICA 2.3
+        if (vNormals.size() > 0) {
+            glEnableClientState(GL_NORMAL_ARRAY);
+            glNormalPointer(GL_DOUBLE, 0, vNormals.data());
+        }
+        if (vIndices != nullptr) {
+            glEnableClientState(GL_INDEX_ARRAY);
+            glIndexPointer(GL_UNSIGNED_INT, 0, vIndices);
+        }
+
+        draw();
+
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        //PRÁCTICA 2.3
+        glDisableClientState(GL_NORMAL_ARRAY);
+        glDisableClientState(GL_INDEX_ARRAY);
+    }
+}
+
+// Comando para renderizar la malla indexada enviada
+void IndexMesh::draw() const {
+    glDrawElements(mPrimitive, nNumIndices, GL_UNSIGNED_INT, vIndices);
+}
+
+IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
+    IndexMesh* indexMesh = new IndexMesh();
+
+    indexMesh->mNumVertices = 8;
+    indexMesh->vVertices.reserve(indexMesh->mNumVertices);
+    indexMesh->vVertices.emplace_back(l / 2, l / 2, -l / 2); //0 (1,1,-1)
+    indexMesh->vVertices.emplace_back(l / 2, -l / 2, -l / 2); //1 (1,1,-1)
+    indexMesh->vVertices.emplace_back(l / 2, -l / 2, l / 2); //2 (1,1,1)
+    indexMesh->vVertices.emplace_back(l / 2, l / 2, l / 2); //3 (1,-1,1)
+    indexMesh->vVertices.emplace_back(-l / 2, l / 2, -l / 2);//4 (-1,1,1)
+    indexMesh->vVertices.emplace_back(-l / 2, l / 2, l / 2);//5 (-1,-1,1)
+    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, l / 2); //6 (-1,1,-1)
+    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, -l / 2);//7 (-1,-1,-1)
+
+    indexMesh->nNumIndices = 36;
+    unsigned int indices[] =
+        { 0, 1, 2, 2, 1, 3,
+        2, 3, 4, 4, 3, 5,
+        4, 5, 6, 6, 5, 7,
+        6, 7, 0, 0, 7, 1,
+        4, 6, 2, 2, 6, 0,
+        1, 7, 3, 3, 7, 5 };
+    indexMesh->vIndices = indices;
+    /*indexMesh->vNormals.reserve(indexMesh->mNumVertices);
+    indexMesh->vNormals.emplace_back(-l / 2, l / 2, -l / 2);
+    indexMesh->vNormals.emplace_back(-l / 2, -l / 2, -l / 2);
+    indexMesh->vNormals.emplace_back(-l / 2, l / 2, l / 2);
+    indexMesh->vNormals.emplace_back(-l / 2, -l / 2, l / 2);
+    indexMesh->vNormals.emplace_back(l / 2, l / 2, l / 2);
+    indexMesh->vNormals.emplace_back(l / 2, -l / 2, l / 2);
+    indexMesh->vNormals.emplace_back(l / 2, l / 2, -l / 2);
+    indexMesh->vNormals.emplace_back(l / 2, -l / 2, -l / 2);*/
+
+        
+ 
+    return indexMesh;
+ }
+
+
+

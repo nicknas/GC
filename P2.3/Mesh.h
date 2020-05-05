@@ -55,10 +55,24 @@ protected:
 	GLuint mNumVertices = 0;  // number of elements ( = vVertices.size())
 	std::vector<glm::dvec3> vVertices;  // vertex array
 	std::vector<glm::dvec4> vColors;    // color array
+	//PRÁCTICA 2.3
+	std::vector<glm::dvec3> vNormals; //normal array
 	virtual void draw() const;
 
 	std::vector<glm::dvec2> vTexCoords;
 };
 //-------------------------------------------------------------------------
-
+//PRÁCTICA 2.3
+class IndexMesh : public Mesh {
+protected:
+	GLuint* vIndices = nullptr; // tabla de índices
+	GLuint nNumIndices = 0;
+	
+public:
+	IndexMesh() { mPrimitive = GL_TRIANGLES; }
+	~IndexMesh() { delete[] vIndices; }
+	virtual void render() const;
+	virtual void draw() const;
+	static IndexMesh* generaIndexCuboConTapas(GLdouble l);
+};
 #endif //_H_Scene_H_
