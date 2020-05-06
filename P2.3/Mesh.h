@@ -67,12 +67,12 @@ class IndexMesh : public Mesh {
 protected:
 	GLuint* vIndices = nullptr; // tabla de índices
 	GLuint nNumIndices = 0;
-	
 public:
 	IndexMesh() { mPrimitive = GL_TRIANGLES; }
 	~IndexMesh() { delete[] vIndices; }
 	virtual void render() const;
 	virtual void draw() const;
 	static IndexMesh* generaIndexCuboConTapas(GLdouble l);
+	virtual void buildNormalVectors();
 };
 #endif //_H_Scene_H_

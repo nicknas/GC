@@ -488,3 +488,28 @@ void AnilloCuadrado::render(dmat4 const& modelViewMat) const
 
 void AnilloCuadrado::update()
 {}
+
+//PRÁCTICA 2.3
+EntityWithIndexMesh::EntityWithIndexMesh(GLdouble arista) {
+	mMesh = IndexMesh::generaIndexCuboConTapas(arista);
+}
+EntityWithIndexMesh::~EntityWithIndexMesh()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void EntityWithIndexMesh::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glEnable(GL_COLOR_MATERIAL);
+		mMesh->render();
+		glDisable(GL_COLOR_MATERIAL);
+	}
+}
+
+//-------------------------------------------------------------------------
+
+void EntityWithIndexMesh::update()
+{}

@@ -103,7 +103,10 @@ void Scene::init()
 	gObjects.push_back(discoparcial);*/
 
 	//PRÁCTICA 2.2
-	gObjects.push_back(new AnilloCuadrado());
+	//gObjects.push_back(new AnilloCuadrado());
+
+	//PRÁCTICA 2.3
+	gObjects.push_back(new EntityWithIndexMesh(100.0));
 }
 //-------------------------------------------------------------------------
 void Scene::free() 

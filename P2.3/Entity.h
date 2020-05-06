@@ -212,4 +212,12 @@ public:
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
 };
+//PRÁCTICA 2.3
+class EntityWithIndexMesh : public Abs_Entity {
+public:
+	explicit EntityWithIndexMesh(GLdouble arista);
+	~EntityWithIndexMesh();
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	virtual void update();
+};
 #endif //_H_Entities_H_
