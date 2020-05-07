@@ -379,15 +379,16 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
     //Vértices
     indexMesh->mNumVertices = 8;
     indexMesh->vVertices.reserve(indexMesh->mNumVertices);
-    indexMesh->vVertices.emplace_back(l / 2, l / 2, -l / 2); //0
-    indexMesh->vVertices.emplace_back(l / 2, -l / 2, -l / 2); //1
-    indexMesh->vVertices.emplace_back(l / 2, l / 2, l / 2); //2
-    indexMesh->vVertices.emplace_back(l / 2, -l / 2, l / 2); //3
-    indexMesh->vVertices.emplace_back(-l / 2, l / 2, l / 2); //4 
-    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, l / 2); //5
-    indexMesh->vVertices.emplace_back(-l / 2, l / 2, -l / 2); //6
-    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, -l / 2); //7
+    indexMesh->vVertices.emplace_back(l / 2, l / 2, l / 2); //0
+    indexMesh->vVertices.emplace_back(l / 2, -l / 2, l / 2); //1
+    indexMesh->vVertices.emplace_back(l / 2, l / 2, -l / 2); //2
+    indexMesh->vVertices.emplace_back(l / 2, -l / 2, -l / 2); //3
 
+    indexMesh->vVertices.emplace_back(-l / 2, l / 2, -l / 2); //4 
+    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, -l / 2); //5
+    indexMesh->vVertices.emplace_back(-l / 2, l / 2, l / 2); //6
+    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, l / 2); //7
+    
     //Colores
     indexMesh->vColors.reserve(indexMesh->mNumVertices);
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
@@ -407,6 +408,7 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
         6, 7, 0, 0, 7, 1,
         4, 6, 2, 2, 6, 0,
         1, 7, 3, 3, 7, 5 };
+    
     indexMesh->vIndices = new GLuint[indexMesh->nNumIndices];
     for (int i = 0; i < indexMesh->nNumIndices; i++) {
         indexMesh->vIndices[i] = indices[i];
@@ -415,13 +417,13 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
     //Normales
     /*indexMesh->vNormals.reserve(indexMesh->mNumVertices);
     indexMesh->vNormals.emplace_back(1.0, 1.0, 2.0); //0
-    indexMesh->vNormals.emplace_back(2.0, -1.0, -1.0); //1
-    indexMesh->vNormals.emplace_back(2.0, 2.0, 1.0); //2
-    indexMesh->vNormals.emplace_back(1.0, -2.0, 2.0); //3
-    indexMesh->vNormals.emplace_back(-1.0, 1.0, 2.0); //4
-    indexMesh->vNormals.emplace_back(-2.0, -1.0, 1.0); //5
-    indexMesh->vNormals.emplace_back(-2.0, 2.0, -1.0); //6
-    indexMesh->vNormals.emplace_back(-1.0, -2.0, -2.0); //7*/
+    indexMesh->vNormals.emplace_back(2.0, -1.0, 1.0); //1
+    indexMesh->vNormals.emplace_back(2.0, 2.0, -1.0); //2
+    indexMesh->vNormals.emplace_back(1.0, -2.0, -2.0); //3
+    indexMesh->vNormals.emplace_back(-1.0, 1.0, -2.0); //4
+    indexMesh->vNormals.emplace_back(-2.0, -1.0, -1.0); //5
+    indexMesh->vNormals.emplace_back(-2.0, 2.0, 1.0); //6
+    indexMesh->vNormals.emplace_back(-1.0, -2.0, 2.0); //7*/
     indexMesh->buildNormalVectors();
 
     return indexMesh;
@@ -440,17 +442,22 @@ void IndexMesh::buildNormalVectors() {
     
     for (int i = 0; i < nNumIndices; i+=3) {
         int a = vIndices[i];
-        int b = vIndices[i + 1];
-        int c = vIndices[i + 2];
+        int b = vIndices[i+1];
+        int c = vIndices[i+2];
+
+        dvec3 v0 = vVertices[a];
+        dvec3 v1 = vVertices[b];
+        dvec3 v2 = vVertices[c];
         
-        vNormals[a] += normalize(cross(vVertices[b] - vVertices[a], vVertices[c] - vVertices[a]));
-        vNormals[b] += normalize(cross(vVertices[b] - vVertices[a], vVertices[c] - vVertices[a]));
-        vNormals[c] += normalize(cross(vVertices[b] - vVertices[a], vVertices[c] - vVertices[a]));
+        dvec3 n = normalize(cross(v2-v1,v0-v1));
+        
+        vNormals[a] += n;
+        vNormals[b] += n;
+        vNormals[c] += n;
     }
     for (int i = 0; i < mNumVertices; i++) {
         vNormals[i] = normalize(vNormals[i]);
     }
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 }
 
 

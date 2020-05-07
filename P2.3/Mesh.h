@@ -3,7 +3,6 @@
 #define _H_Mesh_H_
 
 #include <GL/freeglut.h>
-
 #ifdef _WIN32
 	#include <glm.hpp>
 #else
