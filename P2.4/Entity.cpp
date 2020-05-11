@@ -489,13 +489,9 @@ void AnilloCuadrado::render(dmat4 const& modelViewMat) const
 void AnilloCuadrado::update()
 {}
 
-//PRÁCTICA 2.3
-EntityWithIndexMesh::EntityWithIndexMesh(GLdouble arista) {
-	mMesh = IndexMesh::generaIndexCuboConTapas(arista);
-}
-EntityWithIndexMesh::~EntityWithIndexMesh()
-{
-	delete mMesh; mMesh = nullptr;
+//PRÁCTICA 2.4
+EntityWithIndexMesh::EntityWithIndexMesh() {
+	im = new IndexMesh();
 }
 
 void EntityWithIndexMesh::render(dmat4 const& modelViewMat) const
@@ -509,7 +505,45 @@ void EntityWithIndexMesh::render(dmat4 const& modelViewMat) const
 	}
 }
 
-//-------------------------------------------------------------------------
+//------------------------------------------------------------------------
+Cubo::Cubo(GLdouble arista) {
+	mMesh = IndexMesh::generaIndexCuboConTapas(arista);
+}
+Cubo::~Cubo()
+{
+	delete mMesh; mMesh = nullptr;
+}
 
-void EntityWithIndexMesh::update()
+void Cubo::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glEnable(GL_COLOR_MATERIAL);
+		mMesh->render();
+		glDisable(GL_COLOR_MATERIAL);
+	}
+}
+
+void Cubo::update()
 {}
+
+//-------------------------------------------------------------------------
+CompoundEntity:: ~CompoundEntity() { 
+	for (Abs_Entity* el : gObjects) { 
+		delete el;  el = nullptr; 
+	} 
+}
+
+void CompoundEntity::render(dmat4 const& modelViewMat) const
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+	for (Abs_Entity* el : gObjects) {
+		el->render(aMat);
+	}
+}
+
+void CompoundEntity::addEntity(Abs_Entity* ae) {
+	gObjects.push_back(ae);
+}

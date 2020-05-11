@@ -106,7 +106,48 @@ void Scene::init()
 	//gObjects.push_back(new AnilloCuadrado());
 
 	//PRÁCTICA 2.3
-	gObjects.push_back(new EntityWithIndexMesh(100.0));
+	//gObjects.push_back(new EntityWithIndexMesh(100.0));
+
+	//PRÁCTICA 2.4
+	glm::dmat4 mAux;
+	CompoundEntity* avion = new CompoundEntity();
+	gObjects.push_back(avion);
+
+	EntityWithIndexMesh* alas = new EntityWithIndexMesh();
+	Cubo* cube = new Cubo(100.0);
+	dvec4 green;
+	green.r = 0.0;
+	green.g = 1.0;
+	green.b = 0.0;
+	alas = cube;
+	alas->setColor(green);
+	avion->addEntity(alas);
+	
+	CompoundEntity* chasis = new CompoundEntity();
+	avion->addEntity(chasis);
+	
+	/*Sphere* bola = new Sphere(100.0);
+	bola->color = glm::fvec3(1, 0, 0);
+	chasis->addEntity(bola);*/
+
+	CompoundEntity* helices = new CompoundEntity();
+	chasis->addEntity(helices);
+	
+	Cylinder* cilDer = new Cylinder(10.0, 5.0, 30.0);
+	cilDer->color = glm::fvec3(0, 0, 1);
+	mAux = cilDer->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 105));
+	mAux = rotate(mAux, radians(90.0), dvec3(0.0, 1.0, 0));
+	cilDer->setModelMat(mAux);
+	helices->addEntity(cilDer);
+
+	Cylinder* cilIzq = new Cylinder(10.0, 5.0, 30.0);
+	cilIzq->color = glm::fvec3(0, 0, 1);
+	mAux = cilIzq->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 105));
+	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
+	cilIzq->setModelMat(mAux);
+	helices->addEntity(cilIzq);
 }
 //-------------------------------------------------------------------------
 void Scene::free() 

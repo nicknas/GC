@@ -212,12 +212,34 @@ public:
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
 };
-//PRÁCTICA 2.3
+//PRÁCTICA 2.3 y 2.4
 class EntityWithIndexMesh : public Abs_Entity {
 public:
-	explicit EntityWithIndexMesh(GLdouble arista);
-	~EntityWithIndexMesh();
+	EntityWithIndexMesh();
+	~EntityWithIndexMesh() { delete im;};
+	//Práctica 2.3
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	//virtual void update();
+
+protected:
+	IndexMesh* im;
+};
+//PRÁCTICA 2.4
+class Cubo : public EntityWithIndexMesh {
+public:
+	explicit Cubo(GLdouble arista);
+	~Cubo();
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
+};
+
+class CompoundEntity : public Abs_Entity {
+public:
+	CompoundEntity() {};
+	~CompoundEntity();
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	void addEntity(Abs_Entity* ae);
+protected:
+	std::vector<Abs_Entity*> gObjects;
 };
 #endif //_H_Entities_H_
