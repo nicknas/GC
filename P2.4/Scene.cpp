@@ -119,32 +119,36 @@ void Scene::init()
 	green.r = 0.0;
 	green.g = 1.0;
 	green.b = 0.0;
+	cube->setColor(green);
+	mAux = cube->modelMat();
+	mAux = scale(mAux, dvec3(4.0, 0.2, 1.75));
+	cube->setModelMat(mAux);
 	alas = cube;
-	alas->setColor(green);
+	
 	avion->addEntity(alas);
 	
 	CompoundEntity* chasis = new CompoundEntity();
 	avion->addEntity(chasis);
 	
-	/*Sphere* bola = new Sphere(100.0);
+	Sphere* bola = new Sphere(100.0);
 	bola->color = glm::fvec3(1, 0, 0);
-	chasis->addEntity(bola);*/
+	chasis->addEntity(bola);
 
 	CompoundEntity* helices = new CompoundEntity();
 	chasis->addEntity(helices);
 	
-	Cylinder* cilDer = new Cylinder(10.0, 5.0, 30.0);
+	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
 	cilDer->color = glm::fvec3(0, 0, 1);
 	mAux = cilDer->modelMat();
-	mAux = translate(mAux, dvec3(0, 0, 105));
+	mAux = translate(mAux, dvec3(0, 0, 120));
 	mAux = rotate(mAux, radians(90.0), dvec3(0.0, 1.0, 0));
 	cilDer->setModelMat(mAux);
 	helices->addEntity(cilDer);
 
-	Cylinder* cilIzq = new Cylinder(10.0, 5.0, 30.0);
+	Cylinder* cilIzq = new Cylinder(20.0, 10.0, 50.0);
 	cilIzq->color = glm::fvec3(0, 0, 1);
 	mAux = cilIzq->modelMat();
-	mAux = translate(mAux, dvec3(0, 0, 105));
+	mAux = translate(mAux, dvec3(0, 0, 120));
 	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
 	cilIzq->setModelMat(mAux);
 	helices->addEntity(cilIzq);

@@ -520,6 +520,7 @@ void Cubo::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glEnable(GL_COLOR_MATERIAL);
+		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
 		glDisable(GL_COLOR_MATERIAL);
 	}

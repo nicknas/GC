@@ -390,7 +390,7 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
     indexMesh->vVertices.emplace_back(-l / 2, -l / 2, l / 2); //7
     
     //Colores
-    indexMesh->vColors.reserve(indexMesh->mNumVertices);
+    /*indexMesh->vColors.reserve(indexMesh->mNumVertices);
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
@@ -398,7 +398,7 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
     indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
+    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);*/
 
     //Índices
     indexMesh->nNumIndices = 36;
@@ -415,7 +415,7 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
     }
     
     //Normales
-    /*indexMesh->vNormals.reserve(indexMesh->mNumVertices);
+    indexMesh->vNormals.reserve(indexMesh->mNumVertices);
     indexMesh->vNormals.emplace_back(1.0, 1.0, 2.0); //0
     indexMesh->vNormals.emplace_back(2.0, -1.0, 1.0); //1
     indexMesh->vNormals.emplace_back(2.0, 2.0, -1.0); //2
@@ -423,7 +423,7 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
     indexMesh->vNormals.emplace_back(-1.0, 1.0, -2.0); //4
     indexMesh->vNormals.emplace_back(-2.0, -1.0, -1.0); //5
     indexMesh->vNormals.emplace_back(-2.0, 2.0, 1.0); //6
-    indexMesh->vNormals.emplace_back(-1.0, -2.0, 2.0); //7*/
+    indexMesh->vNormals.emplace_back(-1.0, -2.0, 2.0); //7
     indexMesh->buildNormalVectors();
 
     return indexMesh;
