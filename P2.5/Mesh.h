@@ -74,4 +74,16 @@ public:
 	static IndexMesh* generaIndexCuboConTapas(GLdouble l);
 	virtual void buildNormalVectors();
 };
+//-------------------------------------------------------------------------
+//PRÁCTICA 2.5
+class MbR : public IndexMesh {
+protected:
+	int m;
+	int n;
+	glm::dvec3* perfil;
+public:
+	MbR(int mm, int nn, glm::dvec3* pperfil) { m = mm; n = nn; perfil = pperfil; }
+	~MbR() {}
+	static MbR* generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil);
+};
 #endif //_H_Scene_H_

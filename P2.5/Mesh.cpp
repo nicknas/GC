@@ -431,14 +431,9 @@ IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
 
 void IndexMesh::buildNormalVectors() {
     vNormals.reserve(mNumVertices);
-    vNormals.emplace_back(0.0, 0.0, 0.0); //0
-    vNormals.emplace_back(0.0, 0.0, 0.0); //1
-    vNormals.emplace_back(0.0, 0.0, 0.0); //2
-    vNormals.emplace_back(0.0, 0.0, 0.0); //3
-    vNormals.emplace_back(0.0, 0.0, 0.0); //4
-    vNormals.emplace_back(0.0, 0.0, 0.0); //5
-    vNormals.emplace_back(0.0, 0.0, 0.0); //6
-    vNormals.emplace_back(0.0, 0.0, 0.0); //7
+    for (int i=0;i<mNumVertices;i++)
+        vNormals.emplace_back(0.0, 0.0, 0.0);
+    
     
     for (int i = 0; i < nNumIndices; i+=3) {
         int a = vIndices[i];
@@ -458,6 +453,61 @@ void IndexMesh::buildNormalVectors() {
     for (int i = 0; i < mNumVertices; i++) {
         vNormals[i] = normalize(vNormals[i]);
     }
+}
+
+//PRÁCTICA 2.5
+
+MbR* MbR::generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil) {
+    MbR* mesh = new MbR(mm, nn, perfil);
+    mesh->mPrimitive = GL_TRIANGLES;
+    mesh->mNumVertices = nn*mm;
+    dvec3* vertices = new dvec3[mesh->mNumVertices];
+
+    for (int i = 0; i < nn; i++) {
+        //Generar la muestra i-ésima de vértices
+        GLdouble theta = i * 360 / nn;
+        GLdouble c = cos(radians(theta));
+        GLdouble s = sin(radians(theta));
+        // R_y(theta) es la matriz de rotación alrededor del eje Y
+        for (int j = 0; j < mm; j++) {
+            int indice = i * mm + j;
+            GLdouble x = c * perfil[j].x + s * perfil[j].z;
+            GLdouble z = -s * perfil[j].x + c * perfil[j].z;
+            vertices[indice] = dvec3(x, perfil[j].y, z);
+        }
+    }
+    //Cambiar posición y ponerlo arriba??
+    for (int i = 0; i < mesh->mNumVertices; i++) {
+        mesh->vVertices.emplace_back(vertices[i]);
+    }
+    
+    mesh->nNumIndices = mesh->mNumVertices * 6;
+    mesh->vIndices = new GLuint[mesh->nNumIndices];
+    //Generar índices
+    int indiceMayor = 0;
+    for (int i = 0; i < nn; i++)
+        for (int j = 0; j < mm - 1; j++) {
+            int indice = i * mm + j;
+            //Cara triangular inferior
+            mesh->vIndices[indiceMayor] = indice;
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = (indice + mm) % (nn * mm);
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = (indice + mm + 1) % (nn * mm);
+            indiceMayor++;
+            //Cara triangular superior si indice 2 != indice 3
+            mesh->vIndices[indiceMayor] = (indice + mm + 1) % (nn * mm);
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = indice + 1;
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = indice;
+            indiceMayor++;
+            
+        }
+    mesh->nNumIndices = indiceMayor;
+            
+    mesh->buildNormalVectors();
+    return mesh;
 }
 
 

@@ -109,7 +109,7 @@ void Scene::init()
 	//gObjects.push_back(new EntityWithIndexMesh(100.0));
 
 	//PRÁCTICA 2.4
-	glm::dmat4 mAux;
+	/*glm::dmat4 mAux;
 	CompoundEntity* avion = new CompoundEntity();
 	gObjects.push_back(avion);
 
@@ -137,6 +137,99 @@ void Scene::init()
 	CompoundEntity* helices = new CompoundEntity();
 	chasis->addEntity(helices);
 	
+	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
+	cilDer->color = glm::fvec3(0, 0, 1);
+	mAux = cilDer->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 120));
+	mAux = rotate(mAux, radians(90.0), dvec3(0.0, 1.0, 0));
+	cilDer->setModelMat(mAux);
+	helices->addEntity(cilDer);
+
+	Cylinder* cilIzq = new Cylinder(20.0, 10.0, 50.0);
+	cilIzq->color = glm::fvec3(0, 0, 1);
+	mAux = cilIzq->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 120));
+	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
+	cilIzq->setModelMat(mAux);
+	helices->addEntity(cilIzq);*/
+
+	//PRÁCTICA 2.5
+	glm::dmat4 mAux;
+	dvec4 blue;
+	blue.r = 0.0;
+	blue.g = 0.0;
+	blue.b = 1.0;
+	dvec4 clearblue;
+	clearblue.r = 0.0;
+	clearblue.g = 1.0;
+	clearblue.b = 1.0;
+
+	//Ejercicio 21
+	/*Cono* cone = new Cono(200.0,100.0,30);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	cone->setColor(blue);
+	gObjects.push_back(cone);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+
+	//Ejercicio 22
+	/*Esfera* esfera = new Esfera(200.0, 9, 30);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	esfera->setColor(blue);
+	gObjects.push_back(esfera);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+
+	//Ejercicio 23
+	/*Sphere* sphere = new Sphere(100.0);
+	sphere->color = glm::fvec3(0, 0, 1);
+	mAux = sphere->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 200));
+	sphere->setModelMat(mAux);
+	gObjects.push_back(sphere);
+
+	Esfera* esfera = new Esfera(100.0, 50, 50);
+	esfera->setColor(blue);
+	mAux = esfera->modelMat();
+	mAux = translate(mAux, dvec3(200, 0, 0));
+	esfera->setModelMat(mAux);
+	gObjects.push_back(esfera);*/
+
+	//Ejercicio 24
+	Esfera* esfera = new Esfera(180.0, 50, 50);
+	esfera->setColor(clearblue);
+	gObjects.push_back(esfera);
+
+	CompoundEntity* avion = new CompoundEntity();
+	mAux = avion->modelMat();
+	mAux = translate(mAux, dvec3(0, 200, 0));
+	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
+	mAux = rotate(mAux, radians(45.0), dvec3(0.0, 1.0, 0));
+	avion->setModelMat(mAux);
+	gObjects.push_back(avion);
+
+	EntityWithIndexMesh* alas = new EntityWithIndexMesh();
+	Cubo* cube = new Cubo(100.0);
+	dvec4 green;
+	green.r = 0.0;
+	green.g = 1.0;
+	green.b = 0.0;
+	cube->setColor(green);
+	mAux = cube->modelMat();
+	mAux = scale(mAux, dvec3(4.0, 0.2, 1.75));
+	cube->setModelMat(mAux);
+	alas = cube;
+
+	avion->addEntity(alas);
+
+	CompoundEntity* chasis = new CompoundEntity();
+	avion->addEntity(chasis);
+
+	Sphere* bola = new Sphere(100.0);
+	bola->color = glm::fvec3(1, 0, 0);
+	chasis->addEntity(bola);
+
+	CompoundEntity* helices = new CompoundEntity();
+	chasis->addEntity(helices);
+
 	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
 	cilDer->color = glm::fvec3(0, 0, 1);
 	mAux = cilDer->modelMat();

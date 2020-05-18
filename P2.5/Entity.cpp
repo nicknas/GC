@@ -548,3 +548,68 @@ void CompoundEntity::render(dmat4 const& modelViewMat) const
 void CompoundEntity::addEntity(Abs_Entity* ae) {
 	gObjects.push_back(ae);
 }
+//-------------------------------------------------------------------------
+Cono::Cono(GLdouble h, GLdouble r, GLuint n) {
+	// h=altura del cono, r=radio de la base
+	// n=número de muestras, m=número de puntos del perfil
+	int m = 3;
+	dvec3* perfil = new dvec3[m];
+	perfil[0] = dvec3(0.5, 0.0, 0.0);
+	perfil[1] = dvec3(r, 0.0, 0.0);
+	perfil[2] = dvec3(0.5, h, 0.0);
+	
+	this->mMesh = MbR::generaIndexMeshByRevolution(m, n, perfil);
+}
+Cono::~Cono()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void Cono::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnable(GL_COLOR_MATERIAL);
+		glColor3d(color().r, color().g, color().b);
+		mMesh->render();
+		glDisable(GL_COLOR_MATERIAL);
+		
+	}
+}
+
+void Cono::update()
+{}
+//-------------------------------------------------------------------------
+Esfera::Esfera(GLdouble r, GLuint p, GLuint m) {
+	// r = radio de la esfera
+	// p = numero de puntos (paralelo)
+	// m = número de muestras (meridiano)
+	dvec3* perfil = new dvec3[p];
+	GLdouble angle = -90.0;
+	for (int i = 0; i < p; i++) {
+		perfil[i] = dvec3(r * cos(radians(angle)), r * sin(radians(angle)), 0.0);
+		angle += (180.0 / (p-1));
+	}
+	this->mMesh = MbR::generaIndexMeshByRevolution(p, m, perfil);
+}
+Esfera::~Esfera()
+{
+	delete mMesh; mMesh = nullptr;
+}
+
+void Esfera::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glEnable(GL_COLOR_MATERIAL);
+		glColor3d(color().r, color().g, color().b);
+		mMesh->render();
+		glDisable(GL_COLOR_MATERIAL);
+	}
+}
+
+void Esfera::update()
+{}
