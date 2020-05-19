@@ -166,17 +166,13 @@ void Scene::init()
 
 	//Ejercicio 21
 	/*Cono* cone = new Cono(200.0,100.0,30);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	cone->setColor(blue);
-	gObjects.push_back(cone);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+	gObjects.push_back(cone);*/
 
 	//Ejercicio 22
 	/*Esfera* esfera = new Esfera(200.0, 50, 50);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	esfera->setColor(blue);
-	gObjects.push_back(esfera);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
+	gObjects.push_back(esfera);*/
 
 	//Ejercicio 23
 	/*Sphere* sphere = new Sphere(100.0);
