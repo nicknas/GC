@@ -425,6 +425,7 @@ void Cylinder::render(glm::dmat4 const& modelViewMat) const {
 	glDisable(GL_COLOR_MATERIAL);
 }
 
+
 Disk::Disk(GLdouble inner, GLdouble outer) {
 	innerRadius = inner;
 	outerRadius = outer;
@@ -575,6 +576,7 @@ void Cono::render(dmat4 const& modelViewMat) const
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
 		glDisable(GL_COLOR_MATERIAL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		
 	}
 }
@@ -589,7 +591,7 @@ Esfera::Esfera(GLdouble r, GLuint p, GLuint m) {
 	dvec3* perfil = new dvec3[p];
 	GLdouble angle = -90.0;
 	for (int i = 0; i < p; i++) {
-		perfil[i] = dvec3(r * cos(radians(angle)), r * sin(radians(angle)), 0.0);
+		perfil[i] = dvec3(0.5 + r * cos(radians(angle)), r * sin(radians(angle)), 0.0);
 		angle += (180.0 / (p-1));
 	}
 	this->mMesh = MbR::generaIndexMeshByRevolution(p, m, perfil);
@@ -605,9 +607,11 @@ void Esfera::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glEnable(GL_COLOR_MATERIAL);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
 		glDisable(GL_COLOR_MATERIAL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 }
 

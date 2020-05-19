@@ -172,7 +172,7 @@ void Scene::init()
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);*/
 
 	//Ejercicio 22
-	/*Esfera* esfera = new Esfera(200.0, 9, 30);
+	/*Esfera* esfera = new Esfera(200.0, 50, 50);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	esfera->setColor(blue);
 	gObjects.push_back(esfera);
