@@ -495,7 +495,7 @@ MbR* MbR::generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil) {
             indiceMayor++;
             mesh->vIndices[indiceMayor] = (indice + mm + 1) % (nn * mm);
             indiceMayor++;
-            //Cara triangular superior si indice 2 != indice 3
+            //Cara triangular superior
             mesh->vIndices[indiceMayor] = (indice + mm + 1) % (nn * mm);
             indiceMayor++;
             mesh->vIndices[indiceMayor] = indice + 1;
