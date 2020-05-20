@@ -476,12 +476,12 @@ MbR* MbR::generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil) {
             vertices[indice] = dvec3(x, perfil[j].y, z);
         }
     }
-    //Cambiar posición y ponerlo arriba??
+    //Inicializar vVértices
     for (int i = 0; i < mesh->mNumVertices; i++) {
         mesh->vVertices.emplace_back(vertices[i]);
     }
     
-    mesh->nNumIndices = mesh->mNumVertices * 6;
+    mesh->nNumIndices = nn * (mm-1) * 6;
     mesh->vIndices = new GLuint[mesh->nNumIndices];
     //Generar índices
     int indiceMayor = 0;
@@ -504,7 +504,6 @@ MbR* MbR::generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil) {
             indiceMayor++;
             
         }
-    mesh->nNumIndices = indiceMayor;
             
     mesh->buildNormalVectors();
     return mesh;

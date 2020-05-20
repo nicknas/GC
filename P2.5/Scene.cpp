@@ -165,12 +165,14 @@ void Scene::init()
 	clearblue.b = 1.0;
 
 	//Ejercicio 21
+	//Para ver las líneas, descomentar en el render de Entity.cpp la instrucción que habilita GL_LINE
 	/*Cono* cone = new Cono(200.0,100.0,30);
 	cone->setColor(blue);
 	gObjects.push_back(cone);*/
 
 	//Ejercicio 22
-	/*Esfera* esfera = new Esfera(200.0, 50, 50);
+	//Para ver las líneas, descomentar en el render de Entity.cpp la instrucción que habilita GL_LINE
+	/*Esfera* esfera = new Esfera(200.0, 9, 30);
 	esfera->setColor(blue);
 	gObjects.push_back(esfera);*/
 
