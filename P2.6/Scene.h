@@ -35,7 +35,14 @@ public:
 	void saveFoto();
 	//Práctica 2.1
 	void sceneDirLight(Camera const& cam) const;
+	//PRÁCTICA 2.6
+	void scenePosLight(Camera const& cam) const;
+	void sceneSpotLight(Camera const& cam) const;
 
+	bool activateDirLight = true;
+	bool activatePosLight = false;
+	bool activateSpotLight = false;
+	bool ilumSpot = false;
 protected:
 	void free();
 	void setGL();

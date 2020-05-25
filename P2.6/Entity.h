@@ -257,5 +257,8 @@ public:
 	~Esfera();
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
+	//PRÁCTICA 2.6
+	//Ejercicio 28
+	virtual void setGold(glm::dmat4 const& modelViewMat) const;
 };
 #endif //_H_Entities_H_

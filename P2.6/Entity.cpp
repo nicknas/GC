@@ -617,3 +617,17 @@ void Esfera::render(dmat4 const& modelViewMat) const
 
 void Esfera::update()
 {}
+//PRÁCTICA 2.6
+void Esfera::setGold(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glEnable(GL_COLOR_MATERIAL);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glColor3d(color().r, color().g, color().b);
+		mMesh->render();
+		glDisable(GL_COLOR_MATERIAL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+}
