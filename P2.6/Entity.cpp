@@ -520,7 +520,10 @@ void Cubo::render(dmat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
+		//Práctica 2.6 
 		glEnable(GL_COLOR_MATERIAL);
+		//setCopper();
+
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
 		glDisable(GL_COLOR_MATERIAL);
@@ -529,6 +532,19 @@ void Cubo::render(dmat4 const& modelViewMat) const
 
 void Cubo::update()
 {}
+
+//PRÁCTICA 2.6
+void Cubo::setCopper() const
+{
+	glm::fvec4 ambient = { 0.19125,0.0735,0.0225,1.0 };
+	glm::fvec4 diffuse = { 0.7038,0.27048,0.0828,1.0 };
+	glm::fvec4 specular = { 0.256777,0.137622,0.086014,1.0 };
+	GLdouble f = 12.8;
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, value_ptr(ambient));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, value_ptr(diffuse));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, value_ptr(specular));
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, f);
+}
 
 //-------------------------------------------------------------------------
 CompoundEntity:: ~CompoundEntity() { 
@@ -572,6 +588,7 @@ void Cono::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//Práctica 2.6
 		glEnable(GL_COLOR_MATERIAL);
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
@@ -606,10 +623,14 @@ void Esfera::render(dmat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
+		//Práctica 2.6
 		glEnable(GL_COLOR_MATERIAL);
+		setGold();
+		
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
+		glColor3f(1.0, 1.0, 1.0);
 		glDisable(GL_COLOR_MATERIAL);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
@@ -618,16 +639,14 @@ void Esfera::render(dmat4 const& modelViewMat) const
 void Esfera::update()
 {}
 //PRÁCTICA 2.6
-void Esfera::setGold(dmat4 const& modelViewMat) const
+void Esfera::setGold() const
 {
-	if (mMesh != nullptr) {
-		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
-		upload(aMat);
-		glEnable(GL_COLOR_MATERIAL);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glColor3d(color().r, color().g, color().b);
-		mMesh->render();
-		glDisable(GL_COLOR_MATERIAL);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	}
+	glm::fvec4 ambient = { 0.24725,0.1995,0.0745,1.0 };
+	glm::fvec4 diffuse = { 0.75164,0.60648,0.22648,1.0 };
+	glm::fvec4 specular = { 0.628281,0.555802,0.366065,1.0 };
+	GLdouble f = 51.2;
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, value_ptr(ambient));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, value_ptr(diffuse));
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, value_ptr(specular));
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, f);
 }

@@ -265,6 +265,8 @@ void Scene::setGL()
 	glClearColor(0.7, 0.8, 0.9, 1.0);  // background color (alpha=1 -> opaque)
 	glEnable(GL_DEPTH_TEST);  // enable Depth test 
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING); // Se activa la iluminación
+	glEnable(GL_NORMALIZE); // Se activa la normalización de los vectores normales 
 }
 //-------------------------------------------------------------------------
 void Scene::resetGL() 
@@ -272,6 +274,8 @@ void Scene::resetGL()
 	glClearColor(.0, .0, .0, .0);  // background color (alpha=1 -> opaque)
 	glDisable(GL_DEPTH_TEST);  // disable Depth test 	
 	glDisable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING); 
+	glDisable(GL_NORMALIZE);
 }
 //-------------------------------------------------------------------------
 
@@ -280,6 +284,7 @@ void Scene::render(Camera const& cam) const
 	sceneDirLight(cam);
 	scenePosLight(cam);
 	sceneSpotLight(cam);
+	sceneDark(cam);
 
 	cam.upload();
 	
@@ -341,6 +346,9 @@ void Scene::scenePosLight(Camera const& cam) const {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixd(value_ptr(cam.viewMat()));
 		glLightfv(GL_LIGHT1, GL_POSITION, value_ptr(posDir));
+		glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1);
+		glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0);
+		glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0);
 		glm::fvec4 ambient = { 0, 0, 0, 1 };
 		glm::fvec4 diffuse = { 1, 1, 0, 1 };
 		glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
@@ -360,9 +368,16 @@ void Scene::sceneSpotLight(Camera const& cam) const {
 			glDisable(GL_LIGHT2);
 			glEnable(GL_LIGHT2);
 			glm::fvec4 posDir = { 0, 200, 200, 1 };
+			glm::fvec4 direction = { 0,1,0,0 };
 			glMatrixMode(GL_MODELVIEW);
 			glLoadMatrixd(value_ptr(cam.viewMat()));
 			glLightfv(GL_LIGHT2, GL_POSITION, value_ptr(posDir));
+			glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1);
+			glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0);
+			glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0);
+			glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, value_ptr(direction));
+			glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 180);
+			glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 0);
 			glm::fvec4 ambient = { 0, 0, 0, 1 };
 			glm::fvec4 diffuse = { 0, 1, 0, 1 };
 			glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
@@ -377,6 +392,9 @@ void Scene::sceneSpotLight(Camera const& cam) const {
 			glMatrixMode(GL_MODELVIEW);
 			glLoadMatrixd(value_ptr(cam.viewMat()));
 			glLightfv(GL_LIGHT2, GL_POSITION, value_ptr(posDir));
+			glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1);
+			glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0);
+			glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0);
 			glm::fvec4 ambient = { 0, 0, 0, 1 };
 			glm::fvec4 diffuse = { 0, 1, 0, 1 };
 			glm::fvec4 specular = { 0, 0, 0, 0 };
@@ -388,5 +406,16 @@ void Scene::sceneSpotLight(Camera const& cam) const {
 	}
 	else {
 		glDisable(GL_LIGHT2);
+	}
+}
+//Ejercicio 30
+void Scene::sceneDark(Camera const& cam) const {
+	glEnable(GL_LIGHTING);
+	if (activateDark) {
+		glDisable(GL_LIGHT0);
+		glDisable(GL_LIGHT1);
+		glDisable(GL_LIGHT2);
+		glm::fvec4 ambient = { 0, 0, 0, 1.0 };
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, value_ptr(ambient));
 	}
 }

@@ -231,6 +231,8 @@ public:
 	~Cubo();
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
+	//PRÁCTICA 2.6
+	virtual void setCopper() const;
 };
 
 class CompoundEntity : public Abs_Entity {
@@ -258,7 +260,6 @@ public:
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
 	//PRÁCTICA 2.6
-	//Ejercicio 28
-	virtual void setGold(glm::dmat4 const& modelViewMat) const;
+	virtual void setGold() const;
 };
 #endif //_H_Entities_H_
