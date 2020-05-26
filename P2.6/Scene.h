@@ -40,11 +40,6 @@ public:
 	void sceneSpotLight(Camera const& cam) const;
 	void sceneDark(Camera const& cam) const;
 
-	bool activateDirLight = true;
-	bool activatePosLight = false;
-	bool activateSpotLight = false;
-	bool ilumSpot = false;
-	bool activateDark = false;
 protected:
 	void free();
 	void setGL();

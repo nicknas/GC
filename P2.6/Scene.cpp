@@ -160,7 +160,7 @@ void Scene::init()
 	blue.g = 0.0;
 	blue.b = 1.0;
 	dvec4 clearblue;
-	clearblue.r = 0.0;
+	clearblue.r = 0.5;
 	clearblue.g = 1.0;
 	clearblue.b = 1.0;
 
@@ -284,7 +284,6 @@ void Scene::render(Camera const& cam) const
 	sceneDirLight(cam);
 	scenePosLight(cam);
 	sceneSpotLight(cam);
-	sceneDark(cam);
 
 	cam.upload();
 	
@@ -319,103 +318,62 @@ void Scene::saveFoto() {
 void Scene::sceneDirLight(Camera const& cam) const {
 	glEnable(GL_LIGHTING);
 	//Práctica 2.6
-	if (activateDirLight) {
-		glEnable(GL_LIGHT0);
-		glm::fvec4 posDir = { 1, 1, 1, 0 };
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixd(value_ptr(cam.viewMat()));
-		glLightfv(GL_LIGHT0, GL_POSITION, value_ptr(posDir));
-		glm::fvec4 ambient = { 0, 0, 0, 1 };
-		glm::fvec4 diffuse = { 1, 1, 1, 1 };
-		glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
-		glLightfv(GL_LIGHT0, GL_AMBIENT, value_ptr(ambient));
-		glLightfv(GL_LIGHT0, GL_DIFFUSE, value_ptr(diffuse));
-		glLightfv(GL_LIGHT0, GL_SPECULAR, value_ptr(specular));
-	}
-	else {
-		glDisable(GL_LIGHT0);
-	}
+	//glEnable(GL_LIGHT0);
+	glm::fvec4 posDir = { 1, 1, 1, 0 };
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixd(value_ptr(cam.viewMat()));
+	glLightfv(GL_LIGHT0, GL_POSITION, value_ptr(posDir));
+	glm::fvec4 ambient = { 0, 0, 0, 1 };
+	glm::fvec4 diffuse = { 1, 1, 1, 1 };
+	glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
+	glLightfv(GL_LIGHT0, GL_AMBIENT, value_ptr(ambient));
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, value_ptr(diffuse));
+	glLightfv(GL_LIGHT0, GL_SPECULAR, value_ptr(specular));
+
+	
 }
 //PRÁCTICA 2.6
 //Ejercicio 26
 void Scene::scenePosLight(Camera const& cam) const {
 	glEnable(GL_LIGHTING);
-	if (activatePosLight) {
-		glEnable(GL_LIGHT1);
-		glm::fvec4 posDir = { 300, 300, 0, 1 };
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixd(value_ptr(cam.viewMat()));
-		glLightfv(GL_LIGHT1, GL_POSITION, value_ptr(posDir));
-		glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 1);
-		glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 0);
-		glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, 0);
-		glm::fvec4 ambient = { 0, 0, 0, 1 };
-		glm::fvec4 diffuse = { 1, 1, 0, 1 };
-		glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
-		glLightfv(GL_LIGHT1, GL_AMBIENT, value_ptr(ambient));
-		glLightfv(GL_LIGHT1, GL_DIFFUSE, value_ptr(diffuse));
-		glLightfv(GL_LIGHT1, GL_SPECULAR, value_ptr(specular));
-	}
-	else {
-		glDisable(GL_LIGHT1);
-	}
+	
+	glm::fvec4 posDir = { 300, 300, 0, 1 };
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixd(value_ptr(cam.viewMat()));
+	glLightfv(GL_LIGHT1, GL_POSITION, value_ptr(posDir));
+	glm::fvec4 ambient = { 0, 0, 0, 1 };
+	glm::fvec4 diffuse = { 1, 1, 0, 1 };
+	glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
+	glLightfv(GL_LIGHT1, GL_AMBIENT, value_ptr(ambient));
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, value_ptr(diffuse));
+	glLightfv(GL_LIGHT1, GL_SPECULAR, value_ptr(specular));
 }
 //Ejercicio 27
 void Scene::sceneSpotLight(Camera const& cam) const {
 	glEnable(GL_LIGHTING);
-	if (activateSpotLight) {
-		if (ilumSpot) {
-			glDisable(GL_LIGHT2);
-			glEnable(GL_LIGHT2);
-			glm::fvec4 posDir = { 0, 200, 200, 1 };
-			glm::fvec4 direction = { 0,1,0,0 };
-			glMatrixMode(GL_MODELVIEW);
-			glLoadMatrixd(value_ptr(cam.viewMat()));
-			glLightfv(GL_LIGHT2, GL_POSITION, value_ptr(posDir));
-			glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1);
-			glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0);
-			glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0);
-			glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, value_ptr(direction));
-			glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 180);
-			glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 0);
-			glm::fvec4 ambient = { 0, 0, 0, 1 };
-			glm::fvec4 diffuse = { 0, 1, 0, 1 };
-			glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
-			glLightfv(GL_LIGHT2, GL_AMBIENT, value_ptr(ambient));
-			glLightfv(GL_LIGHT2, GL_DIFFUSE, value_ptr(diffuse));
-			glLightfv(GL_LIGHT2, GL_SPECULAR, value_ptr(specular));
-		}
-		else {
-			glDisable(GL_LIGHT2);
-			glEnable(GL_LIGHT2);
-			glm::fvec4 posDir = { 0, 0, 250, 1 };
-			glMatrixMode(GL_MODELVIEW);
-			glLoadMatrixd(value_ptr(cam.viewMat()));
-			glLightfv(GL_LIGHT2, GL_POSITION, value_ptr(posDir));
-			glLightf(GL_LIGHT2, GL_CONSTANT_ATTENUATION, 1);
-			glLightf(GL_LIGHT2, GL_LINEAR_ATTENUATION, 0);
-			glLightf(GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0);
-			glm::fvec4 ambient = { 0, 0, 0, 1 };
-			glm::fvec4 diffuse = { 0, 1, 0, 1 };
-			glm::fvec4 specular = { 0, 0, 0, 0 };
-			glLightfv(GL_LIGHT2, GL_AMBIENT, value_ptr(ambient));
-			glLightfv(GL_LIGHT2, GL_DIFFUSE, value_ptr(diffuse));
-			glLightfv(GL_LIGHT2, GL_SPECULAR, value_ptr(specular));
-		}
-		
-	}
-	else {
-		glDisable(GL_LIGHT2);
-	}
+	
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 45.0); 
+	glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 4.0);
+	glm::fvec4 posDir = { 0.0, 0.0, 300.0, 1.0 };
+	glm::fvec3 direction = { 0.0,0.7,-1.0};
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixd(value_ptr(cam.viewMat()));
+	glLightfv(GL_LIGHT2, GL_POSITION, value_ptr(posDir));
+	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, value_ptr(direction));
+	glm::fvec4 ambient = { 0, 0, 0, 1 };
+	glm::fvec4 diffuse = { 0, 1, 0, 1 };
+	glm::fvec4 specular = { 0.5, 0.5, 0.5, 1 };
+	glLightfv(GL_LIGHT2, GL_AMBIENT, value_ptr(ambient));
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, value_ptr(diffuse));
+	glLightfv(GL_LIGHT2, GL_SPECULAR, value_ptr(specular));
+	
 }
 //Ejercicio 30
 void Scene::sceneDark(Camera const& cam) const {
-	glEnable(GL_LIGHTING);
-	if (activateDark) {
-		glDisable(GL_LIGHT0);
-		glDisable(GL_LIGHT1);
-		glDisable(GL_LIGHT2);
-		glm::fvec4 ambient = { 0, 0, 0, 1.0 };
-		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, value_ptr(ambient));
-	}
+	//glEnable(GL_LIGHTING);
+	
+	glm::fvec4 ambient = { 0, 0, 0, 1.0 };
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, value_ptr(ambient));
+	
+	
 }
