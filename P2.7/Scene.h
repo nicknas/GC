@@ -32,9 +32,10 @@ protected:
 public:
 	Light();
 	virtual ~Light() { disable(); }
-	void uploadL();
+	void uploadL() const;
 	// Método abstracto
 	virtual void upload(glm::dmat4 const& modelViewMat) const = 0;
+
 	void disable() { if (id < GL_LIGHT0 + GL_MAX_LIGHTS) glDisable(id); };
 	void enable() { if (id < GL_LIGHT0 + GL_MAX_LIGHTS) glEnable(id); };
 	void setAmb(glm::fvec4 amb) { ambient = amb; uploadL(); };
@@ -44,7 +45,7 @@ public:
 //-----------------------------------------------------------------------
 class DirLight : public Light {
 public:
-	virtual void upload(glm::dmat4 const& modelViewMat);
+	virtual void upload(glm::dmat4 const& modelViewMat) const;
 	void setPosDir(glm::fvec3 dir);
 };
 //----------------------------------------------------------
@@ -53,7 +54,7 @@ protected:
 	// Factores de atenuación
 	GLfloat kc = 1, kl = 0, kq = 0;
 public:
-	virtual void upload(glm::dmat4 const& modelViewMat);
+	virtual void upload(glm::dmat4 const& modelViewMat) const;
 	void setPosDir(glm::fvec3 dir);
 	void setAtte(GLfloat kca, GLfloat kla, GLfloat kqa);
 };
@@ -69,7 +70,7 @@ public:
 		: PosLight() {
 		posDir = glm::fvec4(pos, 1.0);
 	};
-	virtual void upload(glm::dmat4 const& modelViewMat);
+	virtual void upload(glm::dmat4 const& modelViewMat)const;
 	void setSpot(glm::fvec3 dir, GLfloat cf, GLfloat e);
 };
 //------------------------------------------------------------------
@@ -111,7 +112,7 @@ public:
 	void sceneSpotLight(Camera const& cam) const;
 	void sceneDark() const;
 	//PRÁCTICA 2.7
-	void setLights(Camera const& cam) const;
+	void setLights();
 
 	DirLight* directionalLight;
 	PosLight* positionalLight;

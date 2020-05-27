@@ -267,6 +267,8 @@ void Scene::setGL()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING); // Se activa la iluminación
 	glEnable(GL_NORMALIZE); // Se activa la normalización de los vectores normales 
+	//Ejercicio 32
+	setLights();
 }
 //-------------------------------------------------------------------------
 void Scene::resetGL() 
@@ -276,16 +278,21 @@ void Scene::resetGL()
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING); 
 	glDisable(GL_NORMALIZE);
+	//Ejercicio 32
+	setLights();
 }
 //-------------------------------------------------------------------------
 
-void Scene::render(Camera const& cam) const 
+void Scene::render(Camera const& cam) const
 {
+	//Ejercicio 32
 	//sceneDirLight(cam);
 	//scenePosLight(cam);
 	//sceneSpotLight(cam);
-	setLights(cam);
-
+	
+	directionalLight->upload(cam.viewMat());
+	positionalLight->upload(cam.viewMat());
+	spotSceneLight->upload(cam.viewMat());
 	cam.upload();
 	
 	for (Abs_Entity* el : gObjects)
@@ -383,17 +390,17 @@ Light::Light() {
 	if (cont < GL_MAX_LIGHTS) {
 		id = GL_LIGHT0 + cont;
 		++cont;
-		glEnable(id);
+		//glEnable(id);
 	}
 };
-void Light::uploadL() {
+void Light::uploadL() const {
 	// Transfiere las características de la luz a la GPU
 	glLightfv(id, GL_AMBIENT, value_ptr(ambient));
 	glLightfv(id, GL_DIFFUSE, value_ptr(diffuse));
 	glLightfv(id, GL_SPECULAR, value_ptr(specular));
 }
 //--------------------------------------------------------------------------
-void DirLight::upload(glm::dmat4 const& modelViewMat) {
+void DirLight::upload(glm::dmat4 const& modelViewMat) const {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixd(value_ptr(modelViewMat));
 	glLightfv(id, GL_POSITION, value_ptr(posDir));
@@ -404,7 +411,7 @@ void DirLight::setPosDir(glm::fvec3 dir) {
 	posDir = glm::fvec4(dir, 0.0);
 }
 //-----------------------------------------------------------------------
-void PosLight::upload(glm::dmat4 const& modelViewMat) {
+void PosLight::upload(glm::dmat4 const& modelViewMat) const{
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixd(value_ptr(modelViewMat));
 	glLightfv(id, GL_POSITION, value_ptr(posDir));
@@ -423,7 +430,7 @@ void PosLight::setAtte(GLfloat kca, GLfloat kla, GLfloat kqa) {
 	kq = kqa;
 }
 //-----------------------------------------------------------------------
-void SpotLight::upload(glm::dmat4 const& modelViewMat) {
+void SpotLight::upload(glm::dmat4 const& modelViewMat) const {
 	PosLight::upload(modelViewMat);
 	glLightfv(id, GL_SPOT_DIRECTION, value_ptr(direction));
 	glLightf(id, GL_SPOT_CUTOFF, cutoff);
@@ -451,25 +458,28 @@ void Material::setCopper() {
 	expF = 12.8;
 }
 //-------------------------------------------------------------------------------------
-void Scene::setLights(Camera const& cam) const {
+void Scene::setLights(){
 	glEnable(GL_LIGHTING);
+
 	//DirLight
+	directionalLight = new DirLight();
 	directionalLight->setPosDir({ 1, 1, 1 });
 	directionalLight->setAmb({ 0, 0, 0, 1 });
 	directionalLight->setDiff({ 1, 1, 1, 1 });
 	directionalLight->setSpec({ 0.5, 0.5, 0.5, 1 });
-	directionalLight->upload(cam.viewMat());
+	
 	//PosLight
+	positionalLight = new PosLight();
 	positionalLight->setPosDir({ 300, 300, 0});
 	positionalLight->setAmb({ 0, 0, 0, 1 });
 	positionalLight->setDiff({ 1, 1, 0, 1 });
 	positionalLight->setSpec({ 0.5, 0.5, 0.5, 1 });
-	positionalLight->upload(cam.viewMat());
+	
 	//SpotLight
+	spotSceneLight = new SpotLight();
 	spotSceneLight->setSpot({ 0.0,0.7,-1.0 }, 45.0, 4.0);
 	spotSceneLight->setPosDir({ 0.0, 0.0, 300.0});
 	spotSceneLight->setAmb({ 0, 0, 0, 1 });
 	spotSceneLight->setDiff({ 0, 1, 0, 1 });
 	spotSceneLight->setSpec({ 0.5, 0.5, 0.5, 1 });
-	spotSceneLight->upload(cam.viewMat());
 }
