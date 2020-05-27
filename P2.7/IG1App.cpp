@@ -158,28 +158,40 @@ void IG1App::key(unsigned char key, int x, int y)
 	//PRÁCTICA 2.6
 	//Ejercicio 25
 	case 'q':
-		glEnable(GL_LIGHT0);
+		//Ejercicio 32
+		//glEnable(GL_LIGHT0);
+		mScene->directionalLight->enable();
 		break;
 	case 'w':
-		glDisable(GL_LIGHT0);
+		//Ejercicio 32
+		//glDisable(GL_LIGHT0);
+		mScene->directionalLight->disable();
 		break;
 	//Ejercicio 26
 	case 'a':
-		glEnable(GL_LIGHT1);
+		//Ejercicio 32
+		//glEnable(GL_LIGHT1);
+		mScene->positionalLight->enable();
 		break;
 	case 's':
-		glDisable(GL_LIGHT1);
+		//Ejercicio 32
+		//glDisable(GL_LIGHT1);
+		mScene->positionalLight->disable();
 		break;
 	//Ejercicio 27
 	case 'z':
-		glEnable(GL_LIGHT2);
+		//Ejercicio 32
+		//glEnable(GL_LIGHT2);
+		mScene->spotSceneLight->enable();
 		break;
 	case 'x':
-		glDisable(GL_LIGHT2);
+		//Ejercicio 32
+		//glDisable(GL_LIGHT2);
+		mScene->spotSceneLight->disable();
 		break;
 	//Ejercicio 30
 	case 'e':
-		mScene->sceneDark(*mCamera);
+		mScene->sceneDark();
 		break;
 	default:
 		need_redisplay = false;
