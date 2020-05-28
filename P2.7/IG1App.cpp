@@ -145,7 +145,7 @@ void IG1App::key(unsigned char key, int x, int y)
 		mScene->setState(0);
 		mScene->init();
 		break;
-	case 'f':
+	case 'v':
 		mScene->saveFoto();
 		break;
 	//Ejercicio 20
@@ -192,6 +192,24 @@ void IG1App::key(unsigned char key, int x, int y)
 	//Ejercicio 30
 	case 'e':
 		mScene->sceneDark();
+		break;
+	//Ejercicio 34
+	case 't':
+		mScene->enciendeFoco(true);
+		break;
+	case 'g':
+		mScene->enciendeFoco(false);
+		break;
+	//Ejercicio 35
+	case 'y':
+		mScene->move();
+		break;
+	//Ejercicio 34
+	case 'd':
+		mScene->minero->enable();
+		break;
+	case 'f':
+		mScene->minero->disable();
 		break;
 	default:
 		need_redisplay = false;

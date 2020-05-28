@@ -547,6 +547,16 @@ void Cubo::setCopper() const
 }
 
 //-------------------------------------------------------------------------
+CompoundEntity::CompoundEntity() {
+	//Ejercicio 34
+	foco = new SpotLight();
+	foco->setSpot({ 0.0,-1.0,0.0 }, 15.0, 0.0);
+	foco->setPosDir({ 0, 0, 0 });
+	foco->setAmb({ 0, 0, 0, 1 });
+	foco->setDiff({ 1, 1, 1, 1 });
+	foco->setSpec({ 0.5, 0.5, 0.5, 1 });
+	foco->setAtte(1.0, 0.0, 0.0);
+}
 CompoundEntity:: ~CompoundEntity() { 
 	for (Abs_Entity* el : gObjects) { 
 		delete el;  el = nullptr; 
@@ -557,6 +567,8 @@ void CompoundEntity::render(dmat4 const& modelViewMat) const
 {
 	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 	upload(aMat);
+	//Ejercicio 34
+	foco->upload(aMat);
 	for (Abs_Entity* el : gObjects) {
 		el->render(aMat);
 	}
@@ -624,9 +636,13 @@ void Esfera::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		//Práctica 2.6
+		/*glEnable(GL_COLOR_MATERIAL);
+		//setGold();*/
+
+		//Práctica 2.7
 		glEnable(GL_COLOR_MATERIAL);
-		setGold();
-		
+		if (material != nullptr)
+			material->upload();
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glColor3d(color().r, color().g, color().b);
 		mMesh->render();
@@ -638,8 +654,9 @@ void Esfera::render(dmat4 const& modelViewMat) const
 
 void Esfera::update()
 {}
+//Comentado en práctica 2.7
 //PRÁCTICA 2.6
-void Esfera::setGold() const
+/*void Esfera::setGold() const
 {
 	glm::fvec4 ambient = { 0.24725,0.1995,0.0745,1.0 };
 	glm::fvec4 diffuse = { 0.75164,0.60648,0.22648,1.0 };
@@ -649,4 +666,85 @@ void Esfera::setGold() const
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, value_ptr(diffuse));
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, value_ptr(specular));
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, f);
+}*/
+
+//PRÁCTICA 2.7
+GLuint Light::cont = 0;
+Light::Light() {
+	if (cont < GL_MAX_LIGHTS) {
+		id = GL_LIGHT0 + cont;
+		++cont;
+		//glEnable(id);
+	}
+};
+void Light::uploadL() const {
+	// Transfiere las características de la luz a la GPU
+	glLightfv(id, GL_AMBIENT, value_ptr(ambient));
+	glLightfv(id, GL_DIFFUSE, value_ptr(diffuse));
+	glLightfv(id, GL_SPECULAR, value_ptr(specular));
+}
+//--------------------------------------------------------------------------
+void DirLight::upload(glm::dmat4 const& modelViewMat) const {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixd(value_ptr(modelViewMat));
+	glLightfv(id, GL_POSITION, value_ptr(posDir));
+	uploadL();
+}
+// Ojo al 0.0 que determina que la luz sea remota
+void DirLight::setPosDir(glm::fvec3 dir) {
+	posDir = glm::fvec4(dir, 0.0);
+}
+//-----------------------------------------------------------------------
+void PosLight::upload(glm::dmat4 const& modelViewMat) const {
+	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixd(value_ptr(modelViewMat));
+	glLightfv(id, GL_POSITION, value_ptr(posDir));
+	glLightf(id, GL_CONSTANT_ATTENUATION, kc);
+	glLightf(id, GL_LINEAR_ATTENUATION, kl);
+	glLightf(id, GL_QUADRATIC_ATTENUATION, kq);
+	uploadL();
+}
+// Ojo al 1.0 que determina que la luz sea local
+void PosLight::setPosDir(glm::fvec3 dir) {
+	posDir = glm::fvec4(dir, 1.0);
+}
+void PosLight::setAtte(GLfloat kca, GLfloat kla, GLfloat kqa) {
+	kc = kca;
+	kl = kla;
+	kq = kqa;
+}
+//-----------------------------------------------------------------------
+void SpotLight::upload(glm::dmat4 const& modelViewMat) const {
+	PosLight::upload(modelViewMat);
+	glLightfv(id, GL_SPOT_DIRECTION, value_ptr(direction));
+	glLightf(id, GL_SPOT_CUTOFF, cutoff);
+	glLightf(id, GL_SPOT_EXPONENT, exp);
+}
+// Ojo al 0.0: la dirección de emisión del foco es vector
+void SpotLight::setSpot(glm::fvec3 dir, GLfloat cf, GLfloat e) {
+	direction = glm::fvec4(dir, 0.0);
+	cutoff = cf;
+	exp = e;
+}
+//-------------------------------------------------------------------------------
+void Material::upload() {
+	glMaterialfv(face, GL_AMBIENT, value_ptr(ambient));
+	glMaterialfv(face, GL_DIFFUSE, value_ptr(diffuse));
+	glMaterialfv(face, GL_SPECULAR, value_ptr(specular));
+	glMaterialf(face, GL_SHININESS, expF);
+	glShadeModel(sh);
+	//glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE); // Defecto
+}
+void Material::setCopper() {
+	ambient = { 0.19125, 0.0735, 0.0225, 1 };
+	diffuse = { 0.7038, 0.27048, 0.0828, 1 };
+	specular = { 0.256777, 0.137622, 0.086014, 1 };
+	expF = 12.8;
+}
+//Ejercicio 33
+void Material::setGold() {
+	ambient = { 0.24725,0.1995,0.0745,1.0 };
+	diffuse = { 0.75164,0.60648,0.22648,1.0 };
+	specular = { 0.628281,0.555802,0.366065,1.0 };
+	expF = 51.2;
 }

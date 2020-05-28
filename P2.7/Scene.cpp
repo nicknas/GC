@@ -163,6 +163,9 @@ void Scene::init()
 	clearblue.r = 0.5;
 	clearblue.g = 1.0;
 	clearblue.b = 1.0;
+	//Ejercicio 33
+	Material* mat = new Material();
+	mat->setGold();
 
 	//Ejercicio 21
 	//Para ver las líneas, descomentar en el render de Entity.cpp la instrucción que habilita GL_LINE
@@ -194,14 +197,17 @@ void Scene::init()
 	//Ejercicio 24
 	Esfera* esfera = new Esfera(180.0, 50, 50);
 	esfera->setColor(clearblue);
+	esfera->setMaterial(mat);
 	gObjects.push_back(esfera);
 
 	CompoundEntity* avion = new CompoundEntity();
 	mAux = avion->modelMat();
-	mAux = translate(mAux, dvec3(0, 200, 0));
+	mAux = translate(mAux, dvec3(0, 250, 0));
 	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
 	avion->setModelMat(mAux);
 	gObjects.push_back(avion);
+	//Ejercicio 34
+	avionEscena = avion;
 
 	EntityWithIndexMesh* alas = new EntityWithIndexMesh();
 	Cubo* cube = new Cubo(100.0);
@@ -226,6 +232,7 @@ void Scene::init()
 
 	CompoundEntity* helices = new CompoundEntity();
 	chasis->addEntity(helices);
+	helicesEscena = helices;
 
 	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
 	cilDer->color = glm::fvec3(0, 0, 1);
@@ -293,6 +300,9 @@ void Scene::render(Camera const& cam) const
 	directionalLight->upload(cam.viewMat());
 	positionalLight->upload(cam.viewMat());
 	spotSceneLight->upload(cam.viewMat());
+	//Ejercicio 36
+	minero->upload(dmat4(1.0));
+	
 	cam.upload();
 	
 	for (Abs_Entity* el : gObjects)
@@ -383,80 +393,6 @@ void Scene::sceneDark() const {
 	glm::fvec4 ambient = { 0, 0, 0, 1.0 };
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, value_ptr(ambient));
 }
-
-//PRÁCTICA 2.7
-GLuint Light::cont = 0;
-Light::Light() {
-	if (cont < GL_MAX_LIGHTS) {
-		id = GL_LIGHT0 + cont;
-		++cont;
-		//glEnable(id);
-	}
-};
-void Light::uploadL() const {
-	// Transfiere las características de la luz a la GPU
-	glLightfv(id, GL_AMBIENT, value_ptr(ambient));
-	glLightfv(id, GL_DIFFUSE, value_ptr(diffuse));
-	glLightfv(id, GL_SPECULAR, value_ptr(specular));
-}
-//--------------------------------------------------------------------------
-void DirLight::upload(glm::dmat4 const& modelViewMat) const {
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixd(value_ptr(modelViewMat));
-	glLightfv(id, GL_POSITION, value_ptr(posDir));
-	uploadL();
-}
-// Ojo al 0.0 que determina que la luz sea remota
-void DirLight::setPosDir(glm::fvec3 dir) {
-	posDir = glm::fvec4(dir, 0.0);
-}
-//-----------------------------------------------------------------------
-void PosLight::upload(glm::dmat4 const& modelViewMat) const{
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixd(value_ptr(modelViewMat));
-	glLightfv(id, GL_POSITION, value_ptr(posDir));
-	glLightf(id, GL_CONSTANT_ATTENUATION, kc);
-	glLightf(id, GL_LINEAR_ATTENUATION, kl);
-	glLightf(id, GL_QUADRATIC_ATTENUATION, kq);
-	uploadL();
-}
-// Ojo al 1.0 que determina que la luz sea local
-void PosLight::setPosDir(glm::fvec3 dir) {
-	posDir = glm::fvec4(dir, 1.0);
-}
-void PosLight::setAtte(GLfloat kca, GLfloat kla, GLfloat kqa) {
-	kc = kca;
-	kl = kla;
-	kq = kqa;
-}
-//-----------------------------------------------------------------------
-void SpotLight::upload(glm::dmat4 const& modelViewMat) const {
-	PosLight::upload(modelViewMat);
-	glLightfv(id, GL_SPOT_DIRECTION, value_ptr(direction));
-	glLightf(id, GL_SPOT_CUTOFF, cutoff);
-	glLightf(id, GL_SPOT_EXPONENT, exp);
-}
-// Ojo al 0.0: la dirección de emisión del foco es vector
-void SpotLight::setSpot(glm::fvec3 dir, GLfloat cf, GLfloat e) {
-	direction = glm::fvec4(dir, 0.0);
-	cutoff = cf;
-	exp = e;
-}
-//-------------------------------------------------------------------------------
-void Material::upload() {
-	glMaterialfv(face, GL_AMBIENT, value_ptr(ambient));
-	glMaterialfv(face, GL_DIFFUSE, value_ptr(diffuse));
-	glMaterialfv(face, GL_SPECULAR, value_ptr(specular));
-	glMaterialf(face, GL_SHININESS, expF);
-	glShadeModel(sh);
-	//glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE); // Defecto
-}
-void Material::setCopper() {
-	ambient = { 0.19125, 0.0735, 0.0225, 1 };
-	diffuse = { 0.7038, 0.27048, 0.0828, 1 };
-	specular = { 0.256777, 0.137622, 0.086014, 1 };
-	expF = 12.8;
-}
 //-------------------------------------------------------------------------------------
 void Scene::setLights(){
 	glEnable(GL_LIGHTING);
@@ -482,4 +418,38 @@ void Scene::setLights(){
 	spotSceneLight->setAmb({ 0, 0, 0, 1 });
 	spotSceneLight->setDiff({ 0, 1, 0, 1 });
 	spotSceneLight->setSpec({ 0.5, 0.5, 0.5, 1 });
+
+	//Minero
+	minero = new PosLight();
+	minero->setPosDir({ 0, 0, 0 });
+	minero->setAmb({ 0, 0, 0, 1 });
+	minero->setDiff({ 1, 1, 1, 1 });
+	minero->setSpec({ 0.5, 0.5, 0.5, 1 });
+}
+//--------------------------------------------------------------------------------------
+//Ejercicio 34
+void Scene::enciendeFoco(bool encencido) {
+	if (encencido)
+		avionEscena->foco->enable();
+	else
+		avionEscena->foco->disable();
+}
+//--------------------------------------------------------------------------------------
+//Ejercicio 35
+void Scene::move() {
+	glm::dmat4 mAux;
+	
+	mAux = helicesEscena->modelMat();
+	mAux = rotate(dmat4(1), radians(angle), dvec3(0.0, 0.0, 1.0));
+	helicesEscena->setModelMat(mAux);
+
+	mAux = avionEscena->modelMat();
+	mAux = translate(dmat4(1), dvec3(0.0, 250.0 * cos(radians(angle)), 250.0 * sin(radians(angle))));
+	mAux = rotate(mAux, radians(angle), dvec3(1.0, 0.0, 0.0));
+	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
+	avionEscena->setModelMat(mAux);
+
+	angle++;
+
+	glutPostRedisplay();
 }
