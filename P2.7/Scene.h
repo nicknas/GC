@@ -47,10 +47,6 @@ public:
 	DirLight* directionalLight;
 	PosLight* positionalLight;
 	SpotLight* spotSceneLight;
-	//Ejercicio 34
-	CompoundEntity* avionEscena;
-	//Ejercicio 35
-	CompoundEntity* helicesEscena;
 	//Ejericio 36
 	PosLight* minero;
 protected:

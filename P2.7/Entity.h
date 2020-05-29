@@ -363,7 +363,7 @@ public:
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	void addEntity(Abs_Entity* ae);
 	SpotLight* foco;
-protected:
 	std::vector<Abs_Entity*> gObjects;
+	
 };
 #endif //_H_Entities_H_

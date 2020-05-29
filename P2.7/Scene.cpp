@@ -15,6 +15,8 @@ using namespace glm;
 void Scene::init()
 { 
 	setGL();  // OpenGL settings
+	//Ejercicio 32
+	setLights();
 
 	// allocate memory and load resources
     // Lights
@@ -195,7 +197,7 @@ void Scene::init()
 	gObjects.push_back(esfera);*/
 
 	//Ejercicio 24
-	Esfera* esfera = new Esfera(180.0, 50, 50);
+	Esfera* esfera = new Esfera(180.0, 100, 100);
 	esfera->setColor(clearblue);
 	esfera->setMaterial(mat);
 	gObjects.push_back(esfera);
@@ -206,8 +208,6 @@ void Scene::init()
 	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
 	avion->setModelMat(mAux);
 	gObjects.push_back(avion);
-	//Ejercicio 34
-	avionEscena = avion;
 
 	EntityWithIndexMesh* alas = new EntityWithIndexMesh();
 	Cubo* cube = new Cubo(100.0);
@@ -232,7 +232,6 @@ void Scene::init()
 
 	CompoundEntity* helices = new CompoundEntity();
 	chasis->addEntity(helices);
-	helicesEscena = helices;
 
 	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
 	cilDer->color = glm::fvec3(0, 0, 1);
@@ -274,8 +273,7 @@ void Scene::setGL()
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING); // Se activa la iluminación
 	glEnable(GL_NORMALIZE); // Se activa la normalización de los vectores normales 
-	//Ejercicio 32
-	setLights();
+	
 }
 //-------------------------------------------------------------------------
 void Scene::resetGL() 
@@ -285,8 +283,6 @@ void Scene::resetGL()
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING); 
 	glDisable(GL_NORMALIZE);
-	//Ejercicio 32
-	setLights();
 }
 //-------------------------------------------------------------------------
 
@@ -429,25 +425,29 @@ void Scene::setLights(){
 //--------------------------------------------------------------------------------------
 //Ejercicio 34
 void Scene::enciendeFoco(bool encencido) {
+	CompoundEntity* avion = (CompoundEntity*)this->gObjects.at(2);
 	if (encencido)
-		avionEscena->foco->enable();
+		avion->foco->enable();
 	else
-		avionEscena->foco->disable();
+		avion->foco->disable();
 }
 //--------------------------------------------------------------------------------------
 //Ejercicio 35
 void Scene::move() {
 	glm::dmat4 mAux;
+	CompoundEntity* avion = (CompoundEntity*) this->gObjects.at(2);
+	CompoundEntity* chasis = (CompoundEntity*) avion->gObjects.at(1);
+	CompoundEntity* helices = (CompoundEntity*)chasis->gObjects.at(1);
 	
-	mAux = helicesEscena->modelMat();
+	mAux = helices->modelMat();
 	mAux = rotate(dmat4(1), radians(angle), dvec3(0.0, 0.0, 1.0));
-	helicesEscena->setModelMat(mAux);
+	helices->setModelMat(mAux);
 
-	mAux = avionEscena->modelMat();
+	mAux = avion->modelMat();
 	mAux = translate(dmat4(1), dvec3(0.0, 250.0 * cos(radians(angle)), 250.0 * sin(radians(angle))));
 	mAux = rotate(mAux, radians(angle), dvec3(1.0, 0.0, 0.0));
 	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
-	avionEscena->setModelMat(mAux);
+	avion->setModelMat(mAux);
 
 	angle++;
 
