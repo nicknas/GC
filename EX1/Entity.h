@@ -366,4 +366,5 @@ public:
 	std::vector<Abs_Entity*> gObjects;
 	
 };
+
 #endif //_H_Entities_H_

@@ -18,6 +18,8 @@
 #include "Viewport.h"
 #include "Camera.h"
 #include "Scene.h"
+//EXTRA 1
+#include "Fondo.h"
 
 //-------------------------------------------------------------------------
 
@@ -96,9 +98,9 @@ protected:
 	//Ejercicio 21
 	bool m2Vistas = false;
 	
-
+	//EXTRA 1
+	Fondo* mFondo = nullptr;
 	
 };
 //-------------------------------------------------------------------------
-
 #endif //_H_IG1App_H_

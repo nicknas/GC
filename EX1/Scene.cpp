@@ -15,13 +15,13 @@ using namespace glm;
 void Scene::init()
 { 
 	setGL();  // OpenGL settings
-	//Ejercicio 32
-	setLights();
+	//Ejercicio 32 
+	//setLights(); Comentado en Extra 1
 
 	// allocate memory and load resources
     // Lights
     // Textures
-	/*for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 10; i++) {
 		gTextures.push_back(new Texture());
 	}
 	gTextures[0]->load("../Bmps/baldosaC.bmp");
@@ -33,20 +33,20 @@ void Scene::init()
 	gTextures[6]->load("../Bmps/papelE.bmp");
 	gTextures[7]->load("../Bmps/windowC.bmp");
 	gTextures[8]->load("../Bmps/windowV.bmp", 128);
-	// gTextures[9]->load("../Bmps/Zelda.bmp");*/
+	gTextures[9]->load("../Bmps/Zelda.bmp");
 
     // Graphics objects (entities) of the scene
-	/*dvec4 yellow;
+	dvec4 yellow;
 	dvec4 magenta;
 	magenta.r = 1.0;
 	magenta.g = 0;
 	magenta.b = 1.0;
 	yellow.r = 1.0;
 	yellow.g = 1.0;
-	yellow.b = 0;*/
+	yellow.b = 0;
 	gObjects.push_back(new EjesRGB(400.0));
 	//PRÁCTICA 1
-	/*if (mId == 0) {
+	if (mId == 0) {
 		gObjects.push_back(new Poligono(yellow, 3, 300.0));
 		gObjects.push_back(new Poligono(magenta, 300, 300.0));
 		gObjects.push_back(new Sierpinski(yellow, 6400, 300.0));
@@ -62,7 +62,7 @@ void Scene::init()
 		gFoto = gObjects[gObjects.size() - 1];
 		gObjects.push_back(new Pared(800.0, 300.0, 600.0, gTextures[8]));
 		gObjects.push_back(new Planta(100.0, 5, gTextures[4]));
-	}*/
+	}
 
 	//PRÁCTICA 2.1
 	/*glm::dmat4 mAux;
@@ -156,7 +156,7 @@ void Scene::init()
 	helices->addEntity(cilIzq);*/
 
 	//PRÁCTICA 2.5
-	glm::dmat4 mAux;
+	/*glm::dmat4 mAux;
 	dvec4 blue;
 	blue.r = 0.0;
 	blue.g = 0.0;
@@ -167,7 +167,7 @@ void Scene::init()
 	clearblue.b = 1.0;
 	//Ejercicio 33
 	Material* mat = new Material();
-	mat->setGold();
+	mat->setGold();*/
 
 	//Ejercicio 21
 	//Para ver las líneas, descomentar en el render de Entity.cpp la instrucción que habilita GL_LINE
@@ -197,7 +197,7 @@ void Scene::init()
 	gObjects.push_back(esfera);*/
 
 	//Ejercicio 24
-	Esfera* esfera = new Esfera(180.0, 100, 100);
+	/*Esfera* esfera = new Esfera(180.0, 100, 100);
 	esfera->setColor(clearblue);
 	esfera->setMaterial(mat);
 	gObjects.push_back(esfera);
@@ -247,7 +247,7 @@ void Scene::init()
 	mAux = translate(mAux, dvec3(0, 0, 120));
 	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
 	cilIzq->setModelMat(mAux);
-	helices->addEntity(cilIzq);
+	helices->addEntity(cilIzq);*/
 }
 //-------------------------------------------------------------------------
 void Scene::free() 
@@ -260,7 +260,8 @@ void Scene::free()
 	gObjects.clear();
 	for (Texture* tx : gTextures)
 	{
-		delete tx; tx = nullptr;
+		if (tx->height() != 3722304989 && tx->width() != 3722304989)
+			delete tx; tx = nullptr;
 	}
 	gTextures.clear();
 }
@@ -268,11 +269,13 @@ void Scene::free()
 void Scene::setGL() 
 {
 	// OpenGL basic setting
-	glClearColor(0.7, 0.8, 0.9, 1.0);  // background color (alpha=1 -> opaque)
+	glClearColor(0.0, 0.0, 0.0, 0.0);  // background color (alpha=1 -> opaque)
+	//glClearColor(0.7, 0.8, 0.9, 1.0);  // background color (alpha=1 -> opaque)
 	glEnable(GL_DEPTH_TEST);  // enable Depth test 
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_LIGHTING); // Se activa la iluminación
-	glEnable(GL_NORMALIZE); // Se activa la normalización de los vectores normales 
+	//Comentado en Extra 1
+	//glEnable(GL_LIGHTING); // Se activa la iluminación
+	//glEnable(GL_NORMALIZE); // Se activa la normalización de los vectores normales 
 	
 }
 //-------------------------------------------------------------------------
@@ -281,8 +284,8 @@ void Scene::resetGL()
 	glClearColor(.0, .0, .0, .0);  // background color (alpha=1 -> opaque)
 	glDisable(GL_DEPTH_TEST);  // disable Depth test 	
 	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING); 
-	glDisable(GL_NORMALIZE);
+	//glDisable(GL_LIGHTING); 
+	//glDisable(GL_NORMALIZE);
 }
 //-------------------------------------------------------------------------
 
@@ -293,11 +296,12 @@ void Scene::render(Camera const& cam) const
 	//scenePosLight(cam);
 	//sceneSpotLight(cam);
 	
+	/*Comentado en Extra1
 	directionalLight->upload(cam.viewMat());
 	positionalLight->upload(cam.viewMat());
 	spotSceneLight->upload(cam.viewMat());
 	//Ejercicio 36
-	minero->upload(dmat4(1.0));
+	minero->upload(dmat4(1.0));*/
 	
 	cam.upload();
 	
