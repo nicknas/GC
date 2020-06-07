@@ -22,7 +22,7 @@ protected:
 	Texture* textura = nullptr;
 	Camera* camara = nullptr;
 public:
-	Fondo();
+	Fondo(Viewport* vp);
 	~Fondo();
 	void setSize(GLsizei xw, GLsizei yh);
 	virtual void render();

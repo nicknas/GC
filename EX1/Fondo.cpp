@@ -12,11 +12,11 @@
 
 //----------------------------------------------------------------------------------------
 //EXTRA 1
-Fondo::Fondo() {
-	malla = Mesh::generaRectanguloTexCor(800.0, 600.0, 1, 1);
+Fondo::Fondo(Viewport* vp) {
+	malla = Mesh::generaRectanguloTexCor(vp->width(), vp->height(), 1, 1);
 	textura = new Texture();
-	textura->load("../Bmps/Zelda.bmp");
-	camara = new Camera(new Viewport(800, 600));
+	textura->load("../Bmps/noche.bmp");
+	camara = new Camera(vp);
 	camara->set2D();
 }
 
@@ -28,7 +28,7 @@ Fondo::~Fondo() {
 
 void Fondo::setSize(GLsizei xw, GLsizei yh) {
 	camara->setSize(xw, yh);
-	camara->upload();
+	malla = Mesh::generaRectanguloTexCor(xw, yh, 1, 1);
 }
 
 void Fondo::render() {

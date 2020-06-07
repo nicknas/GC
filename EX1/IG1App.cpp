@@ -43,7 +43,7 @@ void IG1App::init()
 	mCamera = new Camera(mViewPort);
 	mScene = new Scene;
 	//EXTRA 1
-	mFondo = new Fondo();
+	mFondo = new Fondo(mViewPort);
 	mCamera->set2D();
 	
 	
