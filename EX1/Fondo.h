@@ -2,13 +2,15 @@
 #ifndef _H_Fondo_H_
 #define _H_Fondo_H_
 
+/*EXTRA 2
 #include <GL/freeglut.h>
 
 #ifdef _WIN32
-#include <glm.hpp>
+	#include <glm.hpp>
 #else
-#include <glm/glm.hpp>
-#endif
+	#include <glm/glm.hpp>
+#endif*/
+#include "GLinclude.h" //EXTRA 2
 
 #include "Texture.h"
 #include "Viewport.h"

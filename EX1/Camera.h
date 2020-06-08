@@ -2,13 +2,15 @@
 #ifndef _H_Camera_H_
 #define _H_Camera_H_
 
+/*EXTRA 2
 #include <GL/freeglut.h>
 
 #ifdef _WIN32
 	#include <glm.hpp>
 #else
 	#include <glm/glm.hpp>
-#endif
+#endif*/
+#include "GLinclude.h" //EXTRA 2
 
 #include "Viewport.h"
 

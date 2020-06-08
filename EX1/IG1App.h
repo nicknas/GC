@@ -7,19 +7,21 @@
 //#include <gl/GLU.h>   // OpenGL Utility Library
 //#include <GL/glut.h>  // OpenGL Utility Toolkit
 
-#include <GL/freeglut.h>  // OpenGL Utility Toolkit
+/*EXTRA 2
+#include <GL/freeglut.h>
 
 #ifdef _WIN32
 	#include <glm.hpp>
 #else
-	#include <glm/glm.hpp>        // OpenGL Mathematics
-#endif
+	#include <glm/glm.hpp>
+#endif*/
+#include "GLinclude.h" //EXTRA 2
 
 #include "Viewport.h"
 #include "Camera.h"
 #include "Scene.h"
-//EXTRA 1
-#include "Fondo.h"
+
+#include "Fondo.h" //EXTRA 1
 
 //-------------------------------------------------------------------------
 
@@ -98,8 +100,7 @@ protected:
 	//Ejercicio 21
 	bool m2Vistas = false;
 	
-	//EXTRA 1
-	Fondo* mFondo = nullptr;
+	Fondo* mFondo = nullptr;//EXTRA 1
 	
 };
 //-------------------------------------------------------------------------

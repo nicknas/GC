@@ -36,14 +36,15 @@ void IG1App::init()
 {
 	// create an OpenGL Context
 	iniWinOpenGL();   
+	
 
 	// create the scene after creating the context 
 	// allocate memory and resources
 	mViewPort = new Viewport(mWinW, mWinH); //glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT)
 	mCamera = new Camera(mViewPort);
 	mScene = new Scene;
-	//EXTRA 1
-	mFondo = new Fondo(mViewPort);
+	
+	mFondo = new Fondo(mViewPort); //EXTRA 1
 	mCamera->set2D();
 	
 	
@@ -72,6 +73,8 @@ void IG1App::iniWinOpenGL()
 	
 	mWinId = glutCreateWindow("IG1App");  // with its associated OpenGL context, return window's identifier 
 	
+	if (!gladLoadGL()) { printf("GLAD: Something went wrong!\n"); } // EXTRA 2
+
 	// Callback registration
 	glutReshapeFunc(s_resize);
 	glutKeyboardFunc(s_key);
@@ -82,7 +85,7 @@ void IG1App::iniWinOpenGL()
 	glutMouseFunc(s_mouse); // cuando se presiona o suelta un botón
 	glutMotionFunc(s_motion); // cuando se mueve con un botón presionado
 	glutMouseWheelFunc(s_mouseWheel); // cuando se gira una rueda
-	
+
 	cout << glGetString(GL_VERSION) << '\n';
 	cout << glGetString(GL_VENDOR) << '\n';
 }
@@ -103,8 +106,8 @@ void IG1App::display()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // clears the back buffer
 
-	//EXTRA 1
-	mFondo->render();
+	
+	mFondo->render();//EXTRA 1
 	if (m2Vistas) display2Vistas();
 	else 
 		mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
@@ -123,8 +126,8 @@ void IG1App::resize(int newWidth, int newHeight)
 	// Resize Scene Visible Area such that the scale is not modified
 	mCamera->setSize(mViewPort->width(), mViewPort->height()); 
 
-	//EXTRA 1
-	mFondo->setSize(mViewPort->width(), mViewPort->height());
+	
+	mFondo->setSize(mViewPort->width(), mViewPort->height());//EXTRA 1
 }
 //-------------------------------------------------------------------------
 

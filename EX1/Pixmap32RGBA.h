@@ -5,13 +5,17 @@
 //#include <Windows.h>
 //#include <gl/GL.h>
 
+/*EXTRA 2
 #include <GL/freeglut.h>
-#include <string>
+
 #ifdef _WIN32
-#include <glm.hpp>
+    #include <glm.hpp>
 #else
-#include <glm/glm.hpp>
-#endif
+    #include <glm/glm.hpp>
+#endif*/
+#include "GLinclude.h" //EXTRA 2
+#include <string>
+
 
 
 class Pixmap32RGBA {   
