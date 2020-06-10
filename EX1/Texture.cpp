@@ -22,12 +22,12 @@ void Texture::init()
    
 }
 //-------------------------------------------------------------------------
-
-void Texture::bind(GLuint mixMode) // GL_REPLACE, GL_MODULATE, GL_ADD
+//EXTRA 2
+/*void Texture::bind(GLuint mixMode) // GL_REPLACE, GL_MODULATE, GL_ADD
 {
   glBindTexture(GL_TEXTURE_2D, mId);
   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mixMode);  
-}
+}*/
 //-------------------------------------------------------------------------
 
 void Texture::load(const std::string & BMP_Name, GLubyte alpha)
@@ -117,4 +117,22 @@ void Texture::load(const std::string & BMP_Name, glm::u8vec3 color, GLubyte alph
     glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA, mWidth, mHeight, border, GL_RGBA, GL_UNSIGNED_BYTE, pixMap.data());
 
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+//------------------------------------------------------------
+//EXTRA 2
+void Texture::bind(GLenum textureUnit, GLuint mixMode) {
+    glActiveTexture(textureUnit);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, mId);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mixMode);
+    
+    
+}
+//EXTRA 2
+void Texture::unbind(GLenum textureUnit) const{
+    glActiveTexture(textureUnit);
+    glDisable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    
 }

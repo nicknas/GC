@@ -185,14 +185,14 @@ void Estrella3D::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->bind(GL_REPLACE);
+		mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 		mMesh->render();
 		
 		aMat = rotate(aMat, radians(180.0), dvec3(0.0, 1.0, 0.0));
 		upload(aMat);
 		mMesh->render();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->unbind();
+		mTexture->unbind(GL_TEXTURE0); //EXTRA 2
 	}
 }
 
@@ -223,10 +223,10 @@ void Suelo::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->bind(GL_REPLACE);
+		mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 		mMesh->render();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->unbind();
+		mTexture->unbind(GL_TEXTURE0); //EXTRA 2
 	}
 }
 
@@ -257,16 +257,16 @@ void Caja::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glEnable(GL_CULL_FACE);
-		mTexture->bind(GL_REPLACE);
+		mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 		glCullFace(GL_BACK);
 		mMesh->render();
 		meshSuelo->render();
-		mTexture->unbind();
-		mBackTex->bind(GL_REPLACE);
+		mTexture->unbind(GL_TEXTURE0); //EXTRA 2
+		mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 		glCullFace(GL_FRONT);
 		mMesh->render();
 		meshSuelo->render();
-		mBackTex->unbind();
+		mTexture->unbind(GL_TEXTURE0); //EXTRA 2
 		glDisable(GL_CULL_FACE);
 	}
 }
@@ -297,10 +297,10 @@ void Foto::render(dmat4 const& modelViewMat) const
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->bind(GL_REPLACE);
+		mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 		mMesh->render();
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		mTexture->unbind();
+		mTexture->unbind(GL_TEXTURE0); //EXTRA 2
 	}
 }
 
@@ -330,9 +330,9 @@ void Pared::render(dmat4 const& modelViewMat) const
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		mTexture->bind(GL_REPLACE);
+		mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 		mMesh->render();
-		mTexture->unbind();
+		mTexture->unbind(GL_TEXTURE0); //EXTRA 2
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
 	}
@@ -367,10 +367,10 @@ void Planta::render(dmat4 const& modelViewMat) const
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			mTexture->bind(GL_REPLACE);
+			mTexture->bind(GL_TEXTURE1, GL_REPLACE); //EXTRA 2
 			mMesh->render();
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			mTexture->unbind();
+			mTexture->unbind(GL_TEXTURE0); //EXTRA 2
 			glDepthMask(GL_TRUE);
 			glDisable(GL_BLEND);
 			aMat = rotate(aMat, radians(360.0 / numplantas), dvec3(0.0, 1.0, 0.0));

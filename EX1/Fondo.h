@@ -22,6 +22,7 @@ class Fondo {
 protected:
 	Mesh* malla = nullptr;
 	Texture* textura = nullptr;
+	Texture* textura2 = nullptr;
 	Camera* camara = nullptr;
 public:
 	Fondo(Viewport* vp);
