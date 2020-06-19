@@ -168,3 +168,8 @@ void Camera::setCenital() {
 	setVM();
 }
 
+//EXTRA 1
+void Camera::setViewPortSize(GLsizei xw, GLsizei yh) {
+	mViewPort->setSize(xw, yh);
+}
+

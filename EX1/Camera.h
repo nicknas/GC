@@ -55,6 +55,9 @@ public:
 	//Ejercicio 21
 	void setCenital();
 
+	//EXTRA 1
+	void setViewPortSize(GLsizei xw, GLsizei yh);
+
 protected:
 	
 	glm::dvec3 mEye = { 0.0, 0.0, 500.0 };  // camera's position
@@ -73,7 +76,7 @@ protected:
 	GLdouble mNearVal = 1, mFarVal = 10000;  // view volume
 	GLdouble mScaleFact = 1;   // scale factor
 	bool bOrto = true;   // orthogonal or perspective projection
-
+	
 	Viewport* mViewPort;   // the viewport
 
 	//Ejercicio 20

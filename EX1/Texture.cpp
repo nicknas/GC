@@ -126,8 +126,7 @@ void Texture::bind(GLenum textureUnit, GLuint mixMode) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, mId);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, mixMode);
-    
-    
+     
 }
 //EXTRA 2
 void Texture::unbind(GLenum textureUnit) const{

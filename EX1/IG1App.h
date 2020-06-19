@@ -100,7 +100,7 @@ protected:
 	//Ejercicio 21
 	bool m2Vistas = false;
 	
-	Fondo* mFondo = nullptr;//EXTRA 1
+	Fondo* mFondo = nullptr; //EXTRA 1
 	
 };
 //-------------------------------------------------------------------------

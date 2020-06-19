@@ -12,26 +12,25 @@
 
 //----------------------------------------------------------------------------------------
 //EXTRA 1
-Fondo::Fondo(Viewport* vp) {
-	malla = Mesh::generaRectanguloTexCor(vp->width(), vp->height(), 1, 1);
+Fondo::Fondo() {
+	malla = Mesh::generaRectanguloTexCor(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT), 1, 1);
 	textura = new Texture();
 	textura->load("../Bmps/noche.bmp");
-	textura2 = new Texture();
-	textura2->load("../Bmps/Zelda.bmp",50);
-	camara = new Camera(vp);
+	textura2 = new Texture(); //EXTRA 2
+	textura2->load("../Bmps/Zelda.bmp",50); //EXTRA 2
+	camara = new Camera(new Viewport(glutGet(GLUT_WINDOW_WIDTH), glutGet(GLUT_WINDOW_HEIGHT)));
 	camara->set2D();
 }
 
 Fondo::~Fondo() {
 	delete malla; malla = nullptr;
 	delete textura; textura = nullptr;
-	delete textura2; textura2 = nullptr;
+	delete textura2; textura2 = nullptr; //EXTRA 2
 	delete camara; camara = nullptr;
 }
 
-void Fondo::setSize(GLsizei xw, GLsizei yh) {
-	camara->setSize(xw, yh);
-	malla = Mesh::generaRectanguloTexCor(xw, yh, 1, 1);
+void Fondo::setSizeVP(GLsizei xw, GLsizei yh) {
+	camara->setViewPortSize(xw, yh);
 }
 
 void Fondo::render() {
@@ -41,16 +40,14 @@ void Fondo::render() {
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//glPolygonMode(GL_FRONT, GL_FILL);
 		
-		malla->setTwoUnits();
+		malla->setTwoUnits(); //EXTRA 2
 		textura->bind(GL_TEXTURE0, GL_REPLACE);//EXTRA 2
 		textura2->bind(GL_TEXTURE1, GL_DECAL);//EXTRA 2
 		malla->render();
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		textura->unbind(GL_TEXTURE0);//EXTRA 2
-		textura2->unbind(GL_TEXTURE0);//EXTRA 2
+		textura2->unbind(GL_TEXTURE1);//EXTRA 2
 		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
 	}

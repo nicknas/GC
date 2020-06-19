@@ -44,13 +44,10 @@ void IG1App::init()
 	mCamera = new Camera(mViewPort);
 	mScene = new Scene;
 	
-	mFondo = new Fondo(mViewPort); //EXTRA 1
+	mFondo = new Fondo(); //EXTRA 1
 	mCamera->set2D();
 	
-	
-	//mFondo->setSize(mWinW, mWinH);
 	mScene->init();
-	
 }
 //-------------------------------------------------------------------------
 
@@ -96,8 +93,8 @@ void IG1App::free()
 	delete mScene; mScene = nullptr;
 	delete mCamera; mCamera = nullptr;
 	delete mViewPort; mViewPort = nullptr;
-	//EXTRA 1
-	delete mFondo; mFondo = nullptr;
+	
+	delete mFondo; mFondo = nullptr; //EXTRA 1
 }
 //-------------------------------------------------------------------------
 //Ejercicio 21
@@ -107,7 +104,7 @@ void IG1App::display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  // clears the back buffer
 
 	
-	mFondo->render();//EXTRA 1
+	mFondo->render(); //EXTRA 1
 	if (m2Vistas) display2Vistas();
 	else 
 		mScene->render(*mCamera);  // uploads the viewport and camera to the GPU
@@ -127,7 +124,7 @@ void IG1App::resize(int newWidth, int newHeight)
 	mCamera->setSize(mViewPort->width(), mViewPort->height()); 
 
 	
-	mFondo->setSize(mViewPort->width(), mViewPort->height());//EXTRA 1
+	mFondo->setSizeVP(mViewPort->width(), mViewPort->height()); //EXTRA 1
 }
 //-------------------------------------------------------------------------
 

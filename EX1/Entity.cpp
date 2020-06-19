@@ -367,7 +367,7 @@ void Planta::render(dmat4 const& modelViewMat) const
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			mTexture->bind(GL_TEXTURE1, GL_REPLACE); //EXTRA 2
+			mTexture->bind(GL_TEXTURE0, GL_REPLACE); //EXTRA 2
 			mMesh->render();
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			mTexture->unbind(GL_TEXTURE0); //EXTRA 2

@@ -22,12 +22,12 @@ class Fondo {
 protected:
 	Mesh* malla = nullptr;
 	Texture* textura = nullptr;
-	Texture* textura2 = nullptr;
+	Texture* textura2 = nullptr; //EXTRA 2
 	Camera* camara = nullptr;
 public:
-	Fondo(Viewport* vp);
+	Fondo();
 	~Fondo();
-	void setSize(GLsizei xw, GLsizei yh);
+	void setSizeVP(GLsizei xw, GLsizei yh);
 	virtual void render();
 };
 
