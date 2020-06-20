@@ -73,6 +73,9 @@ public:
 	virtual void draw() const;
 	static IndexMesh* generaIndexCuboConTapas(GLdouble l);
 	virtual void buildNormalVectors();
+	//EJERCICIOS EXTRA 2
+	static IndexMesh* generateGrid(GLdouble lado, GLuint nDiv);
+	static IndexMesh* generateGridTex(GLdouble lado, GLuint nDiv);
 };
 //-------------------------------------------------------------------------
 //PRÁCTICA 2.5

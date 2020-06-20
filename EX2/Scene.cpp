@@ -197,7 +197,7 @@ void Scene::init()
 	gObjects.push_back(esfera);*/
 
 	//Ejercicio 24
-	Esfera* esfera = new Esfera(180.0, 100, 100);
+	/*Esfera* esfera = new Esfera(180.0, 100, 100);
 	esfera->setColor(clearblue);
 	esfera->setMaterial(mat);
 	gObjects.push_back(esfera);
@@ -247,7 +247,16 @@ void Scene::init()
 	mAux = translate(mAux, dvec3(0, 0, 120));
 	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
 	cilIzq->setModelMat(mAux);
-	helices->addEntity(cilIzq);
+	helices->addEntity(cilIzq);*/
+
+	//EJERCICIOS EXTRA 2
+	Grid* grid = new Grid(200.0, 10);
+	//grid->setColor(blue);
+	mAux = grid->modelMat();
+	mAux = translate(mAux, dvec3(-100, 0, -100));
+	mAux = rotate(mAux, radians(90.0), dvec3(1.0, 0.0, 0));
+	grid->setModelMat(mAux);
+	gObjects.push_back(grid);
 }
 //-------------------------------------------------------------------------
 void Scene::free() 

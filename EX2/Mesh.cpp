@@ -509,4 +509,64 @@ MbR* MbR::generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil) {
     return mesh;
 }
 
+// EJERCICIOS EXTRA 2
+IndexMesh* IndexMesh::generateGrid(GLdouble lado, GLuint nDiv) {
+    IndexMesh* mesh = new IndexMesh();
+    mesh->mPrimitive = GL_TRIANGLES;
+    
+    GLdouble interdist = lado / nDiv;
+    GLdouble separacion = 0.0;
+    GLuint m = nDiv + 1;
+    dvec3* perfil = new dvec3[m];
+    for (int i = 0; i < m; i++) {
+        perfil[i] = dvec3(0.0, separacion, 0.0);
+        separacion += interdist;
+    }
+    mesh->mNumVertices = m * m;
+    dvec3* vertices = new dvec3[mesh->mNumVertices];
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < m; j++) {
+            int indice = i * m + j;
+            vertices[indice] = dvec3(perfil[j].x + i* interdist, perfil[j].y, perfil[j].z);
+        }
+    }
+    //Inicializar vVértices
+    for (int i = 0; i < mesh->mNumVertices; i++) {
+        mesh->vVertices.emplace_back(vertices[i]);
+    }
 
+    mesh->nNumIndices = (m-1) * (m-1) * 6;
+    mesh->vIndices = new GLuint[mesh->nNumIndices];
+    //Generar índices
+    int indiceMayor = 0;
+    for (int i = 0; i < m-1; i++)
+        for (int j = 0; j < m-1; j++) {
+            int indice = i * m + j;
+            //Cara triangular inferior
+            mesh->vIndices[indiceMayor] = indice;
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = (indice + m) % (m * m);
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = (indice + m + 1) % (m * m);
+            indiceMayor++;
+            //Cara triangular superior
+            mesh->vIndices[indiceMayor] = (indice + m + 1) % (m * m);
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = indice + 1;
+            indiceMayor++;
+            mesh->vIndices[indiceMayor] = indice;
+            indiceMayor++;
+
+        }
+    mesh->buildNormalVectors();
+    return mesh;
+}
+IndexMesh* IndexMesh::generateGridTex(GLdouble lado, GLuint nDiv) {
+    IndexMesh* mesh = generateGrid(lado, nDiv);
+    mesh->vTexCoords.reserve(mesh->mNumVertices);
+    mesh->vTexCoords.emplace_back(0, lado);
+    mesh->vTexCoords.emplace_back(0, 0);
+    mesh->vTexCoords.emplace_back(lado, lado);
+    mesh->vTexCoords.emplace_back(lado, 0);
+    return mesh;
+}

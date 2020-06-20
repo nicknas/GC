@@ -366,4 +366,13 @@ public:
 	std::vector<Abs_Entity*> gObjects;
 	
 };
+
+//EJERCICIOS EXTRA 2
+class Grid : public EntityWithIndexMesh {
+public:
+	explicit Grid(GLdouble l, GLuint c);
+	~Grid();
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	virtual void update();
+};
 #endif //_H_Entities_H_

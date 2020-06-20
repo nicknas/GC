@@ -748,3 +748,35 @@ void Material::setGold() {
 	specular = { 0.628281,0.555802,0.366065,1.0 };
 	expF = 51.2;
 }
+
+//EJERCICIOS EXTRA 2
+Grid::Grid(GLdouble l, GLuint c) {
+	this->mMesh = IndexMesh::generateGridTex(l, c);
+	mTexture = new Texture();
+	mTexture->load("../Bmps/stones.bmp");
+}
+Grid::~Grid()
+{
+	delete mMesh; mMesh = nullptr;
+	delete mTexture; mTexture = nullptr;
+}
+
+void Grid::render(dmat4 const& modelViewMat) const
+{
+	if (mMesh != nullptr) {
+		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+		upload(aMat);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glEnable(GL_COLOR_MATERIAL);
+		//glColor3d(color().r, color().g, color().b);
+		mTexture->bind(GL_REPLACE);
+		mMesh->render();
+		glDisable(GL_COLOR_MATERIAL);
+		mTexture->unbind();
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	}
+}
+
+void Grid::update()
+{}
