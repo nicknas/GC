@@ -564,9 +564,12 @@ IndexMesh* IndexMesh::generateGrid(GLdouble lado, GLuint nDiv) {
 IndexMesh* IndexMesh::generateGridTex(GLdouble lado, GLuint nDiv) {
     IndexMesh* mesh = generateGrid(lado, nDiv);
     mesh->vTexCoords.reserve(mesh->mNumVertices);
-    mesh->vTexCoords.emplace_back(0, lado);
-    mesh->vTexCoords.emplace_back(0, 0);
-    mesh->vTexCoords.emplace_back(lado, lado);
-    mesh->vTexCoords.emplace_back(lado, 0);
+    GLdouble separacion = lado / nDiv;
+    for (int i = 0; i <= nDiv; i++) {
+        for (int j = 0; j <= nDiv; j++) {
+            mesh->vTexCoords.emplace_back((i * separacion)/lado, (j * separacion)/lado);
+        }
+    }
+    
     return mesh;
 }

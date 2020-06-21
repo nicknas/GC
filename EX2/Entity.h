@@ -235,15 +235,16 @@ public:
 	virtual void setCopper() const;
 };
 // Comentado en PRÁCTICA 2.7
-/*class CompoundEntity : public Abs_Entity {
+class CompoundEntity : public Abs_Entity {
 public:
 	CompoundEntity() {};
 	~CompoundEntity();
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	void addEntity(Abs_Entity* ae);
+	Abs_Entity* getObject(int pos);
 protected:
 	std::vector<Abs_Entity*> gObjects;
-};*/
+};
 
 //PRÁCTICA 2.5
 class Cono : public EntityWithIndexMesh {
@@ -356,23 +357,50 @@ public:
 	virtual void update();
 };
 //Ejercicio 34
-class CompoundEntity : public Abs_Entity {
+class Avion : public CompoundEntity {
 public:
-	CompoundEntity();
-	~CompoundEntity();
+	Avion();
+	~Avion() {};
+	void setFoco(bool encendido);
+	CompoundEntity* getChasis();
+	CompoundEntity* getHelices();
 	virtual void render(glm::dmat4 const& modelViewMat) const;
-	void addEntity(Abs_Entity* ae);
-	SpotLight* foco;
-	std::vector<Abs_Entity*> gObjects;
 	
+protected:
+	SpotLight* foco;
 };
 
 //EJERCICIOS EXTRA 2
 class Grid : public EntityWithIndexMesh {
 public:
-	explicit Grid(GLdouble l, GLuint c);
+	explicit Grid(GLdouble l, GLuint c, Texture* tex);
 	~Grid();
 	virtual void render(glm::dmat4 const& modelViewMat) const;
 	virtual void update();
+};
+
+class GridCube : public CompoundEntity {
+public:
+	GridCube();
+	~GridCube();
+
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	void setFoco(bool encendido);
+protected:
+	Texture* checker = nullptr;
+	Texture* stones = nullptr;
+	SpotLight* foco;
+};
+
+class SirenCube : public CompoundEntity {
+public:
+	SirenCube();
+	~SirenCube();
+
+	virtual void render(glm::dmat4 const& modelViewMat) const;
+	void setFoco(bool encendido);
+	void updateFoco(GLdouble x, GLdouble z);
+protected:
+	SpotLight* foco;
 };
 #endif //_H_Entities_H_

@@ -43,6 +43,8 @@ public:
 	void enciendeFoco(bool encencido);
 	//Ejercicio 35
 	void move();
+	//EJERCICIOS EXTRA 2
+	void sirenMove();
 
 	DirLight* directionalLight;
 	PosLight* positionalLight;

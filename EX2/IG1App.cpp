@@ -202,7 +202,7 @@ void IG1App::key(unsigned char key, int x, int y)
 		break;
 	//Ejercicio 35
 	case 'y':
-		mScene->move();
+		moving = !moving;
 		break;
 	//Ejercicio 34
 	case 'd':
@@ -210,6 +210,10 @@ void IG1App::key(unsigned char key, int x, int y)
 		break;
 	case 'f':
 		mScene->minero->disable();
+		break;
+	//EJERCICIOS EXTRA 2
+	case 'j':
+		sirenMoving = !sirenMoving;
 		break;
 	default:
 		need_redisplay = false;
@@ -270,6 +274,10 @@ void IG1App::update() {
 			glutPostRedisplay();
 		}
 	}
+	if (moving)
+		mScene->move();
+	if (sirenMoving)
+		mScene->sirenMove();
 }
 
 int IG1App::winWidth() {

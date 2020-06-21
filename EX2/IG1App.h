@@ -95,7 +95,11 @@ protected:
 	int mMouseButt;
 	//Ejercicio 21
 	bool m2Vistas = false;
-	
+	//Práctica 2
+	//Ejercicio 35 
+	bool moving = false;
+	//EJERCICIOS EXTRA 2
+	bool sirenMoving = false;
 
 	
 };

@@ -21,7 +21,7 @@ void Scene::init()
 	// allocate memory and load resources
     // Lights
     // Textures
-	/*for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 13; i++) {
 		gTextures.push_back(new Texture());
 	}
 	gTextures[0]->load("../Bmps/baldosaC.bmp");
@@ -33,17 +33,20 @@ void Scene::init()
 	gTextures[6]->load("../Bmps/papelE.bmp");
 	gTextures[7]->load("../Bmps/windowC.bmp");
 	gTextures[8]->load("../Bmps/windowV.bmp", 128);
-	// gTextures[9]->load("../Bmps/Zelda.bmp");*/
+	gTextures[9]->load("../Bmps/Zelda.bmp");
+	gTextures[10]->load("../Bmps/noche.bmp");
+	//gTextures[11]->load("../Bmps/checker.bmp");
+	//gTextures[12]->load("../Bmps/stones.bmp");
 
     // Graphics objects (entities) of the scene
-	/*dvec4 yellow;
+	dvec4 yellow;
 	dvec4 magenta;
 	magenta.r = 1.0;
 	magenta.g = 0;
 	magenta.b = 1.0;
 	yellow.r = 1.0;
 	yellow.g = 1.0;
-	yellow.b = 0;*/
+	yellow.b = 0;
 	gObjects.push_back(new EjesRGB(400.0));
 	//PRÁCTICA 1
 	/*if (mId == 0) {
@@ -202,61 +205,31 @@ void Scene::init()
 	esfera->setMaterial(mat);
 	gObjects.push_back(esfera);
 
-	CompoundEntity* avion = new CompoundEntity();
+	Avion* avion = new Avion();
 	mAux = avion->modelMat();
 	mAux = translate(mAux, dvec3(0, 250, 0));
 	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
 	avion->setModelMat(mAux);
-	gObjects.push_back(avion);
-
-	EntityWithIndexMesh* alas = new EntityWithIndexMesh();
-	Cubo* cube = new Cubo(100.0);
-	dvec4 green;
-	green.r = 0.0;
-	green.g = 1.0;
-	green.b = 0.0;
-	cube->setColor(green);
-	mAux = cube->modelMat();
-	mAux = scale(mAux, dvec3(4.0, 0.2, 1.75));
-	cube->setModelMat(mAux);
-	alas = cube;
-
-	avion->addEntity(alas);
-
-	CompoundEntity* chasis = new CompoundEntity();
-	avion->addEntity(chasis);
-
-	Sphere* bola = new Sphere(100.0);
-	bola->color = glm::fvec3(1, 0, 0);
-	chasis->addEntity(bola);
-
-	CompoundEntity* helices = new CompoundEntity();
-	chasis->addEntity(helices);
-
-	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
-	cilDer->color = glm::fvec3(0, 0, 1);
-	mAux = cilDer->modelMat();
-	mAux = translate(mAux, dvec3(0, 0, 120));
-	mAux = rotate(mAux, radians(90.0), dvec3(0.0, 1.0, 0));
-	cilDer->setModelMat(mAux);
-	helices->addEntity(cilDer);
-
-	Cylinder* cilIzq = new Cylinder(20.0, 10.0, 50.0);
-	cilIzq->color = glm::fvec3(0, 0, 1);
-	mAux = cilIzq->modelMat();
-	mAux = translate(mAux, dvec3(0, 0, 120));
-	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
-	cilIzq->setModelMat(mAux);
-	helices->addEntity(cilIzq);*/
+	gObjects.push_back(avion);*/
+	
 
 	//EJERCICIOS EXTRA 2
-	Grid* grid = new Grid(200.0, 10);
-	//grid->setColor(blue);
-	mAux = grid->modelMat();
-	mAux = translate(mAux, dvec3(-100, 0, -100));
-	mAux = rotate(mAux, radians(90.0), dvec3(1.0, 0.0, 0));
-	grid->setModelMat(mAux);
-	gObjects.push_back(grid);
+	//ESCENA 1
+	/*GridCube* gridCube = new GridCube();
+	gObjects.push_back(gridCube);*/
+	//ESCENA 2
+	Esfera* esfera = new Esfera(180.0, 100, 100);
+	esfera->setColor(clearblue);
+	esfera->setMaterial(mat);
+	gObjects.push_back(esfera);
+
+	SirenCube* sirenCube = new SirenCube();
+	mAux = sirenCube->modelMat();
+	mAux = translate(mAux, dvec3(0, 200, 0));
+	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
+	sirenCube->setModelMat(mAux);
+	gObjects.push_back(sirenCube);
+	
 }
 //-------------------------------------------------------------------------
 void Scene::free() 
@@ -434,31 +407,62 @@ void Scene::setLights(){
 //--------------------------------------------------------------------------------------
 //Ejercicio 34
 void Scene::enciendeFoco(bool encencido) {
-	CompoundEntity* avion = (CompoundEntity*)this->gObjects.at(2);
-	if (encencido)
-		avion->foco->enable();
-	else
-		avion->foco->disable();
+	/*Avion* avion = (Avion*)this->gObjects.at(2);
+	avion->setFoco(encencido);*/
+
+	//EJERCICIOS EXTRA 2 - ESCENA 1
+	/*GridCube* grid = (GridCube*)this->gObjects.at(1);
+	grid->setFoco(encencido);*/
+
+	//EJERCICIOS EXTRA 2 - ESCENA 2
+	SirenCube* sirenCube = (SirenCube*)this->gObjects.at(2);
+	sirenCube->setFoco(encencido);
+
 }
 //--------------------------------------------------------------------------------------
 //Ejercicio 35
 void Scene::move() {
-	glm::dmat4 mAux;
-	CompoundEntity* avion = (CompoundEntity*) this->gObjects.at(2);
-	CompoundEntity* chasis = (CompoundEntity*) avion->gObjects.at(1);
-	CompoundEntity* helices = (CompoundEntity*)chasis->gObjects.at(1);
-	
-	mAux = helices->modelMat();
-	mAux = rotate(dmat4(1), radians(angle), dvec3(0.0, 0.0, 1.0));
-	helices->setModelMat(mAux);
+	GLuint time = glutGet(GLUT_ELAPSED_TIME);
+	if ((time - mLUpdateTime) >= 17) {
+		mLUpdateTime = time;
 
-	mAux = avion->modelMat();
-	mAux = translate(dmat4(1), dvec3(0.0, 250.0 * cos(radians(angle)), 250.0 * sin(radians(angle))));
-	mAux = rotate(mAux, radians(angle), dvec3(1.0, 0.0, 0.0));
-	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
-	avion->setModelMat(mAux);
+		glm::dmat4 mAux;
+		Avion* avion = (Avion*)this->gObjects.at(2);
+		CompoundEntity* chasis = avion->getChasis();
+		CompoundEntity* helices = avion->getHelices();
 
-	angle++;
+		mAux = helices->modelMat();
+		mAux = rotate(dmat4(1), radians(angle), dvec3(0.0, 0.0, 1.0));
+		helices->setModelMat(mAux);
 
-	glutPostRedisplay();
+		mAux = avion->modelMat();
+		mAux = translate(dmat4(1), dvec3(0.0, 250.0 * cos(radians(angle)), 250.0 * sin(radians(angle))));
+		mAux = rotate(mAux, radians(angle), dvec3(1.0, 0.0, 0.0));
+		mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
+		avion->setModelMat(mAux);
+
+		angle++;
+
+		glutPostRedisplay();
+	}
+}
+//EJERCICIOS EXTRA 2
+void Scene::sirenMove() {
+	GLuint time = glutGet(GLUT_ELAPSED_TIME);
+	if ((time - mLUpdateTime) >= 17) {
+		mLUpdateTime = time;
+
+		glm::dmat4 mAux;
+		SirenCube* sirenCube = (SirenCube*)this->gObjects.at(2);
+
+		mAux = sirenCube->modelMat();
+		mAux = translate(dmat4(1), dvec3(0.0, 200.0 * cos(radians(angle)), 200.0 * sin(radians(angle))));
+		mAux = rotate(mAux, radians(angle), dvec3(1.0, 0.0, 0.0));
+		mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
+		sirenCube->setModelMat(mAux);
+		sirenCube->updateFoco(sin(radians(angle)), cos(radians(angle)));
+		angle++;
+
+		glutPostRedisplay();
+	}
 }

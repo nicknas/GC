@@ -547,16 +547,6 @@ void Cubo::setCopper() const
 }
 
 //-------------------------------------------------------------------------
-CompoundEntity::CompoundEntity() {
-	//Ejercicio 34
-	foco = new SpotLight();
-	foco->setSpot({ 0.0,-1.0,0.0 }, 15.0, 0.0);
-	foco->setPosDir({ 0, 0, 0 });
-	foco->setAmb({ 0, 0, 0, 1 });
-	foco->setDiff({ 1, 1, 1, 1 });
-	foco->setSpec({ 0.5, 0.5, 0.5, 1 });
-	foco->setAtte(1.0, 0.0, 0.0);
-}
 CompoundEntity:: ~CompoundEntity() { 
 	for (Abs_Entity* el : gObjects) { 
 		delete el;  el = nullptr; 
@@ -567,8 +557,6 @@ void CompoundEntity::render(dmat4 const& modelViewMat) const
 {
 	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 	upload(aMat);
-	//Ejercicio 34
-	foco->upload(aMat);
 	for (Abs_Entity* el : gObjects) {
 		el->render(aMat);
 	}
@@ -576,6 +564,10 @@ void CompoundEntity::render(dmat4 const& modelViewMat) const
 
 void CompoundEntity::addEntity(Abs_Entity* ae) {
 	gObjects.push_back(ae);
+}
+//Ejercicio 34
+Abs_Entity* CompoundEntity::getObject(int pos) {
+	return gObjects.at(pos);
 }
 //-------------------------------------------------------------------------
 Cono::Cono(GLdouble h, GLdouble r, GLuint n) {
@@ -749,11 +741,92 @@ void Material::setGold() {
 	expF = 51.2;
 }
 
+//Ejercicio 34
+Avion::Avion() {
+	glm::dmat4 mAux;
+	CompoundEntity* avion = new CompoundEntity();
+	gObjects.push_back(avion);
+
+	EntityWithIndexMesh* alas = new EntityWithIndexMesh();
+	Cubo* cube = new Cubo(100.0);
+	dvec4 green;
+	green.r = 0.0;
+	green.g = 1.0;
+	green.b = 0.0;
+	cube->setColor(green);
+	mAux = cube->modelMat();
+	mAux = scale(mAux, dvec3(4.0, 0.2, 1.75));
+	cube->setModelMat(mAux);
+	alas = cube;
+
+	avion->addEntity(alas);
+
+	CompoundEntity* chasis = new CompoundEntity();
+	avion->addEntity(chasis);
+
+	Sphere* bola = new Sphere(100.0);
+	bola->color = glm::fvec3(1, 0, 0);
+	chasis->addEntity(bola);
+
+	CompoundEntity* helices = new CompoundEntity();
+	chasis->addEntity(helices);
+
+	Cylinder* cilDer = new Cylinder(20.0, 10.0, 50.0);
+	cilDer->color = glm::fvec3(0, 0, 1);
+	mAux = cilDer->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 120));
+	mAux = rotate(mAux, radians(90.0), dvec3(0.0, 1.0, 0));
+	cilDer->setModelMat(mAux);
+	helices->addEntity(cilDer);
+
+	Cylinder* cilIzq = new Cylinder(20.0, 10.0, 50.0);
+	cilIzq->color = glm::fvec3(0, 0, 1);
+	mAux = cilIzq->modelMat();
+	mAux = translate(mAux, dvec3(0, 0, 120));
+	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
+	cilIzq->setModelMat(mAux);
+	helices->addEntity(cilIzq);
+
+	foco = new SpotLight();
+	foco->setSpot({ 0.0,-1.0,0.0 }, 15.0, 0.0);
+	foco->setPosDir({ 0, 0, 0 });
+	foco->setAmb({ 0, 0, 0, 1 });
+	foco->setDiff({ 1, 1, 1, 1 });
+	foco->setSpec({ 0.5, 0.5, 0.5, 1 });
+	foco->setAtte(1.0, 0.0, 0.0);
+}
+void Avion::setFoco(bool encendido) {
+	if (encendido)
+		foco->enable();
+	else
+		foco->disable();
+}
+CompoundEntity* Avion::getChasis() {
+	CompoundEntity* avion = (CompoundEntity*)this->gObjects.at(0);
+	CompoundEntity* chasis = (CompoundEntity*)avion->getObject(1);
+	return chasis;
+}
+CompoundEntity* Avion::getHelices() {
+	CompoundEntity* avion = (CompoundEntity*)this->gObjects.at(0);
+	CompoundEntity* chasis = (CompoundEntity*)avion->getObject(1);
+	CompoundEntity* helices = (CompoundEntity*)chasis->getObject(1);
+	return helices;
+}
+
+void Avion::render(dmat4 const& modelViewMat) const
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+	foco->upload(aMat);
+	for (Abs_Entity* el : gObjects) {
+		el->render(aMat);
+	}
+}
+
 //EJERCICIOS EXTRA 2
-Grid::Grid(GLdouble l, GLuint c) {
+Grid::Grid(GLdouble l, GLuint c, Texture* tex) {
 	this->mMesh = IndexMesh::generateGridTex(l, c);
-	mTexture = new Texture();
-	mTexture->load("../Bmps/stones.bmp");
+	mTexture = tex;
 }
 Grid::~Grid()
 {
@@ -766,17 +839,159 @@ void Grid::render(dmat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT, GL_LINE);
+		//glPolygonMode(GL_FRONT, GL_FILL);
 		//glEnable(GL_COLOR_MATERIAL);
 		//glColor3d(color().r, color().g, color().b);
 		mTexture->bind(GL_REPLACE);
 		mMesh->render();
-		glDisable(GL_COLOR_MATERIAL);
+		//glDisable(GL_COLOR_MATERIAL);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		mTexture->unbind();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
 	}
 }
 
 void Grid::update()
 {}
+
+//-------------------------------------------
+GridCube::GridCube() {
+	Texture* checker = new Texture();
+	Texture* stones = new Texture();
+	checker->load("../Bmps/checker.bmp");
+	stones->load("../Bmps/stones.bmp");
+	glm::dmat4 mAux;
+	dvec4 clearblue;
+	clearblue.r = 0.5;
+	clearblue.g = 1.0;
+	clearblue.b = 1.0;
+	Grid* tapa = new Grid(200.0, 10, checker);
+	tapa->setColor(clearblue);
+	mAux = tapa->modelMat();
+	mAux = translate(mAux, dvec3(-100, 100, 100));
+	mAux = rotate(mAux, radians(-90.0), dvec3(1.0, 0.0, 0));
+	tapa->setModelMat(mAux);
+	gObjects.push_back(tapa);
+
+	Grid* base = new Grid(200.0, 10, checker);
+	base->setColor(clearblue);
+	mAux = base->modelMat();
+	mAux = translate(mAux, dvec3(-100, -100, -100));
+	mAux = rotate(mAux, radians(90.0), dvec3(1.0, 0.0, 0));
+	base->setModelMat(mAux);
+	gObjects.push_back(base);
+
+	Grid* ladofront = new Grid(200.0, 10, stones);
+	ladofront->setColor(clearblue);
+	mAux = ladofront->modelMat();
+	mAux = translate(mAux, dvec3(-100, -100, 100));
+	ladofront->setModelMat(mAux);
+	gObjects.push_back(ladofront);
+
+	Grid* ladoright = new Grid(200.0, 10, stones);
+	ladoright->setColor(clearblue);
+	mAux = ladoright->modelMat();
+	mAux = translate(mAux, dvec3(100, -100, 100));
+	mAux = rotate(mAux, radians(90.0), dvec3(0.0, 1.0, 0));
+	ladoright->setModelMat(mAux);
+	gObjects.push_back(ladoright);
+
+	Grid* ladoleft = new Grid(200.0, 10, stones);
+	ladoleft->setColor(clearblue);
+	mAux = ladoleft->modelMat();
+	mAux = translate(mAux, dvec3(-100, -100, -100));
+	mAux = rotate(mAux, radians(-90.0), dvec3(0.0, 1.0, 0));
+	ladoleft->setModelMat(mAux);
+	gObjects.push_back(ladoleft);
+
+	Grid* ladoback = new Grid(200.0, 10, stones);
+	ladoback->setColor(clearblue);
+	mAux = ladoback->modelMat();
+	mAux = translate(mAux, dvec3(100, -100, -100));
+	mAux = rotate(mAux, radians(-180.0), dvec3(0.0, 1.0, 0));
+	ladoback->setModelMat(mAux);
+	gObjects.push_back(ladoback);
+
+
+	foco = new SpotLight();
+	foco->setSpot({ 0.0,0.0, -1.0 }, 15.0, 5.0);
+	foco->setPosDir({ 0, 0, 300 });
+	foco->setAmb({ 0, 0, 0, 1 });
+	foco->setDiff({ 1, 1, 1, 1 });
+	foco->setSpec({ 0.5, 0.5, 0.5, 1 });
+}
+
+
+GridCube::~GridCube() {
+	delete checker; checker = nullptr;
+	delete stones; stones = nullptr;
+}
+
+void GridCube::render(dmat4 const& modelViewMat) const
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+	foco->upload(aMat);
+	for (Abs_Entity* el : gObjects) {
+		el->render(aMat);
+	}
+}
+
+void GridCube::setFoco(bool encendido) {
+	if (encendido)
+		foco->enable();
+	else
+		foco->disable();
+}
+
+//-------------------------------------------
+SirenCube::SirenCube() {
+	dvec4 red;
+	red.r = 1.0;
+	red.g = 0.0;
+	red.b = 0.0;
+	glm::dmat4 mAux;
+
+	GridCube* gridCube = new GridCube();
+	gObjects.push_back(gridCube);
+
+	Esfera* esfera = new Esfera(50.0, 100, 100);
+	mAux = esfera->modelMat();
+	mAux = translate(mAux, dvec3(0, 100, 0));
+	esfera->setModelMat(mAux);
+	esfera->setColor(red);
+	gObjects.push_back(esfera);
+
+	foco = new SpotLight();
+	foco->setSpot({ 0.0,-0.5,1.0 }, 25.0, 0.0);
+	foco->setPosDir({ 0, 50, 0 });
+	foco->setAmb({ 0, 0, 0, 1 });
+	foco->setDiff({ 1, 1, 1, 1 });
+	foco->setSpec({ 0.5, 0.5, 0.5, 1 });
+}
+
+
+SirenCube::~SirenCube() {
+
+}
+
+void SirenCube::render(dmat4 const& modelViewMat) const
+{
+	dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
+	upload(aMat);
+	foco->upload(aMat);
+	for (Abs_Entity* el : gObjects) {
+		el->render(aMat);
+	}
+}
+
+void SirenCube::setFoco(bool encendido) {
+	if (encendido)
+		foco->enable();
+	else
+		foco->disable();
+}
+
+void SirenCube::updateFoco(GLdouble x, GLdouble z) {
+	foco->setSpot({ x,-0.5,1.0 + z }, 25.0, 0.0);
+}
