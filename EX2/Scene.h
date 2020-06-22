@@ -64,7 +64,10 @@ protected:
 	//Ejercicio 35
 	GLuint mLUpdateTime = 0;
 	GLdouble angle = 0.0;
-	
+
+	//EJERCICIOS EXTRA 2
+	bool focoEscena1 = false;
+	bool focoEscena2 = false;
 };
 //-------------------------------------------------------------------------
 

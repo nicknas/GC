@@ -212,12 +212,17 @@ void Scene::init()
 	avion->setModelMat(mAux);
 	gObjects.push_back(avion);*/
 	
-
+	/********************************************************************************************************/
 	//EJERCICIOS EXTRA 2
 	//ESCENA 1
-	/*GridCube* gridCube = new GridCube();
-	gObjects.push_back(gridCube);*/
+	
+	focoEscena1 = true;
+	GridCube* gridCube = new GridCube();
+	gObjects.push_back(gridCube);
+	
 	//ESCENA 2
+	/*
+	focoEscena2 = true;
 	Esfera* esfera = new Esfera(180.0, 100, 100);
 	esfera->setColor(clearblue);
 	esfera->setMaterial(mat);
@@ -228,7 +233,7 @@ void Scene::init()
 	mAux = translate(mAux, dvec3(0, 200, 0));
 	mAux = scale(mAux, dvec3(0.2, 0.2, 0.2));
 	sirenCube->setModelMat(mAux);
-	gObjects.push_back(sirenCube);
+	gObjects.push_back(sirenCube);*/
 	
 }
 //-------------------------------------------------------------------------
@@ -411,12 +416,17 @@ void Scene::enciendeFoco(bool encencido) {
 	avion->setFoco(encencido);*/
 
 	//EJERCICIOS EXTRA 2 - ESCENA 1
-	/*GridCube* grid = (GridCube*)this->gObjects.at(1);
-	grid->setFoco(encencido);*/
-
+	if (focoEscena1) {
+		GridCube* grid = (GridCube*)this->gObjects.at(1);
+		grid->setFoco(encencido);
+	}
+	
 	//EJERCICIOS EXTRA 2 - ESCENA 2
-	SirenCube* sirenCube = (SirenCube*)this->gObjects.at(2);
-	sirenCube->setFoco(encencido);
+	if (focoEscena2) {
+		SirenCube* sirenCube = (SirenCube*)this->gObjects.at(2);
+		sirenCube->setFoco(encencido);
+	}
+	
 
 }
 //--------------------------------------------------------------------------------------

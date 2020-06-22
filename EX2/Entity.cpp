@@ -839,11 +839,10 @@ void Grid::render(dmat4 const& modelViewMat) const
 	if (mMesh != nullptr) {
 		dmat4 aMat = modelViewMat * mModelMat;  // glm matrix multiplication
 		upload(aMat);
-		//glPolygonMode(GL_FRONT, GL_LINE);
-		//glPolygonMode(GL_FRONT, GL_FILL);
+		//glPolygonMode(GL_FRONT, GL_LINE); //Para diferenciar las caras exteriores
 		//glEnable(GL_COLOR_MATERIAL);
 		//glColor3d(color().r, color().g, color().b);
-		mTexture->bind(GL_REPLACE);
+		mTexture->bind(GL_MODULATE);
 		mMesh->render();
 		//glDisable(GL_COLOR_MATERIAL);
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -919,6 +918,7 @@ GridCube::GridCube() {
 	foco->setAmb({ 0, 0, 0, 1 });
 	foco->setDiff({ 1, 1, 1, 1 });
 	foco->setSpec({ 0.5, 0.5, 0.5, 1 });
+	foco->enable();
 }
 
 
@@ -953,6 +953,7 @@ SirenCube::SirenCube() {
 	glm::dmat4 mAux;
 
 	GridCube* gridCube = new GridCube();
+	gridCube->setFoco(false);
 	gObjects.push_back(gridCube);
 
 	Esfera* esfera = new Esfera(50.0, 100, 100);
