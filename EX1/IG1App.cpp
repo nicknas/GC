@@ -168,62 +168,6 @@ void IG1App::key(unsigned char key, int x, int y)
 	case 'k':
 		m2Vistas = !m2Vistas;
 		break;
-	//PRÁCTICA 2.6
-	//Ejercicio 25
-	case 'q':
-		//Ejercicio 32
-		//glEnable(GL_LIGHT0);
-		mScene->directionalLight->enable();
-		break;
-	case 'w':
-		//Ejercicio 32
-		//glDisable(GL_LIGHT0);
-		mScene->directionalLight->disable();
-		break;
-	//Ejercicio 26
-	case 'a':
-		//Ejercicio 32
-		//glEnable(GL_LIGHT1);
-		mScene->positionalLight->enable();
-		break;
-	case 's':
-		//Ejercicio 32
-		//glDisable(GL_LIGHT1);
-		mScene->positionalLight->disable();
-		break;
-	//Ejercicio 27
-	case 'z':
-		//Ejercicio 32
-		//glEnable(GL_LIGHT2);
-		mScene->spotSceneLight->enable();
-		break;
-	case 'x':
-		//Ejercicio 32
-		//glDisable(GL_LIGHT2);
-		mScene->spotSceneLight->disable();
-		break;
-	//Ejercicio 30
-	case 'e':
-		mScene->sceneDark();
-		break;
-	//Ejercicio 34
-	case 't':
-		mScene->enciendeFoco(true);
-		break;
-	case 'g':
-		mScene->enciendeFoco(false);
-		break;
-	//Ejercicio 35
-	case 'y':
-		mScene->move();
-		break;
-	//Ejercicio 34
-	case 'd':
-		mScene->minero->enable();
-		break;
-	case 'f':
-		mScene->minero->disable();
-		break;
 	default:
 		need_redisplay = false;
 		break;

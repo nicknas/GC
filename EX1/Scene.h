@@ -33,24 +33,7 @@ public:
 	void update() const;
 	void setState(int id);
 	void saveFoto();
-	//Práctica 2.1
-	void sceneDirLight(Camera const& cam) const;
-	//PRÁCTICA 2.6
-	void scenePosLight(Camera const& cam) const;
-	void sceneSpotLight(Camera const& cam) const;
-	void sceneDark() const;
-	//PRÁCTICA 2.7
-	void setLights();
-	//Ejercicio 34
-	void enciendeFoco(bool encencido);
-	//Ejercicio 35
-	void move();
-
-	DirLight* directionalLight;
-	PosLight* positionalLight;
-	SpotLight* spotSceneLight;
-	//Ejericio 36
-	PosLight* minero;
+	
 protected:
 	void free();
 	void setGL();
@@ -60,10 +43,6 @@ protected:
 	std::vector<Texture*> gTextures;
 	Abs_Entity* gFoto;
 	int mId = 0;
-
-	//Ejercicio 35
-	GLuint mLUpdateTime = 0;
-	GLdouble angle = 0.0;
 	
 };
 //-------------------------------------------------------------------------

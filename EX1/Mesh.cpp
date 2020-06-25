@@ -8,11 +8,7 @@ using namespace glm;
 
 void Mesh::draw() const 
 {
-   
     glDrawArrays(mPrimitive, 0, size());   // primitive graphic, first index and number of elements to be rendered
-    //PRÁCTICA2.2
-    //unsigned int stripIndices[] = { 0, 1, 2, 3, 4, 5, 6, 7, 0, 1 };
-    //glDrawElements(mPrimitive, size(), GL_UNSIGNED_INT, stripIndices);
 }
 //-------------------------------------------------------------------------
 
@@ -36,18 +32,12 @@ void Mesh::render() const
             glTexCoordPointer(2, GL_DOUBLE, 0, vTexCoords.data());//EXTRA 2
         }
     }
-    //PRÁCTICA 2.3
-    if (vNormals.size() > 0){
-        glEnableClientState(GL_NORMAL_ARRAY);
-        glNormalPointer(GL_DOUBLE, 0, vNormals.data());
-    }
+    
 	draw();
 
     glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    //PRÁCTICA 2.3
-    glDisableClientState(GL_NORMAL_ARRAY);
     
   }
 }
@@ -290,227 +280,6 @@ Mesh* Mesh::generaParedTexCor(GLdouble w, GLdouble h, GLdouble s) {
     mesh->vTexCoords.emplace_back(0.0, 0.0);
     mesh->vTexCoords.emplace_back(1.0, 1.0);
     mesh->vTexCoords.emplace_back(1.0, 0.0);
-    return mesh;
-}
-
-// PRÁCTICA 2.2
-Mesh* Mesh::generaAnilloCuadrado(){
-    Mesh* mesh = new Mesh();
-    mesh->mPrimitive = GL_TRIANGLE_STRIP;
-    mesh->mNumVertices = 10;
-    //Vértices
-    mesh->vVertices.reserve(mesh->mNumVertices);
-    mesh->vVertices.emplace_back(30.0, 30.0, 0.0);
-    mesh->vVertices.emplace_back(10.0, 10.0, 0.0);
-    mesh->vVertices.emplace_back(70.0, 30.0, 0.0);
-    mesh->vVertices.emplace_back(90.0, 10.0, 0.0);
-    mesh->vVertices.emplace_back(70.0, 70.0, 0.0);
-    mesh->vVertices.emplace_back(90.0, 90.0, 0.0);
-    mesh->vVertices.emplace_back(30.0, 70.0, 0.0);
-    mesh->vVertices.emplace_back(10.0, 90.0, 0.0);
-    //mesh->vVertices.emplace_back(30.0, 30.0, 0.0);
-    //mesh->vVertices.emplace_back(10.0, 10.0, 0.0);
-    //Colores
-    mesh->vColors.reserve(mesh->mNumVertices);
-    mesh->vColors.emplace_back(0.0, 0.0, 0.0, 1.0);
-    mesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    mesh->vColors.emplace_back(0.0, 1.0, 0.0, 1.0);
-    mesh->vColors.emplace_back(0.0, 0.0, 1.0, 1.0);
-    mesh->vColors.emplace_back(1.0, 1.0, 0.0, 1.0);
-    mesh->vColors.emplace_back(1.0, 0.0, 1.0, 1.0);
-    mesh->vColors.emplace_back(0.0, 1.0, 1.0, 1.0);
-    mesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    //mesh->vColors.emplace_back(0.0, 0.0, 0.0, 1.0);
-    //mesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-
-    mesh->vNormals.reserve(mesh->mNumVertices);
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0); 
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0); 
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0); 
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);    
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
-    mesh->vNormals.emplace_back(0.0, 0.0, 1.0);
-    return mesh;
-}
-//PRÁCTICA 2.3
-
-void IndexMesh::render() const
-{
-    if (vVertices.size() > 0) {  // transfer data
-// transfer the coordinates of the vertices
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glVertexPointer(3, GL_DOUBLE, 0, vVertices.data());  // number of coordinates per vertex, type of each coordinate, stride, pointer 
-        if (vColors.size() > 0) { // transfer colors
-            glEnableClientState(GL_COLOR_ARRAY);
-            glColorPointer(4, GL_DOUBLE, 0, vColors.data());  // components number (rgba=4), type of each component, stride, pointer  
-        }
-        if (vTexCoords.size() > 0) {
-            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-            glTexCoordPointer(2, GL_DOUBLE, 0, vTexCoords.data());
-        }
-        //PRÁCTICA 2.3
-        if (vNormals.size() > 0) {
-            glEnableClientState(GL_NORMAL_ARRAY);
-            glNormalPointer(GL_DOUBLE, 0, vNormals.data());
-            
-        }
-        if (vIndices != nullptr) {
-            glEnableClientState(GL_INDEX_ARRAY);
-            glIndexPointer(GL_UNSIGNED_INT, 0, vIndices);
-        }
-
-        draw();
-
-        glDisableClientState(GL_COLOR_ARRAY);
-        glDisableClientState(GL_VERTEX_ARRAY);
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-        //PRÁCTICA 2.3
-        glDisableClientState(GL_NORMAL_ARRAY);
-        glDisableClientState(GL_INDEX_ARRAY);
-    }
-}
-
-// Comando para renderizar la malla indexada enviada
-void IndexMesh::draw() const {
-    glDrawElements(mPrimitive, nNumIndices, GL_UNSIGNED_INT, vIndices);
-}
-
-IndexMesh* IndexMesh::generaIndexCuboConTapas(GLdouble l) {
-    IndexMesh* indexMesh = new IndexMesh();
-    indexMesh->mPrimitive = GL_TRIANGLES;
-
-    //Vértices
-    indexMesh->mNumVertices = 8;
-    indexMesh->vVertices.reserve(indexMesh->mNumVertices);
-    indexMesh->vVertices.emplace_back(l / 2, l / 2, l / 2); //0
-    indexMesh->vVertices.emplace_back(l / 2, -l / 2, l / 2); //1
-    indexMesh->vVertices.emplace_back(l / 2, l / 2, -l / 2); //2
-    indexMesh->vVertices.emplace_back(l / 2, -l / 2, -l / 2); //3
-
-    indexMesh->vVertices.emplace_back(-l / 2, l / 2, -l / 2); //4 
-    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, -l / 2); //5
-    indexMesh->vVertices.emplace_back(-l / 2, l / 2, l / 2); //6
-    indexMesh->vVertices.emplace_back(-l / 2, -l / 2, l / 2); //7
-    
-    //Colores
-    /*indexMesh->vColors.reserve(indexMesh->mNumVertices);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);
-    indexMesh->vColors.emplace_back(1.0, 0.0, 0.0, 1.0);*/
-
-    //Índices
-    indexMesh->nNumIndices = 36;
-    GLuint indices[] = { 0, 1, 2, 2, 1, 3,
-        2, 3, 4, 4, 3, 5,
-        4, 5, 6, 6, 5, 7,
-        6, 7, 0, 0, 7, 1,
-        4, 6, 2, 2, 6, 0,
-        1, 7, 3, 3, 7, 5 };
-    
-    indexMesh->vIndices = new GLuint[indexMesh->nNumIndices];
-    for (int i = 0; i < indexMesh->nNumIndices; i++) {
-        indexMesh->vIndices[i] = indices[i];
-    }
-    
-    //Normales
-    indexMesh->vNormals.reserve(indexMesh->mNumVertices);
-    indexMesh->vNormals.emplace_back(1.0, 1.0, 2.0); //0
-    indexMesh->vNormals.emplace_back(2.0, -1.0, 1.0); //1
-    indexMesh->vNormals.emplace_back(2.0, 2.0, -1.0); //2
-    indexMesh->vNormals.emplace_back(1.0, -2.0, -2.0); //3
-    indexMesh->vNormals.emplace_back(-1.0, 1.0, -2.0); //4
-    indexMesh->vNormals.emplace_back(-2.0, -1.0, -1.0); //5
-    indexMesh->vNormals.emplace_back(-2.0, 2.0, 1.0); //6
-    indexMesh->vNormals.emplace_back(-1.0, -2.0, 2.0); //7
-    indexMesh->buildNormalVectors();
-
-    return indexMesh;
- }
-
-void IndexMesh::buildNormalVectors() {
-    vNormals.reserve(mNumVertices);
-    for (int i=0;i<mNumVertices;i++)
-        vNormals.emplace_back(0.0, 0.0, 0.0);
-    
-    
-    for (int i = 0; i < nNumIndices; i+=3) {
-        int a = vIndices[i];
-        int b = vIndices[i+1];
-        int c = vIndices[i+2];
-
-        dvec3 v0 = vVertices[a];
-        dvec3 v1 = vVertices[b];
-        dvec3 v2 = vVertices[c];
-        
-        dvec3 n = normalize(cross(v2-v1,v0-v1));
-        
-        vNormals[a] += n;
-        vNormals[b] += n;
-        vNormals[c] += n;
-    }
-    for (int i = 0; i < mNumVertices; i++) {
-        vNormals[i] = normalize(vNormals[i]);
-    }
-}
-
-//PRÁCTICA 2.5
-
-MbR* MbR::generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil) {
-    MbR* mesh = new MbR(mm, nn, perfil);
-    mesh->mPrimitive = GL_TRIANGLES;
-    mesh->mNumVertices = nn*mm;
-    dvec3* vertices = new dvec3[mesh->mNumVertices];
-
-    for (int i = 0; i < nn; i++) {
-        //Generar la muestra i-ésima de vértices
-        GLdouble theta = i * 360 / nn;
-        GLdouble c = cos(radians(theta));
-        GLdouble s = sin(radians(theta));
-        // R_y(theta) es la matriz de rotación alrededor del eje Y
-        for (int j = 0; j < mm; j++) {
-            int indice = i * mm + j;
-            GLdouble x = c * perfil[j].x + s * perfil[j].z;
-            GLdouble z = -s * perfil[j].x + c * perfil[j].z;
-            vertices[indice] = dvec3(x, perfil[j].y, z);
-        }
-    }
-    //Inicializar vVértices
-    for (int i = 0; i < mesh->mNumVertices; i++) {
-        mesh->vVertices.emplace_back(vertices[i]);
-    }
-    
-    mesh->nNumIndices = nn * (mm-1) * 6;
-    mesh->vIndices = new GLuint[mesh->nNumIndices];
-    //Generar índices
-    int indiceMayor = 0;
-    for (int i = 0; i < nn; i++)
-        for (int j = 0; j < mm - 1; j++) {
-            int indice = i * mm + j;
-            //Cara triangular inferior
-            mesh->vIndices[indiceMayor] = indice;
-            indiceMayor++;
-            mesh->vIndices[indiceMayor] = (indice + mm) % (nn * mm);
-            indiceMayor++;
-            mesh->vIndices[indiceMayor] = (indice + mm + 1) % (nn * mm);
-            indiceMayor++;
-            //Cara triangular superior
-            mesh->vIndices[indiceMayor] = (indice + mm + 1) % (nn * mm);
-            indiceMayor++;
-            mesh->vIndices[indiceMayor] = indice + 1;
-            indiceMayor++;
-            mesh->vIndices[indiceMayor] = indice;
-            indiceMayor++;
-            
-        }
-            
-    mesh->buildNormalVectors();
     return mesh;
 }
 

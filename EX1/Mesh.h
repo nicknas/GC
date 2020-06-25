@@ -36,8 +36,6 @@ public:
 	static Mesh* generaParedTexCor(GLdouble w, GLdouble h, GLdouble s);
 	static Mesh* generaPlanta(GLdouble w, GLdouble h, GLdouble angle);
 	static Mesh* generaPlantaTexCor(GLdouble w, GLdouble h, GLdouble angle);
-	//Práctica 2.2
-	static Mesh* generaAnilloCuadrado();
 	
 	Mesh() {};
 	virtual ~Mesh() {};
@@ -59,8 +57,7 @@ protected:
 	GLuint mNumVertices = 0;  // number of elements ( = vVertices.size())
 	std::vector<glm::dvec3> vVertices;  // vertex array
 	std::vector<glm::dvec4> vColors;    // color array
-	//PRÁCTICA 2.3
-	std::vector<glm::dvec3> vNormals; //normal array
+
 	virtual void draw() const;
 
 	std::vector<glm::dvec2> vTexCoords;
@@ -68,29 +65,4 @@ protected:
 	boolean twoUnits = false; //EXTRA 2
 };
 //-------------------------------------------------------------------------
-//PRÁCTICA 2.3
-class IndexMesh : public Mesh {
-protected:
-	GLuint* vIndices = nullptr; // tabla de índices
-	GLuint nNumIndices = 0;
-public:
-	IndexMesh() { mPrimitive = GL_TRIANGLES; }
-	~IndexMesh() { delete[] vIndices; }
-	virtual void render() const;
-	virtual void draw() const;
-	static IndexMesh* generaIndexCuboConTapas(GLdouble l);
-	virtual void buildNormalVectors();
-};
-//-------------------------------------------------------------------------
-//PRÁCTICA 2.5
-class MbR : public IndexMesh {
-protected:
-	int m;
-	int n;
-	glm::dvec3* perfil;
-public:
-	MbR(int mm, int nn, glm::dvec3* pperfil) { m = mm; n = nn; perfil = pperfil; }
-	~MbR() {}
-	static MbR* generaIndexMeshByRevolution(int mm, int nn, glm::dvec3* perfil);
-};
 #endif //_H_Scene_H_
