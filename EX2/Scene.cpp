@@ -247,7 +247,8 @@ void Scene::free()
 	gObjects.clear();
 	for (Texture* tx : gTextures)
 	{
-		delete tx; tx = nullptr;
+		if (tx->height() != 3722304989 && tx->width() != 3722304989)
+			delete tx; tx = nullptr;
 	}
 	gTextures.clear();
 }
